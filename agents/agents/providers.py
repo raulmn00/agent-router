@@ -59,6 +59,29 @@ class OpenAIProvider(LLMProvider):
         )
         return resp.choices[0].message.content or ""
 
+    def complete_with_logprobs(
+        self, messages: Messages, max_tokens: int = 512
+    ) -> tuple[str, list[float]]:
+        """Same as `complete`, but also returns per-token logprobs of the response.
+
+        Used by routes (e.g. the zero-shot LLM router) that want to derive a
+        confidence score from the model's commitment to each output token.
+        Not part of the LLMProvider ABC — providers that don't support it can
+        simply omit this method; callers must check with `getattr`.
+        """
+        resp = self._client.chat.completions.create(
+            model=self.model,
+            messages=messages,
+            max_tokens=max_tokens,
+            temperature=0.2,
+            logprobs=True,
+        )
+        text = resp.choices[0].message.content or ""
+        content_logprobs = resp.choices[0].logprobs
+        if content_logprobs is None or not content_logprobs.content:
+            return text, []
+        return text, [tok.logprob for tok in content_logprobs.content]
+
 
 # --------------------------------------------------------------------------- #
 # Anthropic                                                                   #
