@@ -1,0 +1,26 @@
+# Build the image from the REPO ROOT (not from inside backend/): the Dockerfile
+# COPYs router/, agents/, backend/. Run:
+#   docker build -f backend/Dockerfile -t agent-router .
+
+# Exclude the trained model from the build context — it's fetched at startup.
+router/model/
+router/checkpoints/
+
+# Python build / test artifacts
+**/__pycache__/
+**/*.pyc
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+
+# Local envs
+.env
+.venv/
+
+# Embedding cache from eval runs
+eval/results/.embed_cache.json
+
+# Editor / OS noise
+.DS_Store
+.idea/
+.vscode/
