@@ -2,6 +2,8 @@
 
 Multi-agent system whose routing layer is a **DistilBERT classifier I fine-tuned**, instead of paying tokens to a frontier LLM to route each request.
 
+**Live demo:** https://agent-router-909428365094.us-central1.run.app — `GET /` for health, `POST /route` with `{"input": "..."}`. Hosted on Google Cloud Run, model fetched on cold start from the [v0.1.0 GitHub Release](https://github.com/raulmn00/agent-router/releases/tag/v0.1.0).
+
 Showcases, in one repo:
 
 - **Own fine-tuning** of `distilbert-base-uncased` on a synthetic dataset for 4 intent classes (`simple_qa`, `complex_task`, `document_qa`, `chitchat`).
