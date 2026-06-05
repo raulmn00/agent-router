@@ -2,11 +2,16 @@ fastapi==0.115.*
 uvicorn[standard]==0.32.*
 pydantic==2.*
 python-dotenv==1.*
+slowapi==0.1.*
 
 # Router stack (DistilBERT)
 torch>=2.4,<3
 transformers>=4.46,<6
 accelerate>=1.1,<2
+
+# Eval-side baselines used by /compare
+scikit-learn>=1.5,<2
+joblib>=1.3,<2
 
 # LLM SDKs
 openai>=2.0,<3
