@@ -101,3 +101,39 @@ class EmbedRouter:
             raise RuntimeError("EmbedRouter not fitted — call .fit(...) first")
         X = _embed_many([text], self.client, self.model, self.cache)
         return str(self.lr.predict(X)[0])
+
+    def classify_with_confidence(self, text: str) -> tuple[str, float]:
+        """Like `classify`, plus the LogReg's predicted probability for the chosen class."""
+        if self.lr is None:
+            raise RuntimeError("EmbedRouter not fitted — call .fit(...) first")
+        X = _embed_many([text], self.client, self.model, self.cache)
+        probs = self.lr.predict_proba(X)[0]
+        idx = int(probs.argmax())
+        return str(self.lr.classes_[idx]), float(probs[idx])
+
+    def save(self, path: str) -> None:
+        """Persist the trained LogReg + class labels to disk.
+
+        Only the fitted classifier is saved — the OpenAI client and the
+        embedding cache are reconstructed at load time. Use `joblib` to match
+        scikit-learn's recommended serialization for fitted estimators.
+        """
+        if self.lr is None:
+            raise RuntimeError("nothing to save — EmbedRouter is not fitted")
+        import joblib
+        import os as _os
+
+        _os.makedirs(_os.path.dirname(path) or ".", exist_ok=True)
+        joblib.dump({"lr": self.lr, "classes_": self.classes_, "model": self.model}, path)
+
+    def load(self, path: str) -> "EmbedRouter":
+        """Inverse of `save` — populates `self.lr` and `self.classes_` from disk."""
+        import joblib
+
+        payload = joblib.load(path)
+        self.lr = payload["lr"]
+        self.classes_ = payload["classes_"]
+        # Honor the saved embedding model (avoid silent mix-ups with newer pins).
+        if payload.get("model"):
+            self.model = payload["model"]
+        return self
