@@ -5,7 +5,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    PYTHONPATH=/app/router:/app/agents:/app/backend \
+    PYTHONPATH=/app/router:/app/agents:/app/eval:/app/backend \
     ROUTER_MODEL_PATH=/app/router/model \
     TRANSFORMERS_VERBOSITY=error \
     TOKENIZERS_PARALLELISM=false
@@ -22,10 +22,12 @@ WORKDIR /app
 COPY backend/requirements.txt /app/backend/requirements.txt
 RUN pip install -r /app/backend/requirements.txt
 
-# Copy package sources. The model directory is gitignored and won't be in the
-# build context — it gets fetched at startup by entrypoint.sh (see below).
+# Copy package sources. The DistilBERT model dir is gitignored and fetched at
+# startup by entrypoint.sh — but `eval/models/embed_router.joblib` (~25KB,
+# fitted LogReg) is committed and travels in this layer.
 COPY router/ /app/router/
 COPY agents/ /app/agents/
+COPY eval/ /app/eval/
 COPY backend/ /app/backend/
 
 # Strip the entrypoint script's CRLF if any, and make it executable.
