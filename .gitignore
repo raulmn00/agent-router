@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Env files
+.env
+.env.local
+
+# Tests / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# Trained model (binary, fetched at deploy time — see backend/entrypoint.sh)
+router/model/
+router/model/**
+
+# Trainer checkpoints / logs
+router/checkpoints/
+router/runs/
+**/wandb/
+
+# IDE
+.idea/
+.vscode/
+.DS_Store
+
+# Eval results (comparison.md/csv) are kept on purpose — but the embedding
+# cache is local-only and should not be committed.
+eval/results/.embed_cache.json

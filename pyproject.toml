@@ -1,0 +1,12 @@
+[project]
+name = "agent-router-workspace"
+version = "0.1.0"
+description = "Multi-agent system with a fine-tuned DistilBERT router (workspace root)."
+requires-python = ">=3.12,<3.13"
+
+# Workspace root is intentionally empty — each subpackage (router/, agents/, backend/, eval/)
+# has its own pyproject.toml with its own dependencies (PEP 621).
+
+[tool.pytest.ini_options]
+testpaths = ["router/tests", "agents/tests", "backend/tests", "eval/tests"]
+addopts = "-ra -q"
