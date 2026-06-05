@@ -1,0 +1,40 @@
+{"text": "How tall is Mount Everest in meters?", "label": "simple_qa"}
+{"text": "Which year was Python 3.0 released?", "label": "simple_qa"}
+{"text": "Who painted the Mona Lisa?", "label": "simple_qa"}
+{"text": "What's the chemical symbol for gold?", "label": "simple_qa"}
+{"text": "How long is the Great Wall of China?", "label": "simple_qa"}
+{"text": "When did World War I end?", "label": "simple_qa"}
+{"text": "What is absolute zero in Celsius?", "label": "simple_qa"}
+{"text": "Who composed the Ninth Symphony?", "label": "simple_qa"}
+{"text": "What's the GDP of Germany?", "label": "simple_qa"}
+{"text": "How many continents are there?", "label": "simple_qa"}
+{"text": "Build me a Slack bot that summarizes my unread channels, posts a digest every morning at 8am, and learns my preferences over time.", "label": "complex_task"}
+{"text": "Migrate our monolith Rails app to a service-oriented architecture without downtime, and write a runbook for each cutover.", "label": "complex_task"}
+{"text": "Set up an MLOps pipeline that retrains our churn model weekly, validates against a holdout set, and rolls back if AUC drops.", "label": "complex_task"}
+{"text": "Design and implement a payment retry system that handles 3DS challenges, exponential backoff, and notifies users only after the third failure.", "label": "complex_task"}
+{"text": "Create a dashboard that ingests Stripe webhooks in real time, deduplicates by event ID, and visualizes MRR cohorts.", "label": "complex_task"}
+{"text": "Architect a multi-region active-active deployment for our SaaS with conflict resolution at the database layer.", "label": "complex_task"}
+{"text": "Develop an A/B testing framework with sequential analysis, automatic stopping, and a power calculator.", "label": "complex_task"}
+{"text": "Implement a webhook gateway that fans out events to N consumers with at-least-once delivery and dead-letter handling.", "label": "complex_task"}
+{"text": "Plan and execute a database migration from MySQL to Postgres for our 2TB user table with zero downtime.", "label": "complex_task"}
+{"text": "Build a search relevance evaluation harness that lets us label queries, compute NDCG, and detect regressions in CI.", "label": "complex_task"}
+{"text": "From the meeting transcript I just pasted, extract every action item and who owns it.", "label": "document_qa"}
+{"text": "In the policy document I uploaded, what's the dress code for client visits?", "label": "document_qa"}
+{"text": "Per the financial statement attached, what is the operating margin?", "label": "document_qa"}
+{"text": "Reading the bug report I shared, what's the suspected root cause?", "label": "document_qa"}
+{"text": "Based on the resume I sent, what's the candidate's strongest technical area?", "label": "document_qa"}
+{"text": "In the legal brief, summarize the precedent cited in section II.", "label": "document_qa"}
+{"text": "From the patient chart, list all medications and dosages.", "label": "document_qa"}
+{"text": "What does the SOW say about milestone payments?", "label": "document_qa"}
+{"text": "In the architecture doc above, why was Kafka chosen over RabbitMQ?", "label": "document_qa"}
+{"text": "Per the user research report, what were the top three pain points?", "label": "document_qa"}
+{"text": "How was your morning?", "label": "chitchat"}
+{"text": "Any plans for dinner tonight?", "label": "chitchat"}
+{"text": "Just popping in to say hi.", "label": "chitchat"}
+{"text": "Long week, isn't it?", "label": "chitchat"}
+{"text": "I'm in a great mood today!", "label": "chitchat"}
+{"text": "Do you ever get bored?", "label": "chitchat"}
+{"text": "What's the funniest thing you know?", "label": "chitchat"}
+{"text": "I miss the old days sometimes.", "label": "chitchat"}
+{"text": "Heading out for coffee, brb.", "label": "chitchat"}
+{"text": "You're really good at this.", "label": "chitchat"}
