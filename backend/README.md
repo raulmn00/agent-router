@@ -1,102 +1,120 @@
 # backend
 
-FastAPI service that wires the DistilBERT router to a 4-arm dispatch.
+FastAPI service that exposes the fine-tuned router and the three-way comparison endpoint.
+
+Live: <https://agent-router-909428365094.us-central1.run.app>
 
 ## Files
 
-- `app/schemas.py` — Pydantic v2 `RouteRequest` (`input: str`, 1–2000 chars) and `RouteResponse` (`intent`, `confidence`, `answer`, `path_taken`, `trace`).
+- `app/schemas.py` — Pydantic v2 models. `RouteRequest`/`RouteResponse` for `/route`; `CompareRequest`/`RouterResult`/`CompareResponse` for `/compare`.
 - `app/dispatch.py` — `Dispatcher.dispatch(text)` routes to one of four arms:
   - `simple_qa` → 1 direct LLM call (`gpt-4o-mini`)
-  - `complex_task` → multi-agent `Orchestrator`
-  - `document_qa` → RAG stub (integration point documented in the code)
+  - `complex_task` → multi-agent `Orchestrator` (Planner → Executors → Critic)
+  - `document_qa` → RAG stub (integration point documented in code)
   - `chitchat` → 1 direct LLM call with small `max_tokens`
-- `app/api.py` — FastAPI app, CORS, lazy classifier singleton, exception handlers for `422 / 503 / 500`.
-- `Dockerfile` + `entrypoint.sh` — container that fetches the trained model from a release URL on startup.
+- `app/compare.py` — `CompareService.compare(text)` runs all three routers (DistilBERT, LLM zero-shot, embeddings + LogReg) with each router isolated behind try/except. A single router's failure becomes its row's `error` field; the other two still return normally.
+- `app/api.py` — FastAPI app, CORS, slowapi rate limiting, lazy singletons (`_classifier_singleton`, `_llm_router_singleton`, `_embed_router_singleton`), and exception handlers for `429 / 503 / 500`.
+- `Dockerfile` + `entrypoint.sh` — container that fetches the DistilBERT model from a release URL on startup. The fitted LogReg artifact for the embed router (`eval/models/embed_router.joblib`) ships baked into the image.
 
 ## Endpoints
 
 ```
 GET  /         { "status": "ok", "service": "agent-router" }
-POST /route    RouteRequest -> RouteResponse
+POST /route    RouteRequest -> RouteResponse              (30 req/min/IP)
+POST /compare  CompareRequest -> CompareResponse          (10 req/min/IP — burns tokens)
 ```
 
-Error codes: `422` (Pydantic validation), `503` (`ProviderUnavailableError` — credentials missing, generic message), `500` (logged server-side, opaque body).
+### Error codes
+
+| Code | When |
+|---|---|
+| `422` | Pydantic validation failed (empty `input` or `input` > 2000 chars). |
+| `429` | slowapi rate limit exceeded. Body: `{"detail": "too many requests — please slow down…"}`. |
+| `503` | `ProviderUnavailableError` — missing credentials. Body: `{"detail": "upstream LLM provider is not configured"}` (generic; never leaks the env var name). |
+| `500` | Unexpected error. Body: `{"detail": "internal server error"}` (opaque). Full traceback in server logs. |
+
+`/compare` itself never returns 5xx on a *single router* failure — the failed router's row carries the error string, the others return normally, and the response stays 200. The endpoint only 5xx's if the whole request can't be processed.
 
 ## Run locally
 
 ```bash
 # from repo root
-cp .env.example .env  # fill in OPENAI_API_KEY
-cd backend
+cp .env.example .env             # fill OPENAI_API_KEY
+
+# train the DistilBERT (one-time, see router/README.md)
+cd router && python -m router.train
+
+# fit the embeddings LogReg (one-time, see eval/README.md)
+cd ../eval && python -m eval.fit_embed_router
+
+# start the server (uvicorn from anywhere; backend/app/__init__.py sets sibling paths)
+cd ../backend
 uvicorn app.api:app --reload --port 8000
 ```
 
-Smoke tests:
+If you skip the LogReg fit step, `/route` still works fully — `/compare` returns 200 with the embed-router row carrying a `FileNotFoundError`.
+
+### Smoke tests
 
 ```bash
 curl -s http://localhost:8000/ | python3 -m json.tool
 
+# /route — single dispatched answer + agent trace
 curl -s -X POST http://localhost:8000/route -H 'Content-Type: application/json' \
   -d '{"input":"What is the capital of France?"}' | python3 -m json.tool
 
 curl -s -X POST http://localhost:8000/route -H 'Content-Type: application/json' \
   -d '{"input":"Design an end-to-end MLOps pipeline with retraining and rollback."}' | python3 -m json.tool
 
-curl -s -X POST http://localhost:8000/route -H 'Content-Type: application/json' \
-  -d '{"input":"In the attached PDF, what is the conclusion?"}' | python3 -m json.tool
-
-curl -s -X POST http://localhost:8000/route -H 'Content-Type: application/json' \
-  -d '{"input":"Hi! How are you?"}' | python3 -m json.tool
+# /compare — all three routers on the same input
+curl -s -X POST http://localhost:8000/compare -H 'Content-Type: application/json' \
+  -d '{"input":"What is the capital of France?"}' | python3 -m json.tool
 ```
 
 ## Build & run with Docker
 
-The image is built from the **repo root**, not from `backend/`, because the Dockerfile needs `router/` and `agents/` in the build context.
+The image is built from the **repo root**, not from `backend/`. The Dockerfile pulls in `router/`, `agents/`, `eval/`, and `backend/`.
 
 ```bash
 # from repo root
 docker build -f backend/Dockerfile -t agent-router .
+
+# run
+docker run --rm -p 8000:8000 \
+  -e OPENAI_API_KEY="${OPENAI_API_KEY}" \
+  -e MODEL_RELEASE_URL="https://github.com/raulmn00/agent-router/releases/download/v0.1.0/model.tar.gz" \
+  agent-router
 ```
 
-The container expects the model to be available at startup. Three ways to provide it:
-
-1. **Bake it in at build time** — comment out `router/model/` from `.dockerignore`, train the model locally first.
-2. **Fetch from a release URL** (recommended for portfolio deploys) — tar your trained model and host it on a GitHub Release:
-   ```bash
-   tar -czf model.tar.gz -C router model
-   gh release create v0.1.0 model.tar.gz
-   ```
-   then run the container with the release URL:
-   ```bash
-   docker run --rm -p 8000:8000 \
-     -e OPENAI_API_KEY="${OPENAI_API_KEY}" \
-     -e MODEL_RELEASE_URL="https://github.com/<you>/agent-router/releases/download/v0.1.0/model.tar.gz" \
-     agent-router
-   ```
-3. **Mount a host directory** — `-v $(pwd)/router/model:/app/router/model`. Skips the fetch entirely.
+The DistilBERT model is **not** in the image — it's fetched at container start. The embeddings LogReg artifact **is** baked into the image (`eval/models/embed_router.joblib`).
 
 ## Deploy to Google Cloud Run
 
-```bash
-# Build & push to Artifact Registry (replace REGION/PROJECT_ID/REPO/IMAGE_TAG)
-gcloud auth configure-docker REGION-docker.pkg.dev
-docker build -f backend/Dockerfile \
-  -t REGION-docker.pkg.dev/PROJECT_ID/REPO/agent-router:IMAGE_TAG .
-docker push REGION-docker.pkg.dev/PROJECT_ID/REPO/agent-router:IMAGE_TAG
+The live service is in project `research-agent-498415`, region `us-central1`:
 
-# Deploy. --memory 1Gi is enough for the model + working set; --cpu 2 leaves
-# headroom for the LLM dispatch path's I/O.
+```bash
+gcloud auth configure-docker us-central1-docker.pkg.dev
+
+# Build & push via Cloud Build (faster than local push for ~3 GB images)
+gcloud builds submit . \
+  --config=cloudbuild.yaml \
+  --project=research-agent-498415 \
+  --region=us-central1
+
+# Deploy. --memory 2Gi covers the model + working set; --cpu 2 leaves headroom
+# for the LLM dispatch path's I/O during /compare.
 gcloud run deploy agent-router \
-  --project PROJECT_ID \
-  --image REGION-docker.pkg.dev/PROJECT_ID/REPO/agent-router:IMAGE_TAG \
-  --region REGION \
-  --memory 1Gi --cpu 2 \
-  --set-env-vars MODEL_RELEASE_URL="https://github.com/<you>/agent-router/releases/download/v0.1.0/model.tar.gz" \
+  --project research-agent-498415 \
+  --image us-central1-docker.pkg.dev/research-agent-498415/agent-router/agent-router:v0.2.0 \
+  --region us-central1 \
+  --memory 2Gi --cpu 2 \
+  --timeout 300 \
+  --set-env-vars MODEL_RELEASE_URL="https://github.com/raulmn00/agent-router/releases/download/v0.1.0/model.tar.gz",CORS_ALLOW_ORIGINS="*" \
   --set-secrets OPENAI_API_KEY=openai-api-key:latest \
   --allow-unauthenticated
 ```
 
-Pin the project flag explicitly (`--project`) — Cloud SDK's active context can flip between accounts silently. Always echo `gcloud config get-value account project` before deploys you can't undo.
+**Always pin `--project` explicitly** — gcloud's active context can flip silently between accounts. Echo `gcloud config get-value account project` before any deploy you can't undo.
 
 ## Tests
 
@@ -104,4 +122,9 @@ Pin the project flag explicitly (`--project`) — Cloud SDK's active context can
 python -m pytest tests/
 ```
 
-All 10 tests use `TestClient` with `app.dependency_overrides` to inject a fake classifier and a `FakeProvider` factory. Covers the 4 dispatch arms and the 3 error codes (`422 / 503 / 500`). No network.
+**19 tests**, all run with `TestClient` and `app.dependency_overrides` to inject fake classifiers and `FakeProvider` factories. No network, no LLM credits, no trained model required.
+
+- 10 `/route` tests cover the 4 dispatch arms and the 3 base error codes (422 / 503 / 500).
+- 9 `/compare` tests cover: 3-way agreement, divergent intents, 1 router failing (200 response with error filled), all 3 failing (200 with no `fastest`/`cheapest`), `Body(...)` validation, and the 429 rate limit (10/min for `/compare`, 30/min for `/route`).
+
+`conftest.py` has an autouse fixture that resets the slowapi limiter between tests so they don't accumulate counts.

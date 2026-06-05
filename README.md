@@ -16,7 +16,8 @@ Showcases, in one repo:
 
 - **Own fine-tuning** of `distilbert-base-uncased` on a synthetic dataset for 4 intent classes (`simple_qa`, `complex_task`, `document_qa`, `chitchat`).
 - **Multi-agent orchestration** (Planner / Executor / Critic) built by hand on top of a pluggable `LLMProvider` (OpenAI / Anthropic / Fake).
-- **FastAPI backend** that wires the router to a 4-arm dispatch.
+- **FastAPI backend** with two endpoints: `POST /route` (one input → dispatched answer + agent trace) and `POST /compare` (one input → all three routers side-by-side with measured latency, confidence, and cost). Rate-limited via slowapi.
+- **React + TypeScript frontend** that consumes both endpoints with a side-by-side comparison view whose column reveal is timed by the *measured* latency.
 - **Comparative evaluation** of three router strategies: the fine-tuned model, an LLM zero-shot baseline, and an embeddings + LogisticRegression baseline — measured for accuracy, F1, latency, and cost on a held-out testset.
 
 ## Architecture
@@ -89,23 +90,41 @@ python -m router.train
 
 Saves model + tokenizer to `router/model/`. Device auto-detected (CUDA → MPS → CPU). The training dataset is committed at `router/data/intents.jsonl` (regenerate with `python -m router.dataset` if you change the templates).
 
-### 3. Run the backend
+### 3. Fit the embeddings LogReg (one-time)
+
+```bash
+cd eval
+python -m eval.fit_embed_router
+```
+
+Writes `eval/models/embed_router.joblib` (~25 KB, committed in this repo). Required by `POST /compare`'s embed-router row; if missing, that row just carries an error and the other two routers still respond.
+
+### 4. Run the backend
 
 ```bash
 cd backend
 uvicorn app.api:app --reload --port 8000
 ```
 
-`POST /route` with `{"input": "..."}`. `GET /` for health. CORS is on by default; set `CORS_ALLOW_ORIGINS` env var to restrict.
+Endpoints: `GET /` (health), `POST /route` (single dispatch, 30 req/min/IP), `POST /compare` (three-way comparison, 10 req/min/IP — burns real tokens, hence the tighter limit). CORS is open by default; set `CORS_ALLOW_ORIGINS` env var to restrict.
 
-### 4. Compare the three routers
+### 5. Frontend (optional)
+
+```bash
+cd frontend
+cp .env.example .env       # default VITE_API_URL=http://localhost:8000
+npm install
+npm run dev                # http://localhost:5173
+```
+
+### 6. Compare the three routers offline (no backend)
 
 ```bash
 cd eval
 python -m eval.compare_routers --runs 3
 ```
 
-Generates `eval/results/comparison.md` and `comparison.csv`. The `--runs N` flag aggregates N independent runs, clearing the embedding cache between them so the embed router stays cold-cache (production-like) for every measurement.
+Generates `eval/results/comparison.md` and `comparison.csv`. The `--runs N` flag aggregates N independent runs, clearing the embedding cache between them so the embed router stays cold-cache (production-like) for every measurement. Reuses the same code that powers `POST /compare`.
 
 ## Evaluation
 
@@ -140,19 +159,21 @@ For this dataset, on this run, the local DistilBERT was the fastest by a wide ma
 ```
 agent-router/
 ├── router/         # DistilBERT intent classifier — train + classify
-├── agents/         # Planner / Executor / Critic / Orchestrator
-├── backend/        # FastAPI: router → dispatch → response
+├── agents/         # Planner / Executor / Critic / Orchestrator + LLMProvider
+├── backend/        # FastAPI: /route + /compare + slowapi rate limiting
 ├── eval/           # Comparative evaluation (DistilBERT vs LLM vs embed)
+├── frontend/       # React + TS demo UI (Vite, hand-written CSS)
 ├── pyproject.toml  # Workspace root (pytest config)
 └── .env.example    # API keys + optional overrides
 ```
 
-Each subpackage has its own `pyproject.toml` and `README.md`. See:
+Each subpackage has its own `pyproject.toml` (or `package.json`) and `README.md`:
 
 - [router/README.md](router/README.md)
 - [agents/README.md](agents/README.md)
 - [backend/README.md](backend/README.md)
 - [eval/README.md](eval/README.md)
+- [frontend/README.md](frontend/README.md)
 
 ## Deployment (Google Cloud Run)
 
@@ -166,10 +187,10 @@ Key flags:
 ## Testing
 
 ```
-router/tests/         schema, balance, stratified split, classifier softmax/argmax
-agents/tests/         orchestrator happy path + critic-reproves-and-retries
-backend/tests/        4 dispatch paths + 422 / 503 / 500 error handling
-eval/tests/           accuracy, f1_macro, cost_per_1k pinning
+router/tests/         schema, balance, stratified split, classifier softmax/argmax     (11)
+agents/tests/         orchestrator happy path + critic-reproves-and-retries           (15)
+backend/tests/        /route 4 dispatch paths + /compare + 422/429/503/500            (19)
+eval/tests/           accuracy, f1_macro, cost_per_1k pinning                          (17)
 ```
 
-53 tests; runs without GPU and without spending API credits. Heavy ML deps are skipif-gated so the schema and orchestration tests still run in environments that don't have `torch`/`transformers` installed.
+**62 backend tests** (`python -m pytest`); runs without GPU and without spending API credits. Heavy ML deps are skipif-gated so schema and orchestration tests still run in environments that don't have `torch`/`transformers` installed. Frontend's `npm run build` runs `tsc -b` first — type-check failures break the build.

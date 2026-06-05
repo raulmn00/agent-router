@@ -1,6 +1,10 @@
 # frontend
 
-Vite + React 18 + TypeScript demo for `agent-router`. Two modes:
+Vite + React 18 + TypeScript demo for `agent-router`.
+
+Live: **<https://agent-router-five.vercel.app>** (deployed on Vercel; points at the Cloud Run backend at <https://agent-router-909428365094.us-central1.run.app>).
+
+Two modes:
 
 - **Roteamento** — calls `POST /route`, renders the dispatched intent, the
   `path_taken` flow, the answer, and the dispatch trace (expanded
@@ -9,7 +13,8 @@ Vite + React 18 + TypeScript demo for `agent-router`. Two modes:
 - **Comparação** — calls `POST /compare` and renders the three routers side
   by side: predicted intent, confidence, **measured** latency, and
   cost-per-1k. Columns reveal in order of latency to make the speed
-  difference visible.
+  difference visible (the timing of the staggered reveal is derived from the
+  real measured `latency_ms`; we never fabricate timings).
 
 No UI library; CSS hand-written with tokens in `src/styles.css`. TypeScript
 `strict: true`, no `any` anywhere.
