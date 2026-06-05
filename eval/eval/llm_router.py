@@ -9,10 +9,14 @@ comparison stays fair).
 
 from __future__ import annotations
 
+import math
+import os
+
 from agents import get_provider
 from router import INTENTS
 
 DEFAULT_FALLBACK = "simple_qa"
+LLM_NO_LOGPROBS_CONFIDENCE = 1.0  # fallback when the API doesn't return logprobs
 
 SYSTEM_PROMPT = (
     "You are an intent classifier. Given a user message, classify it into "
@@ -59,3 +63,32 @@ class LLMRouter:
             max_tokens=10,
         )
         return _normalize(raw)
+
+    def classify_with_confidence(self, text: str) -> tuple[str, float]:
+        """Like `classify`, but also returns a confidence in [0, 1].
+
+        Confidence is derived from the OpenAI logprobs of the FIRST output
+        token (the disambiguating commitment point). If the underlying
+        provider doesn't expose logprobs (e.g. `FakeProvider`), confidence
+        falls back to LLM_NO_LOGPROBS_CONFIDENCE (1.0) and the caller can
+        treat it as "no probability information available".
+        """
+        # Only OpenAIProvider currently supports logprobs; fall back gracefully
+        # for any provider that doesn't have a `complete_with_logprobs` method.
+        complete_with_logprobs = getattr(self.provider, "complete_with_logprobs", None)
+        if complete_with_logprobs is None:
+            intent = self.classify(text)
+            return intent, LLM_NO_LOGPROBS_CONFIDENCE
+
+        raw, logprobs = complete_with_logprobs(
+            [
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": text},
+            ],
+            max_tokens=10,
+        )
+        intent = _normalize(raw)
+        if not logprobs:
+            return intent, LLM_NO_LOGPROBS_CONFIDENCE
+        confidence = math.exp(logprobs[0])  # first-token probability
+        return intent, max(0.0, min(1.0, confidence))
