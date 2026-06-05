@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "router"
+version = "0.1.0"
+description = "Fine-tuned DistilBERT intent router."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "torch>=2.4,<3",
+    "transformers>=4.46,<6",
+    "datasets>=3,<5",
+    "scikit-learn>=1.5,<2",
+    "accelerate>=1.1,<2",
+    "evaluate==0.4.*",
+    "python-dotenv==1.*",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.*",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["router*"]
+exclude = ["tests*", "data*", "model*"]
