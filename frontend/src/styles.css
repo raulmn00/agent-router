@@ -1,0 +1,734 @@
+/* ============================================================
+   Design tokens — single source of truth for colors / spacing.
+   ============================================================ */
+:root {
+  /* Base palette */
+  --bg: #f7f7f8;
+  --surface: #ffffff;
+  --surface-2: #fafafb;
+  --text: #16181d;
+  --text-muted: #5e6470;
+  --text-soft: #8a8f9a;
+  --border: #e5e7eb;
+  --border-strong: #d1d5db;
+  --accent: #4f46e5;
+  --accent-soft: #eef2ff;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+
+  /* Intent colors — fixed per intent, used by IntentBadge + PathFlow */
+  --intent-simple-qa: #2563eb;
+  --intent-complex-task: #7c3aed;
+  --intent-document-qa: #0d9488;
+  --intent-chitchat: #d97706;
+
+  /* Confidence semantic colors */
+  --confidence-high: #16a34a;
+  --confidence-mid: #d97706;
+  --confidence-low: #dc2626;
+
+  /* Sizing */
+  --radius-sm: 6px;
+  --radius: 12px;
+  --radius-lg: 18px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+
+  --max-w-route: 900px;
+  --max-w-compare: 1200px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0c0e12;
+    --surface: #15181f;
+    --surface-2: #1a1e26;
+    --text: #f3f4f6;
+    --text-muted: #a1a7b3;
+    --text-soft: #6c7280;
+    --border: #2a2f3a;
+    --border-strong: #3a4150;
+    --accent: #818cf8;
+    --accent-soft: #1e1f3a;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
+
+    --intent-simple-qa: #60a5fa;
+    --intent-complex-task: #a78bfa;
+    --intent-document-qa: #2dd4bf;
+    --intent-chitchat: #fbbf24;
+  }
+}
+
+/* ============================================================
+   Reset + base
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* ============================================================
+   App shell
+   ============================================================ */
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-lg) var(--space);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-w-route);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.container--wide {
+  max-width: var(--max-w-compare);
+}
+
+.app-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.app-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.app-subtitle {
+  color: var(--text-muted);
+  margin: 0;
+  font-size: 14px;
+  max-width: 720px;
+}
+
+/* ============================================================
+   ModeToggle (tabs)
+   ============================================================ */
+.mode-toggle {
+  display: inline-flex;
+  padding: 4px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  gap: 4px;
+  width: fit-content;
+}
+
+.mode-toggle__btn {
+  border: none;
+  background: transparent;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.mode-toggle__btn:hover {
+  color: var(--text);
+}
+
+.mode-toggle__btn--active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+/* ============================================================
+   MessageInput
+   ============================================================ */
+.message-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space);
+  box-shadow: var(--shadow);
+}
+
+.message-input__textarea {
+  border: none;
+  background: transparent;
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+  font-size: 15px;
+  line-height: 1.5;
+  width: 100%;
+}
+
+.message-input__textarea::placeholder {
+  color: var(--text-soft);
+}
+
+.message-input__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space);
+}
+
+.message-input__hint {
+  color: var(--text-soft);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.message-input__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 120ms ease, transform 80ms ease;
+}
+
+.message-input__btn:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+.message-input__btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.message-input__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   Spinner
+   ============================================================ */
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spinner-rotate 0.7s linear infinite;
+}
+
+.spinner--lg {
+  width: 22px;
+  height: 22px;
+  border-width: 3px;
+}
+
+@keyframes spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================
+   IntentBadge
+   ============================================================ */
+.intent-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: white;
+  background: var(--intent-color, var(--text-muted));
+  white-space: nowrap;
+}
+
+.intent-badge--lg {
+  padding: 6px 14px;
+  font-size: 13px;
+}
+
+.intent-badge--unknown {
+  background: var(--text-muted);
+  opacity: 0.7;
+}
+
+/* ============================================================
+   ConfidenceGauge
+   ============================================================ */
+.gauge {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.gauge__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.gauge__label {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.gauge__value {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 14px;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.gauge__track {
+  height: 8px;
+  width: 100%;
+  background: var(--surface-2);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.gauge__fill {
+  height: 100%;
+  background: var(--gauge-color, var(--accent));
+  border-radius: inherit;
+  transition: width 400ms cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+/* ============================================================
+   Cards
+   ============================================================ */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  box-shadow: var(--shadow);
+}
+
+.card--accent {
+  border-color: var(--accent);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 8px 24px rgba(0, 0, 0, 0.06),
+    0 0 0 3px var(--accent-soft);
+}
+
+/* ============================================================
+   RouteResult layout
+   ============================================================ */
+.result-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space);
+}
+
+.result-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space);
+  flex-wrap: wrap;
+}
+
+.result-card__intent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.result-card__answer {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space);
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   PathFlow
+   ============================================================ */
+.path-flow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: 12.5px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color: var(--text-muted);
+}
+
+.path-flow__node {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: var(--text);
+}
+
+.path-flow__node--router {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.path-flow__node--active {
+  border-color: var(--intent-color, var(--accent));
+  background: color-mix(in srgb, var(--intent-color, var(--accent)) 12%, var(--surface-2));
+  color: var(--intent-color, var(--accent));
+  font-weight: 600;
+}
+
+.path-flow__node--dim {
+  opacity: 0.45;
+}
+
+.path-flow__arrow {
+  color: var(--text-soft);
+  user-select: none;
+}
+
+/* ============================================================
+   TraceViewer
+   ============================================================ */
+.trace {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.trace--featured {
+  border-color: var(--intent-complex-task);
+  background: color-mix(in srgb, var(--intent-complex-task) 8%, transparent);
+}
+
+.trace__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: none;
+  background: var(--surface-2);
+  padding: 10px var(--space);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  text-align: left;
+}
+
+.trace--featured .trace__toggle {
+  background: color-mix(in srgb, var(--intent-complex-task) 14%, var(--surface-2));
+}
+
+.trace__caret {
+  font-size: 10px;
+  color: var(--text-muted);
+  transform: rotate(0deg);
+  transition: transform 150ms ease;
+}
+
+.trace--open .trace__caret {
+  transform: rotate(90deg);
+}
+
+.trace__body {
+  background: var(--surface);
+  padding: var(--space);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  line-height: 1.55;
+  border-top: 1px solid var(--border);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 460px;
+  overflow-y: auto;
+}
+
+.trace__item {
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--border);
+}
+
+.trace__item:last-child {
+  border-bottom: none;
+}
+
+/* ============================================================
+   ComparisonGrid
+   ============================================================ */
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space);
+}
+
+@media (max-width: 880px) {
+  .compare-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.router-column {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 380ms ease,
+    transform 380ms ease,
+    border-color 200ms ease;
+  min-width: 0;
+}
+
+.router-column--revealed {
+  opacity: 1;
+  transform: none;
+}
+
+.router-column--fastest {
+  border-color: var(--confidence-high);
+}
+
+.router-column--divergent {
+  border-color: var(--intent-chitchat);
+}
+
+.router-column--error {
+  border-color: var(--confidence-low);
+}
+
+.router-column__head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.router-column__title {
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+
+.router-column__subtitle {
+  font-size: 12px;
+  color: var(--text-soft);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+.router-column__metric {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.router-column__metric-label {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.router-column__metric-value {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.router-column__metric-value--lg {
+  font-size: 28px;
+}
+
+.router-column__metric-sub {
+  font-size: 11px;
+  color: var(--text-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.router-column__error {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12.5px;
+  color: var(--confidence-low);
+  background: color-mix(in srgb, var(--confidence-low) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--confidence-low) 30%, transparent);
+  border-radius: var(--radius-sm);
+  padding: 10px var(--space);
+  word-break: break-word;
+}
+
+.router-column__skeleton {
+  height: 14px;
+  width: 80%;
+  background: var(--surface-2);
+  border-radius: 4px;
+  animation: skeleton-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.85; }
+}
+
+/* ============================================================
+   ScoreBanner
+   ============================================================ */
+.score-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space);
+  flex-wrap: wrap;
+  font-size: 14px;
+  color: var(--text-muted);
+  box-shadow: var(--shadow);
+}
+
+.score-banner__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.score-banner__label {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-soft);
+}
+
+.score-banner__value {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.score-banner__value--positive {
+  color: var(--confidence-high);
+}
+
+.score-banner__value--neutral {
+  color: var(--intent-chitchat);
+}
+
+.score-banner__divider {
+  width: 1px;
+  height: 18px;
+  background: var(--border);
+}
+
+/* ============================================================
+   Inline states (empty / error / info)
+   ============================================================ */
+.notice {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: var(--space-md);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  font-size: 14px;
+  box-shadow: var(--shadow);
+}
+
+.notice--error {
+  border-color: color-mix(in srgb, var(--confidence-low) 50%, transparent);
+  background: color-mix(in srgb, var(--confidence-low) 6%, var(--surface));
+  color: var(--text);
+}
+
+.notice--rate-limit {
+  border-color: color-mix(in srgb, var(--intent-chitchat) 50%, transparent);
+  background: color-mix(in srgb, var(--intent-chitchat) 8%, var(--surface));
+}
+
+.notice__title {
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.notice__body {
+  margin: 0;
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.app-footer {
+  margin-top: var(--space-xl);
+  font-size: 12px;
+  color: var(--text-soft);
+  text-align: center;
+}
+
+.app-footer a {
+  color: var(--text-muted);
+}
