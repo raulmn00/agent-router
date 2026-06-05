@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eval"
+version = "0.1.0"
+description = "Comparative evaluation: DistilBERT vs LLM-as-router vs embeddings+LR."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "openai>=2.0,<3",
+    "scikit-learn>=1.5,<2",
+    "numpy>=1.26,<3",
+    "python-dotenv==1.*",
+    "router",
+    "agents",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.*",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["eval*"]
+exclude = ["tests*", "data*", "results*"]
