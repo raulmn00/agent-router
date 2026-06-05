@@ -2,7 +2,15 @@
 
 Multi-agent system whose routing layer is a **DistilBERT classifier I fine-tuned**, instead of paying tokens to a frontier LLM to route each request.
 
-**Live demo:** https://agent-router-909428365094.us-central1.run.app — `GET /` for health, `POST /route` with `{"input": "..."}`. Hosted on Google Cloud Run, model fetched on cold start from the [v0.1.0 GitHub Release](https://github.com/raulmn00/agent-router/releases/tag/v0.1.0).
+**Live demo:**
+
+| | URL |
+|---|---|
+| Frontend (React + TS, Vercel) | https://agent-router-five.vercel.app |
+| Backend API (FastAPI, Cloud Run) | https://agent-router-909428365094.us-central1.run.app |
+| Model release tarball | https://github.com/raulmn00/agent-router/releases/tag/v0.1.0 |
+
+The frontend has two modes: **Roteamento** (calls `POST /route` and renders the dispatched intent + agent trace) and **Comparação** (calls `POST /compare` and renders DistilBERT vs LLM zero-shot vs Embeddings+LogReg side by side with measured latency and cost). The DistilBERT model is fetched on cold start by the Cloud Run container from the GitHub Release above.
 
 Showcases, in one repo:
 
