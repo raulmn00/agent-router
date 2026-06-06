@@ -33,6 +33,13 @@ COPY backend/ /app/backend/
 # Strip the entrypoint script's CRLF if any, and make it executable.
 RUN chmod +x /app/backend/entrypoint.sh
 
+# Drop root — every layer above runs as root (apt, pip, chmod). From here on
+# the process runs as a system user that owns /app so entrypoint.sh can write
+# the fetched model into /app/router/model.
+RUN useradd --system --uid 1000 --create-home --shell /usr/sbin/nologin app \
+    && chown -R app:app /app
+USER app
+
 EXPOSE 8000
 
 # entrypoint.sh handles model fetching, then exec's the CMD.
