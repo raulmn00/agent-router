@@ -1,0 +1,10 @@
+              precision    recall  f1-score   support
+
+   simple_qa     1.0000    1.0000    1.0000        30
+complex_task     1.0000    1.0000    1.0000        30
+ document_qa     1.0000    1.0000    1.0000        30
+    chitchat     1.0000    1.0000    1.0000        30
+
+    accuracy                         1.0000       120
+   macro avg     1.0000    1.0000    1.0000       120
+weighted avg     1.0000    1.0000    1.0000       120

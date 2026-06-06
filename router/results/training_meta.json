@@ -1,0 +1,39 @@
+{
+  "base_model": "distilbert-base-uncased",
+  "device": "cuda",
+  "final_metrics": {
+    "test_accuracy": 1.0,
+    "test_f1": 1.0,
+    "test_f1_chitchat": 1.0,
+    "test_f1_complex_task": 1.0,
+    "test_f1_document_qa": 1.0,
+    "test_f1_simple_qa": 1.0,
+    "test_loss": 0.2701835632324219,
+    "test_runtime": 0.0876,
+    "test_samples_per_second": 1369.669,
+    "test_steps_per_second": 91.311
+  },
+  "framework_versions": {
+    "sklearn": "unknown",
+    "torch": "2.11.0+cu128",
+    "transformers": "5.9.0"
+  },
+  "hyperparameters": {
+    "fp16": true,
+    "learning_rate": 5e-05,
+    "num_train_epochs": 4,
+    "per_device_train_batch_size": 16,
+    "weight_decay": 0.01
+  },
+  "intents": [
+    "simple_qa",
+    "complex_task",
+    "document_qa",
+    "chitchat"
+  ],
+  "max_length": 64,
+  "num_labels": 4,
+  "num_test_examples": 120,
+  "num_train_examples": 480,
+  "timestamp_utc": "2026-06-06T17:09:16+00:00"
+}

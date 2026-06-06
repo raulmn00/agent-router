@@ -1,0 +1,39 @@
+{
+  "accuracy": 1.0,
+  "chitchat": {
+    "f1-score": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "support": 30.0
+  },
+  "complex_task": {
+    "f1-score": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "support": 30.0
+  },
+  "document_qa": {
+    "f1-score": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "support": 30.0
+  },
+  "macro avg": {
+    "f1-score": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "support": 120.0
+  },
+  "simple_qa": {
+    "f1-score": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "support": 30.0
+  },
+  "weighted avg": {
+    "f1-score": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "support": 120.0
+  }
+}

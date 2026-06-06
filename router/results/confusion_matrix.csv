@@ -1,0 +1,5 @@
+,simple_qa,complex_task,document_qa,chitchat
+simple_qa,30,0,0,0
+complex_task,0,30,0,0
+document_qa,0,0,30,0
+chitchat,0,0,0,30
