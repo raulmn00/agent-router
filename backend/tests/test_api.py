@@ -43,10 +43,17 @@ class _FakeClassifier:
         return self._decision
 
 
-def _override_with(classifier, factory):
-    """Install a Dispatcher built from the given fakes as the FastAPI dep."""
+def _override_with(classifier, factory, *, threshold: float | None = None):
+    """Install a Dispatcher built from the given fakes as the FastAPI dep.
+
+    `threshold` overrides the confidence threshold for this dispatcher. When
+    None, Dispatcher reads it from the CONFIDENCE_THRESHOLD env var or falls
+    back to the documented default.
+    """
     app.dependency_overrides[get_dispatcher] = lambda: Dispatcher(
-        classifier=classifier, provider_factory=factory
+        classifier=classifier,
+        provider_factory=factory,
+        confidence_threshold=threshold,
     )
 
 
@@ -286,3 +293,146 @@ def test_unexpected_error_returns_500_with_opaque_body():
     assert body == {"detail": "internal server error"}
     # Sensitive details must not leak to the client.
     assert "SECRET_TOKEN_xyz" not in resp.text
+
+
+# --------------------------------------------------------------------------- #
+# Confidence threshold + low-confidence fallback                               #
+# --------------------------------------------------------------------------- #
+
+
+def test_high_confidence_routes_through_normal_path():
+    """Above threshold — same behavior as before the threshold existed."""
+    factory = lambda _n: FakeProvider(responses=["Paris."])
+    # Confidence 0.92 with default threshold 0.65 — well above.
+    _override_with(_FakeClassifier("simple_qa", 0.92), factory, threshold=0.65)
+
+    client = TestClient(app)
+    body = client.post("/route", json={"input": "capital of France?"}).json()
+
+    assert body["intent"] == "simple_qa"
+    assert body["confidence"] == pytest.approx(0.92)
+    assert body["path_taken"] == "simple_qa:direct_llm"
+    assert body["answer"] == "Paris."  # the dispatcher actually called the LLM
+
+
+def test_low_confidence_falls_back_without_calling_llm():
+    """Below threshold — never reach the dispatch arms; never invoke the provider."""
+    factory_calls: list[str] = []
+
+    def factory(name):
+        factory_calls.append(name)
+        raise AssertionError("provider must not be created on the low-confidence path")
+
+    # 0.42 < 0.65 → fallback fires.
+    _override_with(_FakeClassifier("simple_qa", 0.42), factory, threshold=0.65)
+
+    client = TestClient(app)
+    resp = client.post("/route", json={"input": "Tell me about the requirements"})
+    assert resp.status_code == 200
+    body = resp.json()
+
+    # Schema preserved: best-guess intent + measured confidence still reported,
+    # but path_taken is the explicit marker and the answer surfaces uncertainty.
+    assert body["intent"] == "simple_qa"
+    assert body["confidence"] == pytest.approx(0.42)
+    assert body["path_taken"] == "low_confidence_fallback"
+
+    # No provider was constructed → no LLM call, no token spend.
+    assert factory_calls == []
+
+
+def test_low_confidence_trace_includes_attempted_intent_and_confidence():
+    _override_with(
+        _FakeClassifier("complex_task", 0.50),
+        lambda _n: FakeProvider(),
+        threshold=0.65,
+    )
+
+    client = TestClient(app)
+    body = client.post("/route", json={"input": "Build me something cool"}).json()
+
+    joined = "\n".join(body["trace"])
+    # The attempted intent and the numeric confidence must be visible for
+    # observability — that's the whole point of "transparent fallback".
+    assert "complex_task" in joined
+    assert "0.500" in joined or "0.50" in joined
+    # Operator should be able to see which arm WOULD have run.
+    assert any("would have routed to" in line for line in body["trace"])
+
+
+def test_low_confidence_answer_does_not_pretend_to_have_classified():
+    _override_with(
+        _FakeClassifier("document_qa", 0.30),
+        lambda _n: FakeProvider(),
+        threshold=0.65,
+    )
+    client = TestClient(app)
+    body = client.post("/route", json={"input": "huh?"}).json()
+    # Honest UX — don't fake an answer; explain the situation.
+    assert "couldn't confidently" in body["answer"].lower()
+    assert "0.300" in body["answer"] or "0.30" in body["answer"]
+    assert "0.65" in body["answer"]
+
+
+def test_explicit_threshold_overrides_default():
+    """Passing threshold=0.95 to Dispatcher demotes confidence 0.90 to fallback."""
+    factory_calls: list[str] = []
+
+    def factory(name):
+        factory_calls.append(name)
+        return FakeProvider(responses=["should not be reached"])
+
+    _override_with(_FakeClassifier("chitchat", 0.90), factory, threshold=0.95)
+    client = TestClient(app)
+    body = client.post("/route", json={"input": "hi"}).json()
+
+    assert body["path_taken"] == "low_confidence_fallback"
+    assert factory_calls == []
+
+
+def test_env_var_configures_threshold(monkeypatch):
+    """CONFIDENCE_THRESHOLD env var changes the gate without changing code."""
+    # Set the env var, then build a Dispatcher with threshold=None so it reads
+    # from the env. A higher threshold (0.98) demotes confidence 0.92 to fallback,
+    # demonstrating the env var actually controls the behavior.
+    monkeypatch.setenv("CONFIDENCE_THRESHOLD", "0.98")
+
+    # Explicitly pass threshold=None so Dispatcher reads the env we just set.
+    app.dependency_overrides[get_dispatcher] = lambda: Dispatcher(
+        classifier=_FakeClassifier("simple_qa", 0.92),
+        provider_factory=lambda _n: FakeProvider(),
+        confidence_threshold=None,
+    )
+    client = TestClient(app)
+    body = client.post("/route", json={"input": "what?"}).json()
+    assert body["path_taken"] == "low_confidence_fallback"
+
+
+def test_env_var_invalid_value_falls_back_to_default(monkeypatch):
+    """A typo in CONFIDENCE_THRESHOLD shouldn't break the service."""
+    monkeypatch.setenv("CONFIDENCE_THRESHOLD", "not-a-number")
+
+    app.dependency_overrides[get_dispatcher] = lambda: Dispatcher(
+        classifier=_FakeClassifier("chitchat", 0.80),
+        provider_factory=lambda _n: FakeProvider(responses=["hi"]),
+        confidence_threshold=None,
+    )
+    client = TestClient(app)
+    body = client.post("/route", json={"input": "hey"}).json()
+    # Default is 0.65; 0.80 > 0.65 → normal route, not fallback.
+    assert body["path_taken"] == "chitchat:direct_llm"
+
+
+def test_env_var_out_of_range_is_clamped(monkeypatch):
+    """Values outside [0, 1] are almost always a misconfig — clamp instead of break."""
+    monkeypatch.setenv("CONFIDENCE_THRESHOLD", "9.0")
+
+    app.dependency_overrides[get_dispatcher] = lambda: Dispatcher(
+        classifier=_FakeClassifier("simple_qa", 0.99),
+        provider_factory=lambda _n: FakeProvider(),
+        confidence_threshold=None,
+    )
+    client = TestClient(app)
+    body = client.post("/route", json={"input": "anything"}).json()
+    # Clamp 9.0 → 1.0 ⇒ even confidence 0.99 falls below ⇒ fallback fires.
+    assert body["path_taken"] == "low_confidence_fallback"
