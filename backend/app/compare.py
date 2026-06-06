@@ -21,6 +21,29 @@ from .schemas import CompareResponse, RouterResult
 logger = logging.getLogger("agent_router.compare")
 
 
+# Map of known exception class names → safe, fixed messages we're willing to
+# echo back to the client. Anything not in this map collapses to a generic
+# "router unavailable" so internal paths, stack details, account IDs, or other
+# upstream-provider chatter never leak through the per-row error field.
+_SAFE_ERROR_MESSAGES: dict[str, str] = {
+    "FileNotFoundError":         "router artifact not available",
+    "ProviderUnavailableError":  "upstream provider not configured",
+    "RuntimeError":              "router not ready",
+    "RateLimitError":            "upstream provider rate limited",
+    "APIConnectionError":        "upstream provider temporarily unreachable",
+    "APITimeoutError":           "upstream provider timed out",
+    "AuthenticationError":       "upstream provider authentication failed",
+    "BadRequestError":           "upstream provider rejected the request",
+    "ValueError":                "router input rejected",
+}
+
+_FALLBACK_ERROR_MESSAGE = "router unavailable"
+
+
+def _safe_error(exc: Exception) -> str:
+    return _SAFE_ERROR_MESSAGES.get(type(exc).__name__, _FALLBACK_ERROR_MESSAGE)
+
+
 # --------------------------------------------------------------------------- #
 # Protocols                                                                    #
 # --------------------------------------------------------------------------- #
@@ -150,12 +173,16 @@ class CompareService:
                 error=None,
             )
         except Exception as e:
-            logger.warning("router %r failed: %s", adapter.name, e)
+            # Log the full exception for server-side debugging, but only return
+            # a fixed safe message to the client (see _SAFE_ERROR_MESSAGES).
+            logger.warning(
+                "router %r failed: %s: %s", adapter.name, type(e).__name__, e
+            )
             return RouterResult(
                 router_name=adapter.name,
                 intent="",
                 confidence=0.0,
                 latency_ms=0.0,
                 cost_per_1k_usd=cost,
-                error=f"{type(e).__name__}: {e}",
+                error=_safe_error(e),
             )
