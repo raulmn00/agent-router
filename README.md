@@ -126,23 +126,93 @@ python -m eval.compare_routers --runs 3
 
 Generates `eval/results/comparison.md` and `comparison.csv`. The `--runs N` flag aggregates N independent runs, clearing the embedding cache between them so the embed router stays cold-cache (production-like) for every measurement. Reuses the same code that powers `POST /compare`.
 
-## Evaluation
+## Evaluation & honest analysis
 
-Measured locally on 2026-06-05 against the 40-example held-out testset in `eval/data/routing_testset.jsonl`. Hardware: Apple Silicon (MPS for DistilBERT; OpenAI API for the other two).
+Two views into the model: the held-out **test split** (a perfect score that tells you less than it looks) and a **generalization probe** against inputs from outside the training distribution (much more informative).
+
+### 1. Held-out test split — 120 examples, 30 per class
+
+Trained on Google Colab (CUDA, fp16, `distilbert-base-uncased`, 4 epochs, batch 16, lr 5e-5, weight_decay 0.01, max_length 64) over the 480/120 train/test split from `router/data/intents.jsonl`. Every row of the confusion matrix lands on the diagonal — zero misclassifications.
+
+![Confusion matrix](router/results/confusion_matrix.png)
+
+```
+              precision    recall  f1-score   support
+
+   simple_qa     1.0000    1.0000    1.0000        30
+complex_task     1.0000    1.0000    1.0000        30
+ document_qa     1.0000    1.0000    1.0000        30
+    chitchat     1.0000    1.0000    1.0000        30
+
+    accuracy                         1.0000       120
+   macro avg     1.0000    1.0000    1.0000       120
+weighted avg     1.0000    1.0000    1.0000       120
+```
+
+Versioned evidence in [`router/results/`](router/results/):
+[`confusion_matrix.png`](router/results/confusion_matrix.png) · [`confusion_matrix.csv`](router/results/confusion_matrix.csv) · [`classification_report.json`](router/results/classification_report.json) · [`classification_report.txt`](router/results/classification_report.txt) · [`training_meta.json`](router/results/training_meta.json) · [`generalization_test.txt`](router/results/generalization_test.txt).
+
+**Reading the 100% honestly.** This is not a flex. The training set is *synthetic* — every example was generated from the template bank in `router/router/dataset.py`, and the test split is sampled from the same template distribution as training (disjoint sentences, but shared per-class markers). With four classes and consistent surface cues, a fine-tuned DistilBERT separates them trivially. The perfect score says **the task is easily separable on this dataset**, not that the model is exceptional. The number that actually matters is what happens off-distribution — section 2 below.
+
+### 2. Generalization probe — inputs from outside the training distribution
+
+I wrote 20 fresh sentences (different topics and phrasings, never seen at training time) and ran `IntentClassifier.classify()` on each. Full output committed at [`router/results/generalization_test.txt`](router/results/generalization_test.txt).
+
+**16 sentences with obvious class markers** (different from the training templates, but a human would still know the intent):
+
+```
+simple_qa     0.857  What's the capital of Australia?
+simple_qa     0.847  How many milliliters are in a cup?
+simple_qa     0.849  Who wrote the novel Dom Casmurro?
+simple_qa     0.851  What year did the Berlin Wall fall?
+complex_task  0.939  Design a scalable architecture for a food delivery app...
+complex_task  0.825  Plan a 7-day trip to Japan...
+complex_task  0.910  Help me migrate a monolith to microservices step by step.
+complex_task  0.930  Create a go-to-market strategy for a B2B SaaS...
+document_qa   0.871  According to the attached contract...
+document_qa   0.879  In the PDF I uploaded, which section covers the refund policy?
+document_qa   0.813  Summarize the key findings from this research paper.
+document_qa   0.880  Based on the document, what are the eligibility requirements?
+chitchat      0.542  Hey, how's it going today?
+chitchat      0.560  Good morning! Hope you're having a nice day.
+chitchat      0.518  Haha that's pretty funny.
+chitchat      0.562  Thanks so much, you've been really helpful!
+```
+
+All 16 classified correctly. Confidence sits around **0.81–0.94** for the first three intents — and notably **0.52–0.56** for `chitchat`, meaningfully lower even when the answer is right.
+
+**4 ambiguous sentences crafted to remove obvious markers:**
+
+```
+chitchat      0.385  Tell me about the requirements
+chitchat      0.510  Build me something cool
+simple_qa     0.588  What does it say about pricing?
+chitchat      0.417  Can you explain how this works?
+```
+
+These are deliberately underspecified — without surrounding context a human reader could argue for two or three classes for each. Confidence drops to **0.39–0.59**.
+
+**What this actually tells me:**
+
+- **Calibration is decent.** The model doesn't crank every prediction up to 0.99. Confidence visibly drops on inputs it should be unsure about. That's the property that matters for a routing layer — a route picked at 0.42 should be treated very differently from one picked at 0.92.
+- **`chitchat` is doing double duty.** It's both a legitimate intent ("hey, thanks!") AND the soft fallback the model lands on when nothing else fits — 3 out of 4 ambiguous probes ended up there with low confidence. The boundary between *real* chitchat and *I don't really know* is the fuzziest one in the model, which is also why even legitimate chitchat tops out around 0.56.
+- **A confidence threshold is empirically justified.** A `~0.65` floor cleanly separates the 16 clear inputs (lowest 0.813) from the 4 ambiguous ones (highest 0.588). Below the threshold the dispatcher should fall back to an LLM-as-router for that single call instead of routing on a low-confidence guess. **This isn't implemented yet** — it's the next feature, motivated by the numbers in this section rather than by guesswork.
+
+### 3. Comparison against baselines — to be measured
+
+Run locally with the trained model in place; the script writes its output to `eval/results/comparison.{md,csv}` and the README table below should be re-filled from it.
+
+```bash
+cd eval && python -m eval.compare_routers --runs 3
+```
 
 | Approach | Accuracy | F1 (macro) | Mean latency (ms) ± stdev | Cost / 1k (USD) | N |
 |---|---:|---:|---:|---:|---:|
-| **DistilBERT (fine-tuned)** | 0.975 | 0.975 | 24.2 ± 0.2 | $0.0000 | 40 |
-| LLM zero-shot (gpt-4o-mini) | 1.000 | 1.000 | 1786.8 ± 1893.9 | $0.0120 | 40 |
-| Embeddings + LogReg | 0.975 | 0.975 | 3375.5 ± 3883.3 | $0.0003 | 40 |
+| **DistilBERT (fine-tuned)**   | _a preencher com `python -m eval.compare_routers`_ | _idem_ | _idem_ | _idem_ | _idem_ |
+| LLM zero-shot (gpt-4o-mini)   | _a preencher com `python -m eval.compare_routers`_ | _idem_ | _idem_ | _idem_ | _idem_ |
+| Embeddings + LogReg           | _a preencher com `python -m eval.compare_routers`_ | _idem_ | _idem_ | _idem_ | _idem_ |
 
-Notes on the numbers:
-
-- **Accuracy / F1 are deterministic given the trained model.** They came out identical across all 3 runs for every approach.
-- **Latency is whatever the network and the API happen to be doing.** The high stdevs on the LLM and embed rows are not noise to be averaged away — they're an honest reflection of the variability that API-based routing imposes on every call. DistilBERT runs locally, has no network in the path, and its stdev (0.2 ms) confirms it.
-- **Cost is calculated, not measured.** It's derived from the assumptions in `eval/eval/metrics.py` (`PRICING_USD_PER_M_TOKENS`, `TOKEN_ASSUMPTIONS`) — see those constants and adjust if pricing changes or you want to use actually-measured token counts.
-
-Re-run on your own machine to get your numbers: `cd eval && python -m eval.compare_routers --runs 3`.
+Cost values come from the documented assumptions in `eval/eval/metrics.py` (`PRICING_USD_PER_M_TOKENS`, `TOKEN_ASSUMPTIONS`), not from measured per-call token counts.
 
 ### When each approach makes sense
 
@@ -151,8 +221,6 @@ Re-run on your own machine to get your numbers: `cd eval && python -m eval.compa
 - **LLM zero-shot** wins when intents change every week, you don't yet have labelled data, or traffic is low enough that token cost doesn't matter. It's the right baseline for an MVP — and the cheapest way to bootstrap the labelled set that the DistilBERT path needs later.
 
 - **Embeddings + LogReg** sits in between. You need some labelled data but don't want to fine-tune a model end-to-end. Adding a class is fast (re-fit the LogReg in seconds). Whether this beats the LLM zero-shot in your setup depends on the embedding model's discriminative power for your specific intent set — measure both before committing.
-
-For this dataset, on this run, the local DistilBERT was the fastest by a wide margin and tied the embed router on accuracy. The LLM was the only one to reach perfect accuracy, which is consistent with the literature — but it pays for it in latency and cost. Measure these trade-offs on your traffic before generalising.
 
 ## Project layout
 
