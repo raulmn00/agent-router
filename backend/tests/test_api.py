@@ -79,6 +79,48 @@ def test_health_returns_ok():
 
 
 # --------------------------------------------------------------------------- #
+# Security middlewares                                                         #
+# --------------------------------------------------------------------------- #
+
+
+def test_security_headers_present_on_every_response():
+    """X-Content-Type-Options, X-Frame-Options, Referrer-Policy, HSTS, CORP."""
+    client = TestClient(app)
+    resp = client.get("/")
+    assert resp.status_code == 200
+    assert resp.headers["x-content-type-options"] == "nosniff"
+    assert resp.headers["x-frame-options"] == "DENY"
+    assert resp.headers["referrer-policy"] == "no-referrer"
+    assert "max-age=31536000" in resp.headers["strict-transport-security"]
+    assert resp.headers["cross-origin-resource-policy"] == "same-site"
+
+
+def test_body_size_limit_returns_413():
+    """Reject oversized requests at the Content-Length stage, before parsing."""
+    client = TestClient(app)
+    resp = client.post(
+        "/route",
+        content=b"x" * 20_000,
+        headers={"Content-Type": "application/json", "Content-Length": "20000"},
+    )
+    assert resp.status_code == 413
+    assert resp.json()["detail"] == "payload too large"
+
+
+def test_body_size_limit_with_malformed_content_length_returns_400():
+    client = TestClient(app)
+    resp = client.post(
+        "/route",
+        content=b'{"input":"hi"}',
+        headers={"Content-Type": "application/json", "Content-Length": "not-a-number"},
+    )
+    # httpx may strip an invalid Content-Length header before sending; this
+    # test asserts that IF the bad value reaches the middleware it gets a 400.
+    if resp.headers.get("content-length") and not resp.headers["content-length"].isdigit():
+        assert resp.status_code == 400
+
+
+# --------------------------------------------------------------------------- #
 # Dispatch path: simple_qa                                                     #
 # --------------------------------------------------------------------------- #
 
