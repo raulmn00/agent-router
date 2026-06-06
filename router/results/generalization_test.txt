@@ -1,0 +1,29 @@
+Generalization probe — IntentClassifier.classify() on inputs outside the
+training distribution. Each line is: predicted_intent, confidence (softmax
+max in [0, 1]), original sentence.
+
+# Clear inputs (different topics + phrasing from the training templates,
+# but with obvious class markers a human would still recognize).
+simple_qa     0.857  What's the capital of Australia?
+simple_qa     0.847  How many milliliters are in a cup?
+simple_qa     0.849  Who wrote the novel Dom Casmurro?
+simple_qa     0.851  What year did the Berlin Wall fall?
+complex_task  0.939  Design a scalable architecture for a food delivery app...
+complex_task  0.825  Plan a 7-day trip to Japan...
+complex_task  0.910  Help me migrate a monolith to microservices step by step.
+complex_task  0.930  Create a go-to-market strategy for a B2B SaaS...
+document_qa   0.871  According to the attached contract...
+document_qa   0.879  In the PDF I uploaded, which section covers the refund policy?
+document_qa   0.813  Summarize the key findings from this research paper.
+document_qa   0.880  Based on the document, what are the eligibility requirements?
+chitchat      0.542  Hey, how's it going today?
+chitchat      0.560  Good morning! Hope you're having a nice day.
+chitchat      0.518  Haha that's pretty funny.
+chitchat      0.562  Thanks so much, you've been really helpful!
+
+# Ambiguous inputs (crafted to remove the obvious markers; a reader could
+# argue for two or three classes per sentence).
+chitchat      0.385  Tell me about the requirements
+chitchat      0.510  Build me something cool
+simple_qa     0.588  What does it say about pricing?
+chitchat      0.417  Can you explain how this works?
