@@ -177,8 +177,11 @@ def test_compare_one_router_failure_does_not_break_response():
     assert by_name["DistilBERT (fine-tuned)"]["intent"] == "document_qa"
     assert by_name["LLM zero-shot (gpt-4o-mini)"]["error"] is None
     embed_result = by_name["Embeddings + LogReg"]
-    assert embed_result["error"] is not None
-    assert "EmbedRouter artifact missing" in embed_result["error"]
+    # Error message is sanitized — never echoes the raw exception text. Pin the
+    # exact safe message so any future regression that puts back raw `str(e)`
+    # breaks loudly (would leak filesystem paths, account IDs, etc.).
+    assert embed_result["error"] == "router artifact not available"
+    assert "EmbedRouter" not in (embed_result["error"] or "")  # nothing internal leaks
     assert embed_result["intent"] == ""  # empty when errored
     # Cost on the approach is still reported (it's a property of the approach,
     # not of this specific call).
