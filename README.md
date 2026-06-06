@@ -187,10 +187,25 @@ Key flags:
 ## Testing
 
 ```
-router/tests/         schema, balance, stratified split, classifier softmax/argmax     (11)
-agents/tests/         orchestrator happy path + critic-reproves-and-retries           (15)
-backend/tests/        /route 4 dispatch paths + /compare + 422/429/503/500            (19)
-eval/tests/           accuracy, f1_macro, cost_per_1k pinning                          (17)
+router/tests/    schema, balance, stratified split, classifier softmax/argmax              (11)
+agents/tests/    orchestrator happy path + critic-reproves-and-retries                    (15)
+backend/tests/   /route + /compare + 413/422/429/503/500 + security headers + sanitization (22)
+eval/tests/      accuracy, f1_macro, cost_per_1k pinning                                   (17)
 ```
 
-**62 backend tests** (`python -m pytest`); runs without GPU and without spending API credits. Heavy ML deps are skipif-gated so schema and orchestration tests still run in environments that don't have `torch`/`transformers` installed. Frontend's `npm run build` runs `tsc -b` first — type-check failures break the build.
+**65 backend tests** (`python -m pytest`); runs without GPU and without spending API credits. Heavy ML deps are skipif-gated so schema and orchestration tests still run in environments that don't have `torch`/`transformers` installed. Frontend's `npm run build` runs `tsc -b` first — type-check failures break the build.
+
+## Security posture (v0.2.1)
+
+| Layer | Mitigation |
+|---|---|
+| Cloud Run runtime | Dedicated SA `agent-router-runtime@…` with `roles/secretmanager.secretAccessor` on `openai-api-key` only — no project-level Editor. |
+| Container | Runs as non-root `app` (UID 1000); `/app` is the only writable path. |
+| Transport | Cloud Run + Vercel enforce TLS. Backend sets HSTS (`max-age=31536000`), nosniff, `X-Frame-Options: DENY`, no-referrer, `Cross-Origin-Resource-Policy: same-site`. |
+| CORS | `CORS_ALLOW_ORIGINS` allowlist (no wildcard in production). Combination `*` + `allow_credentials` is auto-corrected (credentials disabled) instead of silently broken. |
+| Rate limiting | slowapi: 30 req/min/IP on `/route`, 10 req/min/IP on `/compare`. |
+| Request size | Hard cap at `MAX_BODY_BYTES` (default 10 000) before Pydantic. 413 returned on oversize. |
+| Error surface | 503 generic ("upstream LLM provider is not configured"). 500 opaque. `/compare` per-row errors drawn from a fixed safe allowlist — never echoes raw exception text. |
+| Secrets | `.env` gitignored; production reads `OPENAI_API_KEY` from Secret Manager via Cloud Run's secret mount. |
+| API surface | `/docs`, `/redoc`, `/openapi.json` return 404 when `ENABLE_API_DOCS=false`. |
+| Dependencies | `npm audit` clean (vite 8 + plugin-react 6). Python deps pinned in `backend/requirements.txt`. |
