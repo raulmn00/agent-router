@@ -124,17 +124,80 @@ def get_compare_service() -> CompareService:
 # For multi-instance with a shared limit, point `storage_uri` at Redis.
 limiter = Limiter(key_func=get_remote_address)
 
-app = FastAPI(title="agent-router", version="0.2.0")
+
+def _env_truthy(name: str, default: str) -> bool:
+    return os.getenv(name, default).strip().lower() in {"1", "true", "yes", "on"}
+
+
+# Hide the FastAPI auto-generated docs in production. Defaults to enabled so
+# local dev stays interactive; set ENABLE_API_DOCS=false in the Cloud Run env.
+_DOCS_ENABLED = _env_truthy("ENABLE_API_DOCS", "true")
+
+app = FastAPI(
+    title="agent-router",
+    version="0.2.1",
+    docs_url="/docs" if _DOCS_ENABLED else None,
+    redoc_url="/redoc" if _DOCS_ENABLED else None,
+    openapi_url="/openapi.json" if _DOCS_ENABLED else None,
+)
 app.state.limiter = limiter
+
+# CORS — never run wildcard origins together with credentials (the combo is
+# a spec violation and silently rejected by some browsers). If the operator
+# leaves CORS_ALLOW_ORIGINS unset, default to local-dev only.
+_cors_origins = [
+    o.strip() for o in os.getenv("CORS_ALLOW_ORIGINS", "http://localhost:5173").split(",") if o.strip()
+]
+_cors_allow_credentials = "*" not in _cors_origins
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.getenv("CORS_ALLOW_ORIGINS", "*").split(","),
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=_cors_origins,
+    allow_credentials=_cors_allow_credentials,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["content-type"],
+    max_age=600,
 )
 app.add_middleware(SlowAPIMiddleware)
+
+
+# Hard cap on request body size — Pydantic's max_length=2000 still pays the
+# cost of buffering the whole body before validating. Reject early instead.
+_MAX_BODY_BYTES = int(os.getenv("MAX_BODY_BYTES", str(10_000)))
+
+
+@app.middleware("http")
+async def _limit_body_size(request: Request, call_next):
+    cl = request.headers.get("content-length")
+    if cl is not None:
+        try:
+            if int(cl) > _MAX_BODY_BYTES:
+                return JSONResponse(
+                    status_code=413,
+                    content={"detail": "payload too large"},
+                )
+        except ValueError:
+            return JSONResponse(
+                status_code=400,
+                content={"detail": "invalid Content-Length"},
+            )
+    return await call_next(request)
+
+
+# Conservative security headers — this is a JSON API, the values can be strict.
+@app.middleware("http")
+async def _security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault("X-Frame-Options", "DENY")
+    response.headers.setdefault("Referrer-Policy", "no-referrer")
+    response.headers.setdefault(
+        "Strict-Transport-Security", "max-age=31536000; includeSubDomains"
+    )
+    # Disallow embedding via fetch from arbitrary pages (the API isn't designed
+    # to be loaded as a subresource). CORSMiddleware still controls XHR/fetch.
+    response.headers.setdefault("Cross-Origin-Resource-Policy", "same-site")
+    return response
 
 
 @app.get("/")
