@@ -35,6 +35,11 @@ router/checkpoints/
 router/runs/
 **/wandb/
 
+# NB: `router/results/` is intentionally NOT ignored — confusion_matrix.png/csv,
+# classification_report.{json,txt}, and training_meta.json are evaluation
+# evidence and travel with the repo. The model binary stays out (above);
+# the evidence stays in.
+
 # IDE
 .idea/
 .vscode/
