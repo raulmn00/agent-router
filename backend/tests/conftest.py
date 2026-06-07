@@ -28,3 +28,15 @@ def _reset_rate_limiter():
     limiter.reset()
     yield
     limiter.reset()
+
+
+@pytest.fixture(autouse=True)
+def _reset_metrics_singleton():
+    """The module-level MetricsCollector accumulates across tests if we don't
+    reset it. Wipe before AND after every test so neither test order nor
+    accidental cross-test leakage can affect /stats assertions."""
+    from app.metrics_collector import get_metrics_collector
+
+    get_metrics_collector().reset()
+    yield
+    get_metrics_collector().reset()

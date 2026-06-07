@@ -642,3 +642,131 @@ def test_get_thresholds_function_resolves_consistently(monkeypatch):
     assert resolved == DEFAULT_THRESHOLDS
     assert resolved["chitchat"] == 0.45
     assert resolved["simple_qa"] == 0.65
+
+
+# --------------------------------------------------------------------------- #
+# Observability endpoint (/stats — JSON only; the visualization moved to the   #
+# React frontend in `frontend/`, which fetches /stats directly)                #
+# --------------------------------------------------------------------------- #
+
+
+def test_stats_returns_empty_snapshot_after_reset():
+    """The autouse fixture resets the collector before every test, so the
+    initial snapshot must report zero requests."""
+    client = TestClient(app)
+    resp = client.get("/stats")
+    assert resp.status_code == 200
+    body = resp.json()
+    # Required top-level fields per the StatsResponse schema.
+    for field in ("since", "uptime_seconds", "total_requests",
+                  "intents", "fallbacks", "latency_ms", "errors", "note"):
+        assert field in body
+    assert body["total_requests"] == 0
+    assert body["fallbacks"]["total"] == 0
+    assert body["fallbacks"]["rate"] == 0.0
+    # The ephemerality disclaimer must be present in the response itself —
+    # consumers reading the JSON shouldn't be able to miss the caveat.
+    assert "memory" in body["note"].lower()
+
+
+def test_stats_reflects_dispatcher_activity():
+    """A real /route call must show up in /stats afterwards."""
+    factory = lambda _n: FakeProvider(responses=["Paris is the capital of France."])
+    _override_with(_FakeClassifier("simple_qa", 0.93), factory)
+
+    client = TestClient(app)
+    r = client.post("/route", json={"input": "what is the capital of France?"})
+    assert r.status_code == 200
+
+    s = client.get("/stats").json()
+    assert s["total_requests"] == 1
+    assert s["intents"]["simple_qa"]["count"] == 1
+    assert s["intents"]["simple_qa"]["confidence"]["count"] == 1
+    assert s["intents"]["simple_qa"]["confidence"]["mean"] == pytest.approx(0.93)
+    assert "simple_qa:direct_llm" in s["latency_ms"]
+    assert s["latency_ms"]["simple_qa:direct_llm"]["count"] == 1
+    assert s["fallbacks"]["total"] == 0
+
+
+def test_stats_records_fallback_attribution():
+    """Low-confidence dispatch ⇒ fallback row in /stats indexed by the
+    intent that WAS attempted (the classifier's best guess)."""
+    _override_with(_FakeClassifier("chitchat", 0.20), lambda _n: FakeProvider())
+
+    client = TestClient(app)
+    r = client.post("/route", json={"input": "hi?"})
+    assert r.status_code == 200
+    assert r.json()["path_taken"] == "low_confidence_fallback"
+
+    s = client.get("/stats").json()
+    assert s["fallbacks"]["total"] == 1
+    assert s["fallbacks"]["by_attempted_intent"] == {"chitchat": 1}
+    assert s["fallbacks"]["rate"] == 1.0
+    # And we still see chitchat in the intents map (count=1).
+    assert s["intents"]["chitchat"]["count"] == 1
+
+
+def test_stats_counts_503_when_provider_unavailable():
+    """The ProviderUnavailableError handler must call record_error(503)."""
+    def factory(_name):
+        raise ProviderUnavailableError("openai credentials missing")
+
+    _override_with(_FakeClassifier("simple_qa", 0.9), factory)
+    client = TestClient(app)
+    r = client.post("/route", json={"input": "x"})
+    assert r.status_code == 503
+
+    s = client.get("/stats").json()
+    assert s["errors"].get("503") == 1
+
+
+def test_stats_counts_500_on_unexpected_error():
+    class _BoomClassifier:
+        def classify(self, text):
+            raise RuntimeError("boom — internal")
+
+    _override_with(_BoomClassifier(), lambda _n: FakeProvider())
+    client = TestClient(app, raise_server_exceptions=False)
+    r = client.post("/route", json={"input": "trigger"})
+    assert r.status_code == 500
+
+    s = client.get("/stats").json()
+    assert s["errors"].get("500") == 1
+
+
+def test_dashboard_endpoint_is_removed():
+    """The visualization layer moved to the React frontend; the backend
+    should not serve any HTML page. A future regression that re-adds
+    /dashboard would break this test loudly."""
+    client = TestClient(app)
+    resp = client.get("/dashboard")
+    assert resp.status_code == 404
+
+
+def test_stats_exposes_ephemeral_flag_for_frontend():
+    """The React frontend keys off the boolean `ephemeral` to render a
+    'metrics reset on restart' banner. Pin the field name + value."""
+    client = TestClient(app)
+    body = client.get("/stats").json()
+    assert body["ephemeral"] is True
+    # And the human-readable note is still there alongside.
+    assert "memory" in body["note"].lower()
+
+
+def test_stats_cors_allows_the_frontend_origin():
+    """The Vercel frontend lives on a different origin than the Cloud Run
+    backend. The CORS preflight for GET /stats from the configured frontend
+    origin must succeed and echo the origin back."""
+    client = TestClient(app)
+    resp = client.options(
+        "/stats",
+        headers={
+            "Origin": "http://localhost:5173",
+            "Access-Control-Request-Method": "GET",
+        },
+    )
+    assert resp.status_code == 200
+    # CORSMiddleware echoes the matched origin (or returns no header at all
+    # when blocked). Confirm the origin came back, so the browser will
+    # allow the cross-origin fetch.
+    assert resp.headers.get("access-control-allow-origin") == "http://localhost:5173"
