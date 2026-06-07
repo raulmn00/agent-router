@@ -3,13 +3,26 @@ import { useState } from "react";
 import { CompareMode } from "./components/CompareMode";
 import { ModeToggle, type Mode } from "./components/ModeToggle";
 import { RouteMode } from "./components/RouteMode";
+import { StatsMode } from "./components/StatsMode";
+
+function renderMode(mode: Mode) {
+  switch (mode) {
+    case "route":
+      return <RouteMode />;
+    case "compare":
+      return <CompareMode />;
+    case "stats":
+      return <StatsMode />;
+  }
+}
 
 export function App() {
   const [mode, setMode] = useState<Mode>("route");
+  const isWide = mode !== "route";
 
   return (
     <div className="shell">
-      <div className={`container${mode === "compare" ? " container--wide" : ""}`}>
+      <div className={`container${isWide ? " container--wide" : ""}`}>
         <header className="app-header">
           <h1 className="app-title">agent-router</h1>
           <p className="app-subtitle">
@@ -21,7 +34,7 @@ export function App() {
 
         <ModeToggle mode={mode} onChange={setMode} />
 
-        {mode === "route" ? <RouteMode /> : <CompareMode />}
+        {renderMode(mode)}
 
         <footer className="app-footer">
           <span>
