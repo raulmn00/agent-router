@@ -8,9 +8,10 @@ with canned responses.
 from __future__ import annotations
 
 import os
+import threading
 from abc import ABC, abstractmethod
 from collections import deque
-from typing import Iterable
+from typing import Callable, Iterable
 
 Messages = list[dict]
 
@@ -121,35 +122,58 @@ class AnthropicProvider(LLMProvider):
 
 
 class FakeProvider(LLMProvider):
-    """Returns canned responses in FIFO order.
+    """Returns canned responses for deterministic tests.
 
-    Two ways to use it:
-    - `FakeProvider(responses=[r1, r2, r3])`: cycles through the list, raising
-      if more calls happen than responses provided.
-    - Subclass and override `complete()` for custom logic.
+    Three usage modes:
 
-    Every call is appended to `self.calls` so tests can assert on what each
-    agent prompted.
+    - **FIFO queue** — `FakeProvider(responses=[r1, r2, r3])`. Each call pops
+      the head of the queue. Fine for sequential tests; under *parallel*
+      tests (e.g. concurrent Executors in the orchestrator) the pop order
+      is non-deterministic across threads, so prefer a `responder` instead.
+
+    - **Content-dispatched responder** — `FakeProvider(responder=fn)` where
+      `fn(messages) -> str`. The function is called for every `complete()`
+      and decides the response based on the messages. Thread-safe by design
+      (the responder is called outside the internal lock).
+
+    - **Subclass and override `complete()`** for full custom logic.
+
+    Every call appends `(messages, max_tokens)` to `self.calls` so tests can
+    assert on what each agent prompted. A threading.Lock protects `self.calls`
+    and the internal queue so the orchestrator's `asyncio.to_thread`-driven
+    parallel executor calls don't corrupt state.
     """
 
     name = "fake"
 
-    def __init__(self, responses: Iterable[str] | None = None):
+    def __init__(
+        self,
+        responses: Iterable[str] | None = None,
+        responder: Callable[[Messages], str] | None = None,
+    ):
         self._queue: deque[str] = deque(responses or [])
+        self._responder = responder
         self.calls: list[tuple[Messages, int]] = []
+        self._lock = threading.Lock()
 
     def queue(self, response: str) -> "FakeProvider":
-        self._queue.append(response)
+        with self._lock:
+            self._queue.append(response)
         return self
 
     def complete(self, messages: Messages, max_tokens: int = 512) -> str:
-        self.calls.append((messages, max_tokens))
-        if not self._queue:
-            raise AssertionError(
-                f"FakeProvider has no more queued responses but was called {len(self.calls)} times. "
-                f"Last messages: {messages!r}"
-            )
-        return self._queue.popleft()
+        with self._lock:
+            self.calls.append((messages, max_tokens))
+        # Call the responder OUTSIDE the lock — it may run long or be reentrant.
+        if self._responder is not None:
+            return self._responder(messages)
+        with self._lock:
+            if not self._queue:
+                raise AssertionError(
+                    "FakeProvider has no more queued responses but was called "
+                    f"{len(self.calls)} times. Last messages: {messages!r}"
+                )
+            return self._queue.popleft()
 
 
 # --------------------------------------------------------------------------- #
