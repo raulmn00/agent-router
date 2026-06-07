@@ -19,6 +19,7 @@ Multi-agent orchestration (Planner / Executor / Critic) on top of a pluggable LL
 
 - `MAX_STEPS = 6` — caps the Planner's output so a verbose model can't produce 30 nano-steps.
 - `MAX_ATTEMPTS = 2` — initial attempt + one retry, per design.
+- `DEFAULT_MAX_CONCURRENT_EXECUTORS = 5` — `asyncio.Semaphore` cap on parallel Executor calls within a single attempt. Configurable via the `MAX_CONCURRENT_EXECUTORS` env var.
 
 ## Example
 
@@ -48,9 +49,15 @@ result = Orchestrator(fake).run_task("anything")
 
 The fake provider records every call in `self.calls`, which lets tests assert on what each agent prompted (including that the Critic's feedback was propagated to the Planner on replan).
 
-## Where to parallelize
+## Parallel execution
 
-`Orchestrator.run_task` runs Executors sequentially. The point to swap in `asyncio.gather(*[run_async(s) for s in subtasks])` is marked in `orchestrator.py` — the Executor is stateless, so the only constraint is preserving input order in the aggregation step.
+`Orchestrator.run_task_async` runs the Executors of a single attempt **concurrently** via `asyncio.gather` + `asyncio.Semaphore`. The Planner and Critic remain sequential (one call each), and the retry loop is still sequential — only the N subtasks inside an attempt fan out.
+
+Concurrency mechanism: each Executor call goes through `Executor.execute_async`, which wraps the sync `execute()` in `asyncio.to_thread`. We chose `to_thread` over `AsyncOpenAI` / `AsyncAnthropic` deliberately — the `LLMProvider` ABC stays sync (no fork of the provider hierarchy), and the GIL releases during the SDK's underlying `httpx` socket I/O, so threads actually run concurrently for the LLM roundtrip. The thread overhead is irrelevant next to ~500 ms-2 s of API latency.
+
+Failure isolation: subtasks run with `return_exceptions=True`. A single subtask raising doesn't lose the others — its slot in the aggregated answer carries an `[execution failed: ...]` marker and the trace records `EXEC[i] FAILED ...`.
+
+The public `Orchestrator.run_task(task)` keeps its sync signature so the existing FastAPI dispatcher (running in Starlette's threadpool) keeps working without changes — it internally calls `asyncio.run(run_task_async(task))`. If you compose this into a fully-async stack, call `await orchestrator.run_task_async(task)` and drop the sync wrapper cost.
 
 ## Tests
 
