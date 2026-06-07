@@ -36,10 +36,12 @@ from __future__ import annotations
 import json
 import logging
 import os
+import time
 from typing import Callable, Protocol
 
 from agents import LLMProvider, Orchestrator, get_provider
 
+from .metrics_collector import MetricsCollector, get_metrics_collector
 from .schemas import RouteResponse
 
 logger = logging.getLogger("agent_router.dispatch")
@@ -194,6 +196,7 @@ class Dispatcher:
         classifier: ClassifierProtocol,
         provider_factory: ProviderFactory = get_provider,
         confidence_thresholds: dict[str, float] | None = None,
+        metrics: MetricsCollector | None = None,
     ):
         self.classifier = classifier
         self.provider_factory = provider_factory
@@ -204,6 +207,9 @@ class Dispatcher:
             if confidence_thresholds is not None
             else get_thresholds()
         )
+        # None ⇒ use the module-level singleton. Tests inject a fresh
+        # collector to isolate counts.
+        self.metrics = metrics if metrics is not None else get_metrics_collector()
 
     def _threshold_for(self, intent: str) -> float:
         """Per-class threshold, with a strict default for unknown classes.
@@ -215,6 +221,7 @@ class Dispatcher:
         return self.confidence_thresholds.get(intent, max(DEFAULT_THRESHOLDS.values()))
 
     def dispatch(self, text: str) -> RouteResponse:
+        t0 = time.perf_counter()
         decision = self.classifier.classify(text)
         intent = decision.intent
         confidence = float(decision.confidence)
@@ -224,28 +231,63 @@ class Dispatcher:
         # value of 0.45 are empirically grounded — see the module docstring
         # and scripts/results/prod_routing_report.md.
         if confidence < threshold:
-            return self._low_confidence_fallback(intent, confidence, threshold)
-
-        if intent == "simple_qa":
+            response = self._low_confidence_fallback(intent, confidence, threshold)
+        elif intent == "simple_qa":
             answer, path, trace = self._simple_qa(text)
+            response = RouteResponse(
+                intent=intent, confidence=confidence,
+                answer=answer, path_taken=path, trace=trace,
+            )
         elif intent == "complex_task":
             answer, path, trace = self._complex_task(text)
+            response = RouteResponse(
+                intent=intent, confidence=confidence,
+                answer=answer, path_taken=path, trace=trace,
+            )
         elif intent == "document_qa":
             answer, path, trace = self._document_qa(text)
+            response = RouteResponse(
+                intent=intent, confidence=confidence,
+                answer=answer, path_taken=path, trace=trace,
+            )
         elif intent == "chitchat":
             answer, path, trace = self._chitchat(text)
+            response = RouteResponse(
+                intent=intent, confidence=confidence,
+                answer=answer, path_taken=path, trace=trace,
+            )
         else:
             # Should be unreachable — the classifier is constrained to INTENTS —
             # but if a future intent is added without a dispatch arm, fail loud.
             raise RuntimeError(f"no dispatch arm for intent {intent!r}")
 
-        return RouteResponse(
+        latency_ms = (time.perf_counter() - t0) * 1000.0
+        was_fallback = response.path_taken == LOW_CONFIDENCE_PATH
+
+        # Observability: counters + a single structured log line. NEVER log
+        # `text` itself — only its length. `intent` is what the classifier
+        # PICKED, even on the fallback path (so we can see *which* class is
+        # producing the most fallbacks, which is the calibration signal).
+        self.metrics.record_request(
             intent=intent,
             confidence=confidence,
-            answer=answer,
-            path_taken=path,
-            trace=trace,
+            path_taken=response.path_taken,
+            latency_ms=latency_ms,
+            was_fallback=was_fallback,
         )
+        logger.info(
+            "route.dispatched",
+            extra={
+                "input_length": len(text),
+                "intent": intent,
+                "confidence": round(confidence, 4),
+                "threshold": round(threshold, 2),
+                "path_taken": response.path_taken,
+                "latency_ms": round(latency_ms, 2),
+                "was_fallback": was_fallback,
+            },
+        )
+        return response
 
     # ------------------------------------------------------------------- #
     # Low-confidence fallback                                              #
