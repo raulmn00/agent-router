@@ -195,8 +195,26 @@ These are deliberately underspecified — without surrounding context a human re
 **What this actually tells me:**
 
 - **Calibration is decent.** The model doesn't crank every prediction up to 0.99. Confidence visibly drops on inputs it should be unsure about. That's the property that matters for a routing layer — a route picked at 0.42 should be treated very differently from one picked at 0.92.
-- **`chitchat` is doing double duty.** It's both a legitimate intent ("hey, thanks!") AND the soft fallback the model lands on when nothing else fits — 3 out of 4 ambiguous probes ended up there with low confidence. The boundary between *real* chitchat and *I don't really know* is the fuzziest one in the model, which is also why even legitimate chitchat tops out around 0.56.
-- **A confidence threshold is empirically justified — and now implemented.** A `~0.65` floor cleanly separates the 16 clear inputs (lowest 0.813) from the 4 ambiguous ones (highest 0.588). The dispatcher now gates routing on this exact threshold: predictions with `confidence < CONFIDENCE_THRESHOLD` (default `0.65`, env-configurable) skip the normal dispatch arms and land on a cheap `low_confidence_fallback` path that returns an honest "I'm not sure" response — same `RouteResponse` schema, `path_taken = "low_confidence_fallback"`, `trace` records the intent that *would* have been chosen and the measured confidence. No LLM call on the fallback path; an LLM-driven clarifying-question step is the next natural extension. See [`backend/app/dispatch.py`](backend/app/dispatch.py) (`Dispatcher._low_confidence_fallback`).
+- **`chitchat` is doing double duty.** It's both a legitimate intent ("hey, thanks!") AND the soft fallback the model lands on when nothing else fits — 3 out of 4 ambiguous probes ended up there with low confidence. The boundary between *real* chitchat and *I don't really know* is the fuzziest one in the model, which is also why even legitimate chitchat tops out around 0.56. **This isn't a model bug — it's a property of the class distribution** and the reason the threshold is per-class (below), not global.
+
+- **Per-class confidence thresholds are empirically justified — and now implemented.** The first cut used a single global threshold of `0.65`, and the production smoke test (committed at [`scripts/results/prod_routing_report.md`](scripts/results/prod_routing_report.md)) caught the predictable consequence: a legitimate "Good morning! Hope you're having a nice day." scored 0.560 and got demoted to the fallback — a false positive driven by chitchat's naturally-lower confidence band. The dispatcher now uses a different threshold per intent:
+
+  | Class | Threshold | Why |
+  |---|---:|---|
+  | `simple_qa`    | 0.65 | Clear inputs sit at 0.81–0.86; 0.65 catches genuinely ambiguous ones (0.39–0.59). |
+  | `complex_task` | 0.65 | Clear inputs 0.82–0.94. |
+  | `document_qa`  | 0.65 | Clear inputs 0.81–0.88. |
+  | `chitchat`     | **0.45** | Legitimate chitchat tops out around 0.52–0.56; a 0.65 floor was demoting real conversation. 0.45 still catches ambiguous-classified-as-chitchat (which sit at 0.39–0.51). |
+
+  Resolution order (later overrides earlier):
+  1. hardcoded defaults (above)
+  2. legacy `CONFIDENCE_THRESHOLD` scalar env var → applied uniformly to every class
+  3. `CONFIDENCE_THRESHOLDS` env var → JSON object overriding specific classes, e.g.
+     ```
+     CONFIDENCE_THRESHOLDS='{"chitchat": 0.50, "simple_qa": 0.70}'
+     ```
+
+  Malformed JSON, unknown intent keys, non-numeric values → logged at WARNING level and ignored; the service never crashes on a misconfigured env var. Predictions below the threshold for *their own* class skip the four dispatch arms and land on `path_taken = "low_confidence_fallback"` with no LLM call. See [`backend/app/dispatch.py`](backend/app/dispatch.py) (`Dispatcher._low_confidence_fallback` and `get_thresholds()`).
 
 ### 3. Comparison against baselines — to be measured
 
