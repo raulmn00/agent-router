@@ -5,6 +5,13 @@ Endpoints:
   POST /route    — classify + dispatch + respond
   POST /compare  — run all three routers (DistilBERT / LLM / Embed) on the
                    same input and aggregate (rate-limited; burns real tokens)
+  GET  /stats    — in-memory observability snapshot (JSON, typed by
+                   StatsResponse). Designed to be consumed by the React
+                   frontend, which renders the dashboard view of this data.
+
+Architecture: this service is a DATA API. Visualization (the live-stats
+dashboard) lives in the React app at `frontend/` and fetches /stats
+directly via the configured CORS allowlist. The backend serves no HTML.
 
 Error model:
   422  Pydantic validation (automatic)
@@ -35,10 +42,21 @@ from agents import ProviderUnavailableError, get_provider
 
 from .compare import CompareService, build_adapters
 from .dispatch import Dispatcher
-from .schemas import CompareRequest, CompareResponse, RouteRequest, RouteResponse
+from .logging_config import configure_json_logging
+from .metrics_collector import MetricsCollector, get_metrics_collector
+from .schemas import (
+    CompareRequest,
+    CompareResponse,
+    RouteRequest,
+    RouteResponse,
+    StatsResponse,
+)
 
+# Install JSON formatter on the root logger before anything else logs. On
+# Cloud Run, stdout → Cloud Logging picks up each JSON line as a structured
+# entry with first-class indexed fields (intent, latency_ms, etc.).
+configure_json_logging()
 logger = logging.getLogger("agent_router")
-logging.basicConfig(level=logging.INFO)
 
 EVAL_MODELS_DIR = Path(__file__).resolve().parents[2] / "eval" / "models"
 
@@ -239,6 +257,7 @@ def compare(
 
 @app.exception_handler(RateLimitExceeded)
 async def _rate_limit_handler(_request: Request, exc: RateLimitExceeded):
+    get_metrics_collector().record_error(429)
     return JSONResponse(
         status_code=429,
         content={
@@ -251,6 +270,7 @@ async def _rate_limit_handler(_request: Request, exc: RateLimitExceeded):
 @app.exception_handler(ProviderUnavailableError)
 async def _provider_unavailable_handler(_request: Request, exc: ProviderUnavailableError):
     # Generic message — do NOT echo `str(exc)` (could leak the env var name).
+    get_metrics_collector().record_error(503)
     logger.warning("provider unavailable: %s", exc)
     return JSONResponse(
         status_code=503,
@@ -262,8 +282,26 @@ async def _provider_unavailable_handler(_request: Request, exc: ProviderUnavaila
 async def _generic_error_handler(_request: Request, exc: Exception):
     # FastAPI already maps HTTPException + Pydantic errors before this fires;
     # this is the catch-all for unexpected bugs. Log full detail, expose none.
+    get_metrics_collector().record_error(500)
     logger.exception("unhandled error: %s", exc)
     return JSONResponse(
         status_code=500,
         content={"detail": "internal server error"},
     )
+
+
+# --------------------------------------------------------------------------- #
+# Observability endpoints                                                      #
+# --------------------------------------------------------------------------- #
+
+
+@app.get("/stats", response_model=StatsResponse)
+def stats(collector: MetricsCollector = Depends(get_metrics_collector)) -> StatsResponse:
+    """Aggregate snapshot of in-memory metrics since process start.
+
+    Honest about the limitation: metrics reset on every Cloud Run cold start
+    or revision change. The `note` field in the response repeats this so
+    automated consumers don't mistake the snapshot for persistent data.
+    """
+    return StatsResponse(**collector.snapshot())
+
