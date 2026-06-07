@@ -1,600 +1,720 @@
-{"text": "Who is the tallest mountain in the world?", "label": "simple_qa"}
-{"text": "Design a billing service that handles Stripe webhooks, idempotent retries and reconciliation.", "label": "complex_task"}
-{"text": "Write code that observability stack with OpenTelemetry, Prometheus and Grafana dashboards and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "In the article I shared, summarize each section in one sentence.", "label": "document_qa"}
-{"text": "Develop a RAG system that indexes PDFs, embeds with bge-small and answers with citations, with monitoring.", "label": "complex_task"}
-{"text": "Develop a code review bot that posts inline comments based on a custom linter.", "label": "complex_task"}
-{"text": "Which the year Python was released?", "label": "simple_qa"}
-{"text": "Implement web scraper that crawls news sites, dedupes by URL, and stores results in Postgres and document the architecture.", "label": "complex_task"}
-{"text": "Give me Einstein's most famous equation.", "label": "simple_qa"}
-{"text": "Develop a Kubernetes deployment with autoscaling, secrets via SealedSecrets and a Helm chart and document the architecture.", "label": "complex_task"}
-{"text": "Implement image processing service that converts, resizes and watermarks with caching — production ready.", "label": "complex_task"}
-{"text": "When did the chemical formula for water?", "label": "simple_qa"}
-{"text": "lemme think", "label": "chitchat"}
-{"text": "Cheers.", "label": "chitchat"}
-{"text": "Set up an end-to-end agent that plans a trip end-to-end: flights, hotels, calendar invites, and a budget and document the architecture.", "label": "complex_task"}
-{"text": "Define the antonym of brave.", "label": "simple_qa"}
-{"text": "Bye!", "label": "chitchat"}
-{"text": "Architect scheduling agent that books meetings, resolves conflicts and emails participants, including a rollback plan.", "label": "complex_task"}
-{"text": "Design a observability stack with OpenTelemetry, Prometheus and Grafana dashboards with full test coverage.", "label": "complex_task"}
-{"text": "smh", "label": "chitchat"}
-{"text": "Who is the current year?", "label": "simple_qa"}
-{"text": "What is what HTTP stands for?", "label": "simple_qa"}
-{"text": "Define the latest version of Python.", "label": "simple_qa"}
-{"text": "Based on chapter 2, explain figure 2 in plain English.", "label": "document_qa"}
-{"text": "Develop a personal finance app that imports CSVs, categorizes via ML and exports reports step by step.", "label": "complex_task"}
-{"text": "Where is the discoverer of penicillin?", "label": "simple_qa"}
-{"text": "Where was a synonym for happy?", "label": "simple_qa"}
-{"text": "Write code that fraud detection system with stream processing and a feedback loop with full test coverage.", "label": "complex_task"}
-{"text": "What's the official language of Brazil?", "label": "simple_qa"}
-{"text": "Set up an end-to-end REST API in FastAPI with JWT auth, rate limiting and OpenAPI docs, including a rollback plan.", "label": "complex_task"}
-{"text": "Plan and build scheduled job runner that executes user-defined Python with sandboxing and quotas, including a rollback plan.", "label": "complex_task"}
-{"text": "Implement scheduled job runner that executes user-defined Python with sandboxing and quotas, including a rollback plan.", "label": "complex_task"}
-{"text": "Quick one.", "label": "chitchat"}
-{"text": "Set up an end-to-end CI/CD pipeline on GitHub Actions with test matrix, caching and preview deployments with full test coverage.", "label": "complex_task"}
-{"text": "Who was the discoverer of penicillin?", "label": "simple_qa"}
-{"text": "In the slide deck, summarize each section in one sentence.", "label": "document_qa"}
-{"text": "Set up an end-to-end frontend dashboard with Next.js, server components, and incremental static regeneration.", "label": "complex_task"}
-{"text": "Tell me the longest river in South America.", "label": "simple_qa"}
-{"text": "Build a code review bot that posts inline comments based on a custom linter and document the architecture.", "label": "complex_task"}
-{"text": "hey friend", "label": "chitchat"}
-{"text": "Based on the document above, extract all dates and what happens on each.", "label": "document_qa"}
-{"text": "How many Einstein's most famous equation?", "label": "simple_qa"}
-{"text": "Set up an end-to-end web scraper that crawls news sites, dedupes by URL, and stores results in Postgres — production ready.", "label": "complex_task"}
-{"text": "evening!", "label": "chitchat"}
-{"text": "From the spec, what evidence is presented?", "label": "document_qa"}
-{"text": "Who is the latest version of Python?", "label": "simple_qa"}
-{"text": "Where was the tallest mountain in the world?", "label": "simple_qa"}
-{"text": "Create a search service with OpenSearch, ingestion via Kafka and faceted filters — production ready.", "label": "complex_task"}
-{"text": "From the spec, what is the projected revenue for next quarter?", "label": "document_qa"}
-{"text": "Develop a multi-tenant SaaS with row-level security, per-tenant migrations and a billing portal step by step.", "label": "complex_task"}
-{"text": "how was your weekend?", "label": "chitchat"}
-{"text": "From the attached spreadsheet, summarize the key findings in 5 bullet points.", "label": "document_qa"}
-{"text": "Help me ship image processing service that converts, resizes and watermarks with caching — production ready.", "label": "complex_task"}
-{"text": "From the meeting notes, give me the methodology used.", "label": "document_qa"}
-{"text": "What's the GDP of Japan?", "label": "simple_qa"}
-{"text": "Walk me through building terraform module that provisions a VPC, three subnets and a NAT gateway step by step.", "label": "complex_task"}
-{"text": "Where is the capital of France?", "label": "simple_qa"}
-{"text": "From the meeting notes, what assumptions does the model rely on?", "label": "document_qa"}
-{"text": "What's the Pythagorean theorem?", "label": "simple_qa"}
-{"text": "🙂", "label": "chitchat"}
-{"text": "In the whitepaper, what is the recommended approach?", "label": "document_qa"}
-{"text": "Define the founder of Microsoft.", "label": "simple_qa"}
-{"text": "Write code that terraform module that provisions a VPC, three subnets and a NAT gateway with full test coverage.", "label": "complex_task"}
-{"text": "haha", "label": "chitchat"}
-{"text": "Based on chapter 2, give me the methodology used.", "label": "document_qa"}
-{"text": "Based on the document above, who are the parties involved?", "label": "document_qa"}
-{"text": "happy friday!", "label": "chitchat"}
-{"text": "From the meeting notes, list the prerequisites mentioned.", "label": "document_qa"}
-{"text": "Write code that CI/CD pipeline on GitHub Actions with test matrix, caching and preview deployments, including a rollback plan.", "label": "complex_task"}
-{"text": "Who is the difference between TCP and UDP?", "label": "simple_qa"}
-{"text": "Refactor my fraud detection system with stream processing and a feedback loop with full test coverage.", "label": "complex_task"}
-{"text": "Based on the document above, what is the projected revenue for next quarter?", "label": "document_qa"}
-{"text": "Plan and build image processing service that converts, resizes and watermarks with caching and document the architecture.", "label": "complex_task"}
-{"text": "When did the largest desert in the world?", "label": "simple_qa"}
-{"text": "Looking at the contract, who are the parties involved?", "label": "document_qa"}
-{"text": "What's the first president of the United States?", "label": "simple_qa"}
-{"text": "From the attached spreadsheet, give me a TL;DR.", "label": "document_qa"}
-{"text": "Where was two plus two?", "label": "simple_qa"}
-{"text": "kinda hungry", "label": "chitchat"}
-{"text": "Create a machine learning training loop with mixed precision, gradient accumulation and checkpointing step by step.", "label": "complex_task"}
-{"text": "Who are you?", "label": "chitchat"}
-{"text": "Help me ship scheduled job runner that executes user-defined Python with sandboxing and quotas and document the architecture.", "label": "complex_task"}
-{"text": "Based on chapter 2, extract all dates and what happens on each.", "label": "document_qa"}
-{"text": "back from lunch", "label": "chitchat"}
-{"text": "Architect fraud detection system with stream processing and a feedback loop and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "In the whitepaper, what are the payment terms?", "label": "document_qa"}
-{"text": "Implement real-time chat backend using WebSockets, Redis pub/sub and presence tracking and document the architecture.", "label": "complex_task"}
-{"text": "Tell me a joke.", "label": "chitchat"}
-{"text": "Architect machine learning training loop with mixed precision, gradient accumulation and checkpointing and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "When did the discoverer of penicillin?", "label": "simple_qa"}
-{"text": "In the attached PDF, give me the methodology used.", "label": "document_qa"}
-{"text": "When was the capital of France?", "label": "simple_qa"}
-{"text": "Nice to meet you.", "label": "chitchat"}
-{"text": "Why is the fastest land animal?", "label": "simple_qa"}
-{"text": "you're the best", "label": "chitchat"}
-{"text": "How many the meaning of 'ephemeral'?", "label": "simple_qa"}
-{"text": "kk", "label": "chitchat"}
-{"text": "Help me ship real-time chat backend using WebSockets, Redis pub/sub and presence tracking — production ready.", "label": "complex_task"}
-{"text": "Where was the Pythagorean theorem?", "label": "simple_qa"}
-{"text": "Where was the currency of Switzerland?", "label": "simple_qa"}
-{"text": "Write code that agent that plans a trip end-to-end: flights, hotels, calendar invites, and a budget step by step.", "label": "complex_task"}
-{"text": "Per the file I sent, what does paragraph 4 say?", "label": "document_qa"}
-{"text": "When did the latest version of Python?", "label": "simple_qa"}
-{"text": "Create a frontend dashboard with Next.js, server components, and incremental static regeneration step by step.", "label": "complex_task"}
-{"text": "how's your day so far?", "label": "chitchat"}
-{"text": "Pleasure to meet you.", "label": "chitchat"}
-{"text": "From the text I uploaded, what are the supported configurations?", "label": "document_qa"}
-{"text": "Who is the value of pi?", "label": "simple_qa"}
-{"text": "i'm back", "label": "chitchat"}
-{"text": "Develop a scheduled job runner that executes user-defined Python with sandboxing and quotas — production ready.", "label": "complex_task"}
-{"text": "today was great", "label": "chitchat"}
-{"text": "In the manual, what are the supported configurations?", "label": "document_qa"}
-{"text": "favorite book?", "label": "chitchat"}
-{"text": "Define the currency of Switzerland.", "label": "simple_qa"}
-{"text": "When was the Pythagorean theorem?", "label": "simple_qa"}
-{"text": "Tell me the discoverer of penicillin.", "label": "simple_qa"}
-{"text": "Where was the chemical formula for water?", "label": "simple_qa"}
-{"text": "From the text I uploaded, extract every named entity.", "label": "document_qa"}
-{"text": "In the slide deck, what are the limitations discussed?", "label": "document_qa"}
-{"text": "Per the file I sent, give me the methodology used.", "label": "document_qa"}
-{"text": "Help me ship data pipeline that ingests CSVs from S3, validates with pydantic, and loads to BigQuery step by step.", "label": "complex_task"}
-{"text": "ttyl", "label": "chitchat"}
-{"text": "Who is the GDP of Japan?", "label": "simple_qa"}
-{"text": "Tell me the chemical formula for water.", "label": "simple_qa"}
-{"text": "When did the author of Hamlet?", "label": "simple_qa"}
-{"text": "In the slide deck, list the prerequisites mentioned.", "label": "document_qa"}
-{"text": "In the slide deck, extract every named entity.", "label": "document_qa"}
-{"text": "Develop a real-time chat backend using WebSockets, Redis pub/sub and presence tracking step by step.", "label": "complex_task"}
-{"text": "Architect observability stack with OpenTelemetry, Prometheus and Grafana dashboards and document the architecture.", "label": "complex_task"}
-{"text": "Name the smallest planet in the solar system.", "label": "simple_qa"}
-{"text": "What's the meaning of 'ephemeral'?", "label": "simple_qa"}
-{"text": "According to the report, give me the methodology used.", "label": "document_qa"}
-{"text": "Pop quiz: ready?", "label": "chitchat"}
-{"text": "What can you do?", "label": "chitchat"}
-{"text": "Implement Kubernetes deployment with autoscaling, secrets via SealedSecrets and a Helm chart and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "How many the chemical formula for water?", "label": "simple_qa"}
-{"text": "favorite movie?", "label": "chitchat"}
-{"text": "Help me ship event-driven workflow with SQS, Lambda and a DLQ that retries with backoff with full test coverage.", "label": "complex_task"}
-{"text": "Refactor my notification service that fans out to email, SMS and push with a unified template engine and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "How's the weather where you are?", "label": "chitchat"}
-{"text": "In the manual, explain figure 2 in plain English.", "label": "document_qa"}
-{"text": "feeling sleepy", "label": "chitchat"}
-{"text": "In the slide deck, what is the main conclusion?", "label": "document_qa"}
-{"text": "What is the speed of light?", "label": "simple_qa"}
-{"text": "Design a REST API in FastAPI with JWT auth, rate limiting and OpenAPI docs, with monitoring.", "label": "complex_task"}
-{"text": "Have a great day.", "label": "chitchat"}
-{"text": "Where was what JSON means?", "label": "simple_qa"}
-{"text": "Random question for you.", "label": "chitchat"}
-{"text": "Where was the square root of 144?", "label": "simple_qa"}
-{"text": "do you dream?", "label": "chitchat"}
-{"text": "Who is two plus two?", "label": "simple_qa"}
-{"text": "Define the first president of the United States.", "label": "simple_qa"}
-{"text": "What a day.", "label": "chitchat"}
-{"text": "Why is Einstein's most famous equation?", "label": "simple_qa"}
-{"text": "From the text I uploaded, what's the difference between option A and B as described?", "label": "document_qa"}
-{"text": "Walk me through building REST API in FastAPI with JWT auth, rate limiting and OpenAPI docs and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "Name the official language of Brazil.", "label": "simple_qa"}
-{"text": "When was the smallest planet in the solar system?", "label": "simple_qa"}
-{"text": "Refactor my real-time chat backend using WebSockets, Redis pub/sub and presence tracking step by step.", "label": "complex_task"}
-{"text": "From the text I uploaded, what is the termination clause?", "label": "document_qa"}
-{"text": "According to the report, what risks are flagged?", "label": "document_qa"}
-{"text": "Implement frontend dashboard with Next.js, server components, and incremental static regeneration, including a rollback plan.", "label": "complex_task"}
-{"text": "Who is the longest river in South America?", "label": "simple_qa"}
-{"text": "In the attached PDF, what assumptions does the model rely on?", "label": "document_qa"}
-{"text": "In the article I shared, what does the author argue?", "label": "document_qa"}
-{"text": "In the attached PDF, list the prerequisites mentioned.", "label": "document_qa"}
-{"text": "Per the file I sent, extract all dates and what happens on each.", "label": "document_qa"}
-{"text": "Walk me through building image processing service that converts, resizes and watermarks with caching with full test coverage.", "label": "complex_task"}
-{"text": "Name the discoverer of penicillin.", "label": "simple_qa"}
-{"text": "thx", "label": "chitchat"}
-{"text": "Give me the speed of light.", "label": "simple_qa"}
-{"text": "Per section 3 of the document, what are the supported configurations?", "label": "document_qa"}
-{"text": "What is the founder of Microsoft?", "label": "simple_qa"}
-{"text": "Design a load testing harness that ramps up traffic and reports p50/p95/p99, including a rollback plan.", "label": "complex_task"}
-{"text": "You're great.", "label": "chitchat"}
-{"text": "Who is the largest mammal on earth?", "label": "simple_qa"}
-{"text": "How's it going?", "label": "chitchat"}
-{"text": "Who was the moon landing?", "label": "simple_qa"}
-{"text": "According to the report, summarize each section in one sentence.", "label": "document_qa"}
-{"text": "Based on the document above, what does paragraph 4 say?", "label": "document_qa"}
-{"text": "Looking at the contract, summarize the key findings in 5 bullet points.", "label": "document_qa"}
-{"text": "Do you sleep?", "label": "chitchat"}
-{"text": "Architect REST API in FastAPI with JWT auth, rate limiting and OpenAPI docs — production ready.", "label": "complex_task"}
-{"text": "Who is the largest desert in the world?", "label": "simple_qa"}
-{"text": "In the article I shared, what is the recommended approach?", "label": "document_qa"}
-{"text": "From the spec, what is the main conclusion?", "label": "document_qa"}
-{"text": "you rock", "label": "chitchat"}
-{"text": "What's the discoverer of penicillin?", "label": "simple_qa"}
-{"text": "much appreciated", "label": "chitchat"}
-{"text": "Tell me a fun fact.", "label": "chitchat"}
-{"text": "Mondays...", "label": "chitchat"}
-{"text": "Create a machine learning training loop with mixed precision, gradient accumulation and checkpointing and document the architecture.", "label": "complex_task"}
-{"text": "ty", "label": "chitchat"}
-{"text": "How much the value of pi?", "label": "simple_qa"}
-{"text": "From the text I uploaded, what is the projected revenue for next quarter?", "label": "document_qa"}
-{"text": "Walk me through building scheduled job runner that executes user-defined Python with sandboxing and quotas and document the architecture.", "label": "complex_task"}
-{"text": "Design a data pipeline that ingests CSVs from S3, validates with pydantic, and loads to BigQuery — production ready.", "label": "complex_task"}
-{"text": "I'm tired today.", "label": "chitchat"}
-{"text": "Set up an end-to-end scheduled job runner that executes user-defined Python with sandboxing and quotas with full test coverage.", "label": "complex_task"}
-{"text": "Per section 3 of the document, extract every named entity.", "label": "document_qa"}
-{"text": "Who was the official language of Brazil?", "label": "simple_qa"}
-{"text": "Develop a web scraper that crawls news sites, dedupes by URL, and stores results in Postgres — production ready.", "label": "complex_task"}
-{"text": "From the spec, what does paragraph 4 say?", "label": "document_qa"}
-{"text": "Plan and build log analysis tool that parses NGINX access logs and surfaces anomalies step by step.", "label": "complex_task"}
-{"text": "one sec", "label": "chitchat"}
-{"text": "How many the founder of Microsoft?", "label": "simple_qa"}
-{"text": "In the whitepaper, translate the executive summary into Portuguese.", "label": "document_qa"}
-{"text": "Give me the latest version of Python.", "label": "simple_qa"}
-{"text": "Per the file I sent, give me a TL;DR.", "label": "document_qa"}
-{"text": "Develop a vector database wrapper with hybrid search and metadata filtering, with monitoring.", "label": "complex_task"}
-{"text": "In the whitepaper, what is the projected revenue for next quarter?", "label": "document_qa"}
-{"text": "Define Einstein's most famous equation.", "label": "simple_qa"}
-{"text": "In the whitepaper, list every action item assigned to me.", "label": "document_qa"}
-{"text": "Build a vector database wrapper with hybrid search and metadata filtering and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "Build a fraud detection system with stream processing and a feedback loop, including a rollback plan.", "label": "complex_task"}
-{"text": "Based on the document above, what is the termination clause?", "label": "document_qa"}
-{"text": "Define the discoverer of penicillin.", "label": "simple_qa"}
-{"text": "In the manual, what is the termination clause?", "label": "document_qa"}
-{"text": "In the attached PDF, give me a TL;DR.", "label": "document_qa"}
-{"text": "back!", "label": "chitchat"}
-{"text": "When was the chemical formula for water?", "label": "simple_qa"}
-{"text": "I'm bored.", "label": "chitchat"}
-{"text": "happy monday", "label": "chitchat"}
-{"text": "According to the report, what are the supported configurations?", "label": "document_qa"}
-{"text": "Where is the tallest mountain in the world?", "label": "simple_qa"}
-{"text": "I like talking to you.", "label": "chitchat"}
-{"text": "In the manual, translate the executive summary into Portuguese.", "label": "document_qa"}
-{"text": "In the article I shared, what is the termination clause?", "label": "document_qa"}
-{"text": "Architect scheduled job runner that executes user-defined Python with sandboxing and quotas and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "Where is the population of Tokyo?", "label": "simple_qa"}
-{"text": "brb", "label": "chitchat"}
-{"text": "In the slide deck, what's the difference between option A and B as described?", "label": "document_qa"}
-{"text": "coffee time", "label": "chitchat"}
-{"text": "Per the file I sent, list every action item assigned to me.", "label": "document_qa"}
-{"text": "In the article I shared, what are the supported configurations?", "label": "document_qa"}
-{"text": "Appreciate it.", "label": "chitchat"}
-{"text": "Design a feature flag system with percentage rollouts, user targeting and an admin UI and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "i need a break", "label": "chitchat"}
-{"text": "In the whitepaper, explain figure 2 in plain English.", "label": "document_qa"}
-{"text": "Walk me through building agent that plans a trip end-to-end: flights, hotels, calendar invites, and a budget and document the architecture.", "label": "complex_task"}
-{"text": "still here?", "label": "chitchat"}
-{"text": "Set up an end-to-end vector database wrapper with hybrid search and metadata filtering and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "In the slide deck, what are the supported configurations?", "label": "document_qa"}
-{"text": "In the whitepaper, extract every named entity.", "label": "document_qa"}
-{"text": "In the article I shared, give me a TL;DR.", "label": "document_qa"}
-{"text": "What is Einstein's most famous equation?", "label": "simple_qa"}
-{"text": "👍", "label": "chitchat"}
-{"text": "you there?", "label": "chitchat"}
-{"text": "In the slide deck, give me a TL;DR.", "label": "document_qa"}
-{"text": "Develop a event-driven workflow with SQS, Lambda and a DLQ that retries with backoff step by step.", "label": "complex_task"}
-{"text": "Who was the inventor of the telephone?", "label": "simple_qa"}
-{"text": "From the attached spreadsheet, what does paragraph 4 say?", "label": "document_qa"}
-{"text": "Where was the largest mammal on earth?", "label": "simple_qa"}
-{"text": "Give me the fastest land animal.", "label": "simple_qa"}
-{"text": "In the manual, who are the parties involved?", "label": "document_qa"}
-{"text": "Do you like music? do you dream?", "label": "chitchat"}
-{"text": "Who was the antonym of brave?", "label": "simple_qa"}
-{"text": "In the whitepaper, what is the main conclusion?", "label": "document_qa"}
-{"text": "Help me ship model serving layer with batching, GPU autoscaling and request shadowing step by step.", "label": "complex_task"}
-{"text": "Which two plus two?", "label": "simple_qa"}
-{"text": "Where is the value of pi?", "label": "simple_qa"}
-{"text": "Based on the document above, what is the SLA?", "label": "document_qa"}
-{"text": "What is the discoverer of penicillin?", "label": "simple_qa"}
-{"text": "any plans for the weekend?", "label": "chitchat"}
-{"text": "Tell me the French Revolution.", "label": "simple_qa"}
-{"text": "rofl you rock", "label": "chitchat"}
-{"text": "Tell me the square root of 144.", "label": "simple_qa"}
-{"text": "Where is the GDP of Japan?", "label": "simple_qa"}
-{"text": "What is a synonym for happy?", "label": "simple_qa"}
-{"text": "ok i'm done for today", "label": "chitchat"}
-{"text": "Per section 3 of the document, what does the author argue?", "label": "document_qa"}
-{"text": "Bye! Anyone there?", "label": "chitchat"}
-{"text": "In the article I shared, what assumptions does the model rely on?", "label": "document_qa"}
-{"text": "Refactor my code review bot that posts inline comments based on a custom linter, including a rollback plan.", "label": "complex_task"}
-{"text": "Plan and build real-time chat backend using WebSockets, Redis pub/sub and presence tracking.", "label": "complex_task"}
-{"text": "How many what HTTP stands for?", "label": "simple_qa"}
-{"text": "Looking at the contract, give me a TL;DR.", "label": "document_qa"}
-{"text": "Help me ship log analysis tool that parses NGINX access logs and surfaces anomalies, with monitoring.", "label": "complex_task"}
-{"text": "yep", "label": "chitchat"}
-{"text": "Implement browser extension that captures highlights, syncs to a backend and supports OAuth, with monitoring.", "label": "complex_task"}
-{"text": "say hi back", "label": "chitchat"}
-{"text": "Per the file I sent, what assumptions does the model rely on?", "label": "document_qa"}
-{"text": "ty How have you been?", "label": "chitchat"}
-{"text": "tgif", "label": "chitchat"}
-{"text": "Help me ship fraud detection system with stream processing and a feedback loop with full test coverage.", "label": "complex_task"}
-{"text": "Why is the latest version of Python?", "label": "simple_qa"}
-{"text": "Design a log analysis tool that parses NGINX access logs and surfaces anomalies, with monitoring.", "label": "complex_task"}
-{"text": "Walk me through building frontend dashboard with Next.js, server components, and incremental static regeneration — production ready.", "label": "complex_task"}
-{"text": "From the text I uploaded, what is the recommended approach?", "label": "document_qa"}
-{"text": "Design a terraform module that provisions a VPC, three subnets and a NAT gateway.", "label": "complex_task"}
-{"text": "Based on chapter 2, what risks are flagged?", "label": "document_qa"}
-{"text": "Write code that frontend dashboard with Next.js, server components, and incremental static regeneration step by step.", "label": "complex_task"}
-{"text": "What time is it for you?", "label": "chitchat"}
-{"text": "lol", "label": "chitchat"}
-{"text": "Architect RAG system that indexes PDFs, embeds with bge-small and answers with citations — production ready.", "label": "complex_task"}
-{"text": "In the whitepaper, what are the limitations discussed?", "label": "document_qa"}
-{"text": "Which the currency of Switzerland?", "label": "simple_qa"}
-{"text": "Set up an end-to-end image processing service that converts, resizes and watermarks with caching.", "label": "complex_task"}
-{"text": "Implement scheduled job runner that executes user-defined Python with sandboxing and quotas with full test coverage.", "label": "complex_task"}
-{"text": "Walk me through building web scraper that crawls news sites, dedupes by URL, and stores results in Postgres — production ready.", "label": "complex_task"}
-{"text": "tea time", "label": "chitchat"}
-{"text": "Give me the GDP of Japan.", "label": "simple_qa"}
-{"text": "Plan and build agent that plans a trip end-to-end: flights, hotels, calendar invites, and a budget.", "label": "complex_task"}
-{"text": "Knock knock.", "label": "chitchat"}
-{"text": "yo", "label": "chitchat"}
-{"text": "Good afternoon!", "label": "chitchat"}
-{"text": "Say something fun.", "label": "chitchat"}
-{"text": "thanks for listening", "label": "chitchat"}
-{"text": "Hi!", "label": "chitchat"}
-{"text": "Are you having a good day?", "label": "chitchat"}
-{"text": "According to the report, list every action item assigned to me.", "label": "document_qa"}
-{"text": "Walk me through building load testing harness that ramps up traffic and reports p50/p95/p99 with full test coverage.", "label": "complex_task"}
-{"text": "logging off", "label": "chitchat"}
-{"text": "What's your favorite color?", "label": "chitchat"}
-{"text": "Tell me the inventor of the telephone.", "label": "simple_qa"}
-{"text": "How much the capital of Australia?", "label": "simple_qa"}
-{"text": "Plan and build notification service that fans out to email, SMS and push with a unified template engine, including a rollback plan.", "label": "complex_task"}
-{"text": "Define the official language of Brazil.", "label": "simple_qa"}
-{"text": "i'm happy today", "label": "chitchat"}
-{"text": "Tell me the largest mammal on earth.", "label": "simple_qa"}
-{"text": "Who was the smallest planet in the solar system?", "label": "simple_qa"}
-{"text": "nope", "label": "chitchat"}
-{"text": "In the article I shared, what are the payment terms?", "label": "document_qa"}
-{"text": "Define a synonym for happy.", "label": "simple_qa"}
-{"text": "Set up an end-to-end RAG system that indexes PDFs, embeds with bge-small and answers with citations step by step.", "label": "complex_task"}
-{"text": "When was the capital of Australia?", "label": "simple_qa"}
-{"text": "long weekend coming up", "label": "chitchat"}
-{"text": "Make me laugh.", "label": "chitchat"}
-{"text": "From the spec, explain figure 2 in plain English.", "label": "document_qa"}
-{"text": "When did the boiling point of water?", "label": "simple_qa"}
-{"text": "In the slide deck, give me the methodology used.", "label": "document_qa"}
-{"text": "Give me the Pythagorean theorem.", "label": "simple_qa"}
-{"text": "Where was the longest river in South America?", "label": "simple_qa"}
-{"text": "In the article I shared, what is the main conclusion?", "label": "document_qa"}
-{"text": "Plan and build data labeling tool with active learning and inter-annotator agreement metrics step by step.", "label": "complex_task"}
-{"text": "what are you up to?", "label": "chitchat"}
-{"text": "Help me ship machine learning training loop with mixed precision, gradient accumulation and checkpointing — production ready.", "label": "complex_task"}
-{"text": "What's the chemical formula for water?", "label": "simple_qa"}
-{"text": "rofl", "label": "chitchat"}
-{"text": "Based on the document above, summarize each section in one sentence.", "label": "document_qa"}
-{"text": "In the manual, list every action item assigned to me.", "label": "document_qa"}
-{"text": "From the attached spreadsheet, what is the recommended approach?", "label": "document_qa"}
-{"text": "Plan and build event-driven workflow with SQS, Lambda and a DLQ that retries with backoff, including a rollback plan.", "label": "complex_task"}
-{"text": "👋", "label": "chitchat"}
-{"text": "Name the first president of the United States.", "label": "simple_qa"}
-{"text": "Who was the meaning of 'ephemeral'?", "label": "simple_qa"}
-{"text": "Refactor my RAG system that indexes PDFs, embeds with bge-small and answers with citations, with monitoring.", "label": "complex_task"}
-{"text": "How much the GDP of Japan?", "label": "simple_qa"}
-{"text": "Name the French Revolution.", "label": "simple_qa"}
-{"text": "Looking at the contract, what does paragraph 4 say?", "label": "document_qa"}
-{"text": "Define the current year.", "label": "simple_qa"}
-{"text": "Where is the French Revolution?", "label": "simple_qa"}
-{"text": "Based on chapter 2, give me a TL;DR.", "label": "document_qa"}
-{"text": "Plan and build load testing harness that ramps up traffic and reports p50/p95/p99 and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "In the attached PDF, what are the payment terms?", "label": "document_qa"}
-{"text": "Implement data pipeline that ingests CSVs from S3, validates with pydantic, and loads to BigQuery, including a rollback plan.", "label": "complex_task"}
-{"text": "Goodnight.", "label": "chitchat"}
-{"text": "Name the latest version of Python.", "label": "simple_qa"}
-{"text": "Refactor my event-driven workflow with SQS, Lambda and a DLQ that retries with backoff, with monitoring.", "label": "complex_task"}
-{"text": "Write code that event-driven workflow with SQS, Lambda and a DLQ that retries with backoff step by step.", "label": "complex_task"}
-{"text": "When was Einstein's most famous equation?", "label": "simple_qa"}
-{"text": "afk for a moment", "label": "chitchat"}
-{"text": "hiya", "label": "chitchat"}
-{"text": "According to the report, what is the main conclusion?", "label": "document_qa"}
-{"text": "Design a agent that plans a trip end-to-end: flights, hotels, calendar invites, and a budget and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "Tell me the smallest planet in the solar system.", "label": "simple_qa"}
-{"text": "From the attached spreadsheet, extract every named entity.", "label": "document_qa"}
-{"text": "Are you a robot?", "label": "chitchat"}
-{"text": "In the attached PDF, what risks are flagged?", "label": "document_qa"}
-{"text": "In the manual, what risks are flagged?", "label": "document_qa"}
-{"text": "Based on the document above, what is the recommended approach?", "label": "document_qa"}
-{"text": "Create a notification service that fans out to email, SMS and push with a unified template engine, with monitoring.", "label": "complex_task"}
-{"text": "How many the capital of Australia?", "label": "simple_qa"}
-{"text": "Who was the first president of the United States?", "label": "simple_qa"}
-{"text": "Long day, huh? Just wanted to chat.", "label": "chitchat"}
-{"text": "maybe", "label": "chitchat"}
-{"text": "Just wanted to chat.", "label": "chitchat"}
-{"text": "cheer me up", "label": "chitchat"}
-{"text": "In the whitepaper, who are the parties involved?", "label": "document_qa"}
-{"text": "Plan and build log analysis tool that parses NGINX access logs and surfaces anomalies.", "label": "complex_task"}
-{"text": "Build a feature flag system with percentage rollouts, user targeting and an admin UI and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "Hello!", "label": "chitchat"}
-{"text": "Develop a browser extension that captures highlights, syncs to a backend and supports OAuth.", "label": "complex_task"}
-{"text": "Which the longest river in South America?", "label": "simple_qa"}
-{"text": "Which the difference between TCP and UDP?", "label": "simple_qa"}
-{"text": "From the meeting notes, what evidence is presented?", "label": "document_qa"}
-{"text": "Architect data labeling tool with active learning and inter-annotator agreement metrics with full test coverage.", "label": "complex_task"}
-{"text": "Per the file I sent, what evidence is presented?", "label": "document_qa"}
-{"text": "What is the GDP of Japan?", "label": "simple_qa"}
-{"text": "Develop a frontend dashboard with Next.js, server components, and incremental static regeneration with full test coverage.", "label": "complex_task"}
-{"text": "Per section 3 of the document, what are the limitations discussed?", "label": "document_qa"}
-{"text": "Based on chapter 2, summarize the key findings in 5 bullet points.", "label": "document_qa"}
-{"text": "How are you?", "label": "chitchat"}
-{"text": "Anyone there?", "label": "chitchat"}
-{"text": "Based on the document above, list the prerequisites mentioned.", "label": "document_qa"}
-{"text": "When was World War II?", "label": "simple_qa"}
-{"text": "Per the file I sent, what risks are flagged?", "label": "document_qa"}
-{"text": "How much the fastest land animal?", "label": "simple_qa"}
-{"text": "When was two plus two?", "label": "simple_qa"}
-{"text": "send vibes", "label": "chitchat"}
-{"text": "🙌", "label": "chitchat"}
-{"text": "Give me the current year.", "label": "simple_qa"}
-{"text": "From the meeting notes, what is the recommended approach?", "label": "document_qa"}
-{"text": "Write code that scheduled job runner that executes user-defined Python with sandboxing and quotas, with monitoring.", "label": "complex_task"}
-{"text": "sure thing", "label": "chitchat"}
-{"text": "Help me ship Kubernetes deployment with autoscaling, secrets via SealedSecrets and a Helm chart with full test coverage.", "label": "complex_task"}
-{"text": "From the spec, what does the author argue?", "label": "document_qa"}
-{"text": "Long day, huh?", "label": "chitchat"}
-{"text": "In the attached PDF, extract all dates and what happens on each.", "label": "document_qa"}
-{"text": "Based on the document above, extract every named entity.", "label": "document_qa"}
-{"text": "Give me the official language of Brazil.", "label": "simple_qa"}
-{"text": "From the attached spreadsheet, what evidence is presented?", "label": "document_qa"}
-{"text": "Who is the fastest land animal?", "label": "simple_qa"}
-{"text": "From the attached spreadsheet, list the prerequisites mentioned.", "label": "document_qa"}
-{"text": "In the article I shared, what is the projected revenue for next quarter?", "label": "document_qa"}
-{"text": "In the slide deck, translate the executive summary into Portuguese.", "label": "document_qa"}
-{"text": "Set up an end-to-end observability stack with OpenTelemetry, Prometheus and Grafana dashboards with full test coverage.", "label": "complex_task"}
-{"text": "Create a personal finance app that imports CSVs, categorizes via ML and exports reports, including a rollback plan.", "label": "complex_task"}
-{"text": "Architect real-time chat backend using WebSockets, Redis pub/sub and presence tracking — production ready.", "label": "complex_task"}
-{"text": "Walk me through building event-driven workflow with SQS, Lambda and a DLQ that retries with backoff.", "label": "complex_task"}
-{"text": "From the spec, what is the termination clause?", "label": "document_qa"}
-{"text": "Hey there.", "label": "chitchat"}
-{"text": "Create a billing service that handles Stripe webhooks, idempotent retries and reconciliation with full test coverage.", "label": "complex_task"}
-{"text": "ok You're great.", "label": "chitchat"}
-{"text": "Based on chapter 2, list the prerequisites mentioned.", "label": "document_qa"}
-{"text": "Write code that observability stack with OpenTelemetry, Prometheus and Grafana dashboards step by step.", "label": "complex_task"}
-{"text": "Do you like music?", "label": "chitchat"}
-{"text": "From the spec, what are the supported configurations?", "label": "document_qa"}
-{"text": "cool", "label": "chitchat"}
-{"text": "In the article I shared, translate the executive summary into Portuguese.", "label": "document_qa"}
-{"text": "back from lunch Cheers.", "label": "chitchat"}
-{"text": "Plan and build browser extension that captures highlights, syncs to a backend and supports OAuth and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "Who is Einstein's most famous equation?", "label": "simple_qa"}
-{"text": "Who was the difference between TCP and UDP?", "label": "simple_qa"}
-{"text": "Help me ship model serving layer with batching, GPU autoscaling and request shadowing and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "Build a Kubernetes deployment with autoscaling, secrets via SealedSecrets and a Helm chart and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "tell me something nice", "label": "chitchat"}
-{"text": "Give me the largest mammal on earth.", "label": "simple_qa"}
-{"text": "In the slide deck, what does the author argue?", "label": "document_qa"}
-{"text": "How much the largest desert in the world?", "label": "simple_qa"}
-{"text": "Name the boiling point of water.", "label": "simple_qa"}
-{"text": "From the meeting notes, what does the author argue?", "label": "document_qa"}
-{"text": "What is the first president of the United States?", "label": "simple_qa"}
-{"text": "Help me ship browser extension that captures highlights, syncs to a backend and supports OAuth.", "label": "complex_task"}
-{"text": "Develop a terraform module that provisions a VPC, three subnets and a NAT gateway and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "Architect personal finance app that imports CSVs, categorizes via ML and exports reports with full test coverage.", "label": "complex_task"}
-{"text": "What's two plus two?", "label": "simple_qa"}
-{"text": "Implement terraform module that provisions a VPC, three subnets and a NAT gateway.", "label": "complex_task"}
-{"text": "wave hello", "label": "chitchat"}
-{"text": "hehe", "label": "chitchat"}
-{"text": "How many two plus two?", "label": "simple_qa"}
-{"text": "Architect real-time chat backend using WebSockets, Redis pub/sub and presence tracking step by step.", "label": "complex_task"}
-{"text": "Thank you so much.", "label": "chitchat"}
-{"text": "send hugs", "label": "chitchat"}
-{"text": "What's your favorite color? send hugs", "label": "chitchat"}
-{"text": "Tell me the capital of France.", "label": "simple_qa"}
-{"text": "Develop a image processing service that converts, resizes and watermarks with caching.", "label": "complex_task"}
-{"text": "What is the tallest mountain in the world?", "label": "simple_qa"}
-{"text": "From the spec, what risks are flagged?", "label": "document_qa"}
-{"text": "What's up?", "label": "chitchat"}
-{"text": "lmao", "label": "chitchat"}
-{"text": "Where was the capital of France?", "label": "simple_qa"}
-{"text": "got it", "label": "chitchat"}
-{"text": "Good evening.", "label": "chitchat"}
-{"text": "In the whitepaper, what does the author argue?", "label": "document_qa"}
-{"text": "Walk me through building frontend dashboard with Next.js, server components, and incremental static regeneration step by step.", "label": "complex_task"}
-{"text": "Help me ship model serving layer with batching, GPU autoscaling and request shadowing and document the architecture.", "label": "complex_task"}
-{"text": "Which the French Revolution?", "label": "simple_qa"}
-{"text": "Looking at the contract, what is the termination clause?", "label": "document_qa"}
-{"text": "From the text I uploaded, what is the main conclusion?", "label": "document_qa"}
-{"text": "What's your name? Appreciate it.", "label": "chitchat"}
-{"text": "In the article I shared, list the prerequisites mentioned.", "label": "document_qa"}
-{"text": "In the manual, what is the projected revenue for next quarter?", "label": "document_qa"}
-{"text": "haha that's funny", "label": "chitchat"}
-{"text": "Walk me through building load testing harness that ramps up traffic and reports p50/p95/p99, with monitoring.", "label": "complex_task"}
-{"text": "Who was the speed of light?", "label": "simple_qa"}
-{"text": "sup", "label": "chitchat"}
-{"text": "Give me the population of Tokyo.", "label": "simple_qa"}
-{"text": "Give me the meaning of 'ephemeral'.", "label": "simple_qa"}
-{"text": "Name the population of Tokyo.", "label": "simple_qa"}
-{"text": "favorite food?", "label": "chitchat"}
-{"text": "Per the file I sent, summarize the key findings in 5 bullet points.", "label": "document_qa"}
-{"text": "Looking at the contract, what are the supported configurations?", "label": "document_qa"}
-{"text": "sounds good ty", "label": "chitchat"}
-{"text": "Design a CI/CD pipeline on GitHub Actions with test matrix, caching and preview deployments, with monitoring.", "label": "complex_task"}
-{"text": "smh Do you sleep?", "label": "chitchat"}
-{"text": "According to the report, what are the limitations discussed?", "label": "document_qa"}
-{"text": "Refactor my REST API in FastAPI with JWT auth, rate limiting and OpenAPI docs step by step.", "label": "complex_task"}
-{"text": "In the manual, give me a TL;DR.", "label": "document_qa"}
-{"text": "How many the longest river in South America?", "label": "simple_qa"}
-{"text": "Set up an end-to-end REST API in FastAPI with JWT auth, rate limiting and OpenAPI docs with full test coverage.", "label": "complex_task"}
-{"text": "Design a image processing service that converts, resizes and watermarks with caching and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "In the manual, what does the author argue?", "label": "document_qa"}
-{"text": "Walk me through building machine learning training loop with mixed precision, gradient accumulation and checkpointing — production ready.", "label": "complex_task"}
-{"text": "today was rough", "label": "chitchat"}
-{"text": "When was the antonym of brave?", "label": "simple_qa"}
-{"text": "Why is the tallest mountain in the world?", "label": "simple_qa"}
-{"text": "See you!", "label": "chitchat"}
-{"text": "Write code that web scraper that crawls news sites, dedupes by URL, and stores results in Postgres with full test coverage.", "label": "complex_task"}
-{"text": "How much the year Python was released?", "label": "simple_qa"}
-{"text": "Design a real-time chat backend using WebSockets, Redis pub/sub and presence tracking — production ready.", "label": "complex_task"}
-{"text": "signing off", "label": "chitchat"}
-{"text": "Looking at the contract, explain figure 2 in plain English.", "label": "document_qa"}
-{"text": "Where was the current year?", "label": "simple_qa"}
-{"text": "From the meeting notes, translate the executive summary into Portuguese.", "label": "document_qa"}
-{"text": "From the text I uploaded, what are the limitations discussed?", "label": "document_qa"}
-{"text": "Implement REST API in FastAPI with JWT auth, rate limiting and OpenAPI docs step by step.", "label": "complex_task"}
-{"text": "Architect frontend dashboard with Next.js, server components, and incremental static regeneration.", "label": "complex_task"}
-{"text": "🤣", "label": "chitchat"}
-{"text": "What's the moon landing?", "label": "simple_qa"}
-{"text": "Based on the document above, what risks are flagged?", "label": "document_qa"}
-{"text": "Who was the chemical formula for water?", "label": "simple_qa"}
-{"text": "Hope you're well.", "label": "chitchat"}
-{"text": "Architect observability stack with OpenTelemetry, Prometheus and Grafana dashboards step by step.", "label": "complex_task"}
-{"text": "When did the antonym of brave?", "label": "simple_qa"}
-{"text": "Refactor my CI/CD pipeline on GitHub Actions with test matrix, caching and preview deployments, with monitoring.", "label": "complex_task"}
-{"text": "Ping.", "label": "chitchat"}
-{"text": "Per the file I sent, what are the limitations discussed?", "label": "document_qa"}
-{"text": "From the spec, extract every named entity.", "label": "document_qa"}
-{"text": "are you sentient?", "label": "chitchat"}
-{"text": "Who is what JSON means?", "label": "simple_qa"}
-{"text": "Take care.", "label": "chitchat"}
-{"text": "Write code that real-time chat backend using WebSockets, Redis pub/sub and presence tracking, including a rollback plan.", "label": "complex_task"}
-{"text": "Implement scheduling agent that books meetings, resolves conflicts and emails participants and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "sounds good", "label": "chitchat"}
-{"text": "Talk to you later.", "label": "chitchat"}
-{"text": "According to the report, who are the parties involved?", "label": "document_qa"}
-{"text": "From the attached spreadsheet, summarize each section in one sentence.", "label": "document_qa"}
-{"text": "sure thing happy friday!", "label": "chitchat"}
-{"text": "i'm sad today", "label": "chitchat"}
-{"text": "morning!", "label": "chitchat"}
-{"text": "Build a feature flag system with percentage rollouts, user targeting and an admin UI — production ready.", "label": "complex_task"}
-{"text": "Design a RAG system that indexes PDFs, embeds with bge-small and answers with citations and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "What's your name?", "label": "chitchat"}
-{"text": "do you have feelings?", "label": "chitchat"}
-{"text": "Where was the official language of Brazil?", "label": "simple_qa"}
-{"text": "ok", "label": "chitchat"}
-{"text": "From the text I uploaded, what evidence is presented?", "label": "document_qa"}
-{"text": "Architect image processing service that converts, resizes and watermarks with caching.", "label": "complex_task"}
-{"text": "compliment me", "label": "chitchat"}
-{"text": "Based on chapter 2, what does paragraph 4 say?", "label": "document_qa"}
-{"text": "You're helpful.", "label": "chitchat"}
-{"text": "According to the report, what is the termination clause?", "label": "document_qa"}
-{"text": "Set up an end-to-end personal finance app that imports CSVs, categorizes via ML and exports reports — production ready.", "label": "complex_task"}
-{"text": "When was the inventor of the telephone?", "label": "simple_qa"}
-{"text": "Based on chapter 2, what assumptions does the model rely on?", "label": "document_qa"}
-{"text": "heyo", "label": "chitchat"}
-{"text": "Design a feature flag system with percentage rollouts, user targeting and an admin UI, with monitoring.", "label": "complex_task"}
-{"text": "Design a fraud detection system with stream processing and a feedback loop step by step.", "label": "complex_task"}
-{"text": "Awesome, thanks.", "label": "chitchat"}
-{"text": "Define the population of Tokyo.", "label": "simple_qa"}
-{"text": "How's life?", "label": "chitchat"}
-{"text": "Build a data labeling tool with active learning and inter-annotator agreement metrics and document the architecture.", "label": "complex_task"}
-{"text": "When was the speed of light?", "label": "simple_qa"}
-{"text": "Which the population of Tokyo?", "label": "simple_qa"}
-{"text": "In the article I shared, explain figure 2 in plain English.", "label": "document_qa"}
-{"text": "Create a machine learning training loop with mixed precision, gradient accumulation and checkpointing and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "Per section 3 of the document, summarize the key findings in 5 bullet points.", "label": "document_qa"}
-{"text": "Write code that data labeling tool with active learning and inter-annotator agreement metrics.", "label": "complex_task"}
-{"text": "Walk me through building search service with OpenSearch, ingestion via Kafka and faceted filters with full test coverage.", "label": "complex_task"}
-{"text": "Just saying hi.", "label": "chitchat"}
-{"text": "Mondays... signing off", "label": "chitchat"}
-{"text": "signing off What's up?", "label": "chitchat"}
-{"text": "How much World War II?", "label": "simple_qa"}
-{"text": "nice", "label": "chitchat"}
-{"text": "In the manual, what does paragraph 4 say?", "label": "document_qa"}
-{"text": "Walk me through building vector database wrapper with hybrid search and metadata filtering, including a rollback plan.", "label": "complex_task"}
-{"text": "Thanks!", "label": "chitchat"}
-{"text": "Implement multi-tenant SaaS with row-level security, per-tenant migrations and a billing portal, including a rollback plan.", "label": "complex_task"}
-{"text": "Based on chapter 2, what is the projected revenue for next quarter?", "label": "document_qa"}
-{"text": "Based on chapter 2, list every action item assigned to me.", "label": "document_qa"}
-{"text": "i appreciate you", "label": "chitchat"}
-{"text": "Plan and build CI/CD pipeline on GitHub Actions with test matrix, caching and preview deployments, including a rollback plan.", "label": "complex_task"}
-{"text": "k", "label": "chitchat"}
-{"text": "How have you been?", "label": "chitchat"}
-{"text": "In the article I shared, what's the difference between option A and B as described?", "label": "document_qa"}
-{"text": "What's what JSON means?", "label": "simple_qa"}
-{"text": "Good morning.", "label": "chitchat"}
-{"text": "Tell me the largest desert in the world.", "label": "simple_qa"}
-{"text": "Set up an end-to-end Kubernetes deployment with autoscaling, secrets via SealedSecrets and a Helm chart with full test coverage.", "label": "complex_task"}
-{"text": "Walk me through building multi-tenant SaaS with row-level security, per-tenant migrations and a billing portal, including a rollback plan.", "label": "complex_task"}
-{"text": "Refactor my data labeling tool with active learning and inter-annotator agreement metrics and document the architecture.", "label": "complex_task"}
-{"text": "Where is the largest mammal on earth?", "label": "simple_qa"}
-{"text": "Per section 3 of the document, summarize each section in one sentence.", "label": "document_qa"}
-{"text": "From the spec, who are the parties involved?", "label": "document_qa"}
-{"text": "In the article I shared, what does paragraph 4 say?", "label": "document_qa"}
-{"text": "In the slide deck, list every action item assigned to me.", "label": "document_qa"}
-{"text": "Refactor my multi-tenant SaaS with row-level security, per-tenant migrations and a billing portal and benchmark it against the baseline.", "label": "complex_task"}
-{"text": "From the meeting notes, what does paragraph 4 say?", "label": "document_qa"}
-{"text": "😂", "label": "chitchat"}
-{"text": "In the article I shared, what evidence is presented?", "label": "document_qa"}
-{"text": "In the slide deck, what assumptions does the model rely on?", "label": "document_qa"}
-{"text": "Implement event-driven workflow with SQS, Lambda and a DLQ that retries with backoff step by step.", "label": "complex_task"}
-{"text": "Plan and build web scraper that crawls news sites, dedupes by URL, and stores results in Postgres step by step.", "label": "complex_task"}
-{"text": "In the attached PDF, what is the main conclusion?", "label": "document_qa"}
-{"text": "Help me ship REST API in FastAPI with JWT auth, rate limiting and OpenAPI docs.", "label": "complex_task"}
-{"text": "Set up an end-to-end browser extension that captures highlights, syncs to a backend and supports OAuth and document the architecture.", "label": "complex_task"}
-{"text": "Why is the smallest planet in the solar system?", "label": "simple_qa"}
-{"text": "In the manual, what is the main conclusion?", "label": "document_qa"}
-{"text": "What is the French Revolution?", "label": "simple_qa"}
+{"text": "How much the value of pi?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Implement web scraper that crawls news sites, dedupes by URL, and stores results in Postgres and document the architecture.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Develop a scheduled job runner that executes user-defined Python with sandboxing and quotas — production ready.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Hello!", "label": "chitchat", "difficulty": "easy"}
+{"text": "Develop a vector database wrapper with hybrid search and metadata filtering, with monitoring.", "label": "complex_task", "difficulty": "easy"}
+{"text": "send hugs", "label": "chitchat", "difficulty": "easy"}
+{"text": "Per section 3 of the document, summarize each section in one sentence.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Develop a terraform module that provisions a VPC, three subnets and a NAT gateway and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "In the article I shared, summarize each section in one sentence.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Create a machine learning training loop with mixed precision, gradient accumulation and checkpointing and document the architecture.", "label": "complex_task", "difficulty": "easy"}
+{"text": "In the article I shared, what does the author argue?", "label": "document_qa", "difficulty": "easy"}
+{"text": "How many two plus two?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "how was your weekend?", "label": "chitchat", "difficulty": "easy"}
+{"text": "What is the first president of the United States?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Forgot the year — when did the Berlin Wall fall?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "What time is it for you?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Which the year Python was released?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Based on chapter 2, explain figure 2 in plain English.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Spot anything that contradicts what was agreed yesterday?", "label": "document_qa", "difficulty": "hard"}
+{"text": "Walk me through building terraform module that provisions a VPC, three subnets and a NAT gateway step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Give me the largest mammal on earth.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Tough crowd today, sorry I'm cranky.", "label": "chitchat", "difficulty": "hard"}
+{"text": "Architect REST API in FastAPI with JWT auth, rate limiting and OpenAPI docs — production ready.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Design a load testing harness that ramps up traffic and reports p50/p95/p99, including a rollback plan.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Any idea what time zone São Paulo is in?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "What can you do?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Does it allow remote work?", "label": "document_qa", "difficulty": "hard"}
+{"text": "From the meeting notes, what is the recommended approach?", "label": "document_qa", "difficulty": "easy"}
+{"text": "brb", "label": "chitchat", "difficulty": "easy"}
+{"text": "Create a machine learning training loop with mixed precision, gradient accumulation and checkpointing step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Design a agent that plans a trip end-to-end: flights, hotels, calendar invites, and a budget and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "In the whitepaper, who are the parties involved?", "label": "document_qa", "difficulty": "easy"}
+{"text": "hiya", "label": "chitchat", "difficulty": "easy"}
+{"text": "You're helpful.", "label": "chitchat", "difficulty": "easy"}
+{"text": "I want to grow my newsletter from 100 to 10k subscribers. Lay out the strategy.", "label": "complex_task", "difficulty": "hard"}
+{"text": "ttyl", "label": "chitchat", "difficulty": "easy"}
+{"text": "I like talking to you.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Tell me the longest river in South America.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "In the whitepaper, what is the projected revenue for next quarter?", "label": "document_qa", "difficulty": "easy"}
+{"text": "When was the chemical formula for water?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "today was rough", "label": "chitchat", "difficulty": "easy"}
+{"text": "Take care.", "label": "chitchat", "difficulty": "easy"}
+{"text": "From the text I uploaded, what is the termination clause?", "label": "document_qa", "difficulty": "easy"}
+{"text": "From the spec, extract every named entity.", "label": "document_qa", "difficulty": "easy"}
+{"text": "i'm happy today", "label": "chitchat", "difficulty": "easy"}
+{"text": "In the manual, what does the author argue?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Architect image processing service that converts, resizes and watermarks with caching.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Design a data pipeline that ingests CSVs from S3, validates with pydantic, and loads to BigQuery — production ready.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Write code that CI/CD pipeline on GitHub Actions with test matrix, caching and preview deployments, including a rollback plan.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Does this lay out the timeline anywhere?", "label": "document_qa", "difficulty": "hard"}
+{"text": "What's your name?", "label": "chitchat", "difficulty": "easy"}
+{"text": "From the text I uploaded, what is the projected revenue for next quarter?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Based on the document above, extract all dates and what happens on each.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Who is the fastest land animal?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Who is Einstein's most famous equation?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "When did the chemical formula for water?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Refactor my data labeling tool with active learning and inter-annotator agreement metrics and document the architecture.", "label": "complex_task", "difficulty": "easy"}
+{"text": "sure thing", "label": "chitchat", "difficulty": "easy"}
+{"text": "Who is the GDP of Japan?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Create a personal finance app that imports CSVs, categorizes via ML and exports reports, including a rollback plan.", "label": "complex_task", "difficulty": "easy"}
+{"text": "When did the discoverer of penicillin?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "I want to make our product accessible to screen reader users — walk me through it.", "label": "complex_task", "difficulty": "hard"}
+{"text": "When did the latest version of Python?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "send vibes", "label": "chitchat", "difficulty": "easy"}
+{"text": "Does this cover the data deletion process?", "label": "document_qa", "difficulty": "hard"}
+{"text": "When was the Pythagorean theorem?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "maybe", "label": "chitchat", "difficulty": "easy"}
+{"text": "Long day, huh? Just wanted to chat.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Give me Einstein's most famous equation.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Got a small team that needs to ship a mobile app in 6 weeks — how do we do it?", "label": "complex_task", "difficulty": "hard"}
+{"text": "Where was the chemical formula for water?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Tell me a fun fact.", "label": "chitchat", "difficulty": "easy"}
+{"text": "When was Einstein's most famous equation?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Per the file I sent, what assumptions does the model rely on?", "label": "document_qa", "difficulty": "easy"}
+{"text": "In the whitepaper, extract every named entity.", "label": "document_qa", "difficulty": "easy"}
+{"text": "What's the moon landing?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Based on chapter 2, give me the methodology used.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Who was the moon landing?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Implement multi-tenant SaaS with row-level security, per-tenant migrations and a billing portal, including a rollback plan.", "label": "complex_task", "difficulty": "easy"}
+{"text": "say hi back", "label": "chitchat", "difficulty": "easy"}
+{"text": "Based on chapter 2, what assumptions does the model rely on?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Per section 3 of the document, extract every named entity.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Wow, didn't expect that answer — neat.", "label": "chitchat", "difficulty": "hard"}
+{"text": "In the whitepaper, explain figure 2 in plain English.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Need to take our open source library from 50 stars to 10k. Roadmap, please.", "label": "complex_task", "difficulty": "hard"}
+{"text": "do you have feelings?", "label": "chitchat", "difficulty": "easy"}
+{"text": "We're going from on-prem to multi-cloud. Map out everything.", "label": "complex_task", "difficulty": "hard"}
+{"text": "feeling sleepy", "label": "chitchat", "difficulty": "easy"}
+{"text": "Where is the discoverer of penicillin?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Create a billing service that handles Stripe webhooks, idempotent retries and reconciliation with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Where was the capital of France?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Out of curiosity, what's the deepest point in the ocean?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "Write code that event-driven workflow with SQS, Lambda and a DLQ that retries with backoff step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Design a billing service that handles Stripe webhooks, idempotent retries and reconciliation.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Coffee's kicking in, I should be more useful soon.", "label": "chitchat", "difficulty": "hard"}
+{"text": "What does it say in the conclusion?", "label": "document_qa", "difficulty": "hard"}
+{"text": "What's the discoverer of penicillin?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "What is the founder of Microsoft?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "We're moving 40 engineers to a new repo structure — break that down for me.", "label": "complex_task", "difficulty": "hard"}
+{"text": "i'm sad today", "label": "chitchat", "difficulty": "easy"}
+{"text": "In the whitepaper, what is the main conclusion?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Based on chapter 2, what is the projected revenue for next quarter?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Tell me, how tall is the Eiffel Tower roughly?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "do you dream?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Hey, do you happen to know the capital of Norway?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "Awesome, thanks.", "label": "chitchat", "difficulty": "easy"}
+{"text": "In the article I shared, what does paragraph 4 say?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Are you having a good day?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Ugh, Mondays. How do you even function this early?", "label": "chitchat", "difficulty": "hard"}
+{"text": "Anyone there?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Per the file I sent, what are the limitations discussed?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Walk me through building web scraper that crawls news sites, dedupes by URL, and stores results in Postgres — production ready.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Looking at the contract, what are the supported configurations?", "label": "document_qa", "difficulty": "easy"}
+{"text": "In the slide deck, summarize each section in one sentence.", "label": "document_qa", "difficulty": "easy"}
+{"text": "🤣", "label": "chitchat", "difficulty": "easy"}
+{"text": "In the article I shared, explain figure 2 in plain English.", "label": "document_qa", "difficulty": "easy"}
+{"text": "In the manual, what are the supported configurations?", "label": "document_qa", "difficulty": "easy"}
+{"text": "back from lunch Cheers.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Per section 3 of the document, what are the limitations discussed?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Where was a synonym for happy?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Walk me through building vector database wrapper with hybrid search and metadata filtering, including a rollback plan.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Define the antonym of brave.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Design a RAG system that indexes PDFs, embeds with bge-small and answers with citations and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Any clue what the population of Tokyo is these days?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "In the manual, list every action item assigned to me.", "label": "document_qa", "difficulty": "easy"}
+{"text": "You're great.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Plan and build real-time chat backend using WebSockets, Redis pub/sub and presence tracking.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Implement browser extension that captures highlights, syncs to a backend and supports OAuth, with monitoring.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Name the boiling point of water.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "From the text I uploaded, what evidence is presented?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Help me ship model serving layer with batching, GPU autoscaling and request shadowing and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Based on the document above, what is the recommended approach?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Help me ship browser extension that captures highlights, syncs to a backend and supports OAuth.", "label": "complex_task", "difficulty": "easy"}
+{"text": "From the meeting notes, list the prerequisites mentioned.", "label": "document_qa", "difficulty": "easy"}
+{"text": "lol", "label": "chitchat", "difficulty": "easy"}
+{"text": "Hi!", "label": "chitchat", "difficulty": "easy"}
+{"text": "Summarize what they said about Q3 in two lines.", "label": "document_qa", "difficulty": "hard"}
+{"text": "How's it going?", "label": "chitchat", "difficulty": "easy"}
+{"text": "When did the author of Hamlet?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Walk me through building image processing service that converts, resizes and watermarks with caching with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Architect fraud detection system with stream processing and a feedback loop and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "tell me something nice", "label": "chitchat", "difficulty": "easy"}
+{"text": "In the manual, give me a TL;DR.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Define the discoverer of penicillin.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "ok You're great.", "label": "chitchat", "difficulty": "easy"}
+{"text": "still here?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Set up an end-to-end CI/CD pipeline on GitHub Actions with test matrix, caching and preview deployments with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Write code that terraform module that provisions a VPC, three subnets and a NAT gateway with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "What's your favorite color? send hugs", "label": "chitchat", "difficulty": "easy"}
+{"text": "smh Do you sleep?", "label": "chitchat", "difficulty": "easy"}
+{"text": "What is the speed of light?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Gonna miss this when I have to actually go work.", "label": "chitchat", "difficulty": "hard"}
+{"text": "From the text I uploaded, what is the recommended approach?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Define Einstein's most famous equation.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "How much the year Python was released?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "hey friend", "label": "chitchat", "difficulty": "easy"}
+{"text": "It cites a study — give me the citation.", "label": "document_qa", "difficulty": "hard"}
+{"text": "See you!", "label": "chitchat", "difficulty": "easy"}
+{"text": "Ha, fair point. I'll concede that one.", "label": "chitchat", "difficulty": "hard"}
+{"text": "Where is the tallest mountain in the world?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "According to the report, summarize each section in one sentence.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Where was two plus two?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "What is what HTTP stands for?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Help me settle a bet — speed of sound in m/s?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "Where is the capital of France?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Who was the inventor of the telephone?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "any plans for the weekend?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Pull out the main argument from what I just shared.", "label": "document_qa", "difficulty": "hard"}
+{"text": "Based on the document above, what risks are flagged?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Long day, huh?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Implement event-driven workflow with SQS, Lambda and a DLQ that retries with backoff step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Why is the fastest land animal?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Architect RAG system that indexes PDFs, embeds with bge-small and answers with citations — production ready.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Highlight everything related to security.", "label": "document_qa", "difficulty": "hard"}
+{"text": "Implement scheduled job runner that executes user-defined Python with sandboxing and quotas with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Walk me through launching a podcast end to end.", "label": "complex_task", "difficulty": "hard"}
+{"text": "Make me laugh.", "label": "chitchat", "difficulty": "easy"}
+{"text": "How's the weather where you are?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Develop a real-time chat backend using WebSockets, Redis pub/sub and presence tracking step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Per section 3 of the document, summarize the key findings in 5 bullet points.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Write code that real-time chat backend using WebSockets, Redis pub/sub and presence tracking, including a rollback plan.", "label": "complex_task", "difficulty": "easy"}
+{"text": "What's the first president of the United States?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "In the slide deck, what are the supported configurations?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Looking at the contract, summarize the key findings in 5 bullet points.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Plan and build load testing harness that ramps up traffic and reports p50/p95/p99 and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Implement real-time chat backend using WebSockets, Redis pub/sub and presence tracking and document the architecture.", "label": "complex_task", "difficulty": "easy"}
+{"text": "are you sentient?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Need a sanity check: how long is a marathon in km?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "Help me plan opening a small bookstore in my neighborhood, soup to nuts.", "label": "complex_task", "difficulty": "hard"}
+{"text": "Help me ship scheduled job runner that executes user-defined Python with sandboxing and quotas and document the architecture.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Who was the difference between TCP and UDP?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Architect data labeling tool with active learning and inter-annotator agreement metrics with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Refactor my event-driven workflow with SQS, Lambda and a DLQ that retries with backoff, with monitoring.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Talks about a probation period — for how long?", "label": "document_qa", "difficulty": "hard"}
+{"text": "Plan and build CI/CD pipeline on GitHub Actions with test matrix, caching and preview deployments, including a rollback plan.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Refactor my CI/CD pipeline on GitHub Actions with test matrix, caching and preview deployments, with monitoring.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Who was the speed of light?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Cheers, that was easier than I expected.", "label": "chitchat", "difficulty": "hard"}
+{"text": "From the attached spreadsheet, extract every named entity.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Refactor my fraud detection system with stream processing and a feedback loop with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "you there?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Name the latest version of Python.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Define the currency of Switzerland.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Who is the difference between TCP and UDP?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Which paragraph covers refunds?", "label": "document_qa", "difficulty": "hard"}
+{"text": "Talk to you later.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Based on the document above, what is the termination clause?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Which page has the pricing?", "label": "document_qa", "difficulty": "hard"}
+{"text": "In the article I shared, give me a TL;DR.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Implement image processing service that converts, resizes and watermarks with caching — production ready.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Develop a Kubernetes deployment with autoscaling, secrets via SealedSecrets and a Helm chart and document the architecture.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Create a machine learning training loop with mixed precision, gradient accumulation and checkpointing and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Give me the current year.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "According to this, who's liable if the shipment is damaged?", "label": "document_qa", "difficulty": "hard"}
+{"text": "Wasn't it Edison who invented the light bulb?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "From the text I uploaded, extract every named entity.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Set up an end-to-end browser extension that captures highlights, syncs to a backend and supports OAuth and document the architecture.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Build a vector database wrapper with hybrid search and metadata filtering and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Need to redesign our marketing site from scratch. Walk me through the steps.", "label": "complex_task", "difficulty": "hard"}
+{"text": "Have a great day.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Tea break, bbiab.", "label": "chitchat", "difficulty": "hard"}
+{"text": "How many the founder of Microsoft?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Who is the longest river in South America?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "In the slide deck, list the prerequisites mentioned.", "label": "document_qa", "difficulty": "easy"}
+{"text": "evening!", "label": "chitchat", "difficulty": "easy"}
+{"text": "In the attached PDF, what assumptions does the model rely on?", "label": "document_qa", "difficulty": "easy"}
+{"text": "ok", "label": "chitchat", "difficulty": "easy"}
+{"text": "k", "label": "chitchat", "difficulty": "easy"}
+{"text": "Honestly you're way more patient than my last assistant lol", "label": "chitchat", "difficulty": "hard"}
+{"text": "Design a feature flag system with percentage rollouts, user targeting and an admin UI, with monitoring.", "label": "complex_task", "difficulty": "easy"}
+{"text": "I forget — who painted the Mona Lisa?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "Tell me the discoverer of penicillin.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Write code that data labeling tool with active learning and inter-annotator agreement metrics.", "label": "complex_task", "difficulty": "easy"}
+{"text": "What is the GDP of Japan?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "morning!", "label": "chitchat", "difficulty": "easy"}
+{"text": "Do you like music?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Plan and build log analysis tool that parses NGINX access logs and surfaces anomalies.", "label": "complex_task", "difficulty": "easy"}
+{"text": "back!", "label": "chitchat", "difficulty": "easy"}
+{"text": "In the slide deck, extract every named entity.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Walk me through building multi-tenant SaaS with row-level security, per-tenant migrations and a billing portal, including a rollback plan.", "label": "complex_task", "difficulty": "easy"}
+{"text": "What is Einstein's most famous equation?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Name the smallest planet in the solar system.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Develop a browser extension that captures highlights, syncs to a backend and supports OAuth.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Refactor my code review bot that posts inline comments based on a custom linter, including a rollback plan.", "label": "complex_task", "difficulty": "easy"}
+{"text": "sup", "label": "chitchat", "difficulty": "easy"}
+{"text": "Where was the tallest mountain in the world?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Who is two plus two?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "In the whitepaper, what are the payment terms?", "label": "document_qa", "difficulty": "easy"}
+{"text": "haha", "label": "chitchat", "difficulty": "easy"}
+{"text": "Just saying hi.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Bye! Anyone there?", "label": "chitchat", "difficulty": "easy"}
+{"text": "According to the report, give me the methodology used.", "label": "document_qa", "difficulty": "easy"}
+{"text": "From the meeting notes, what does the author argue?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Give me the latest version of Python.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Help me ship log analysis tool that parses NGINX access logs and surfaces anomalies, with monitoring.", "label": "complex_task", "difficulty": "easy"}
+{"text": "From the attached spreadsheet, summarize the key findings in 5 bullet points.", "label": "document_qa", "difficulty": "easy"}
+{"text": "From the spec, what is the projected revenue for next quarter?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Design a image processing service that converts, resizes and watermarks with caching and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Create a search service with OpenSearch, ingestion via Kafka and faceted filters — production ready.", "label": "complex_task", "difficulty": "easy"}
+{"text": "How many the chemical formula for water?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Is there a non-compete clause? If yes, how long?", "label": "document_qa", "difficulty": "hard"}
+{"text": "Give me the official language of Brazil.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Implement data pipeline that ingests CSVs from S3, validates with pydantic, and loads to BigQuery, including a rollback plan.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Plan and build notification service that fans out to email, SMS and push with a unified template engine, including a rollback plan.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Architect observability stack with OpenTelemetry, Prometheus and Grafana dashboards and document the architecture.", "label": "complex_task", "difficulty": "easy"}
+{"text": "🙌", "label": "chitchat", "difficulty": "easy"}
+{"text": "Is a tomato technically a fruit?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "Just started a YouTube channel. Walk me through getting to 1k subscribers.", "label": "complex_task", "difficulty": "hard"}
+{"text": "Cheers.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Pull the requirements for hiring senior engineers.", "label": "document_qa", "difficulty": "hard"}
+{"text": "Lmao you have a sense of humor, who knew.", "label": "chitchat", "difficulty": "hard"}
+{"text": "long weekend coming up", "label": "chitchat", "difficulty": "easy"}
+{"text": "Just wanted to chat.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Are you a robot?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Set up an end-to-end image processing service that converts, resizes and watermarks with caching.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Pop quiz: ready?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Wait, isn't the Pacific the largest ocean?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "Plan and build scheduled job runner that executes user-defined Python with sandboxing and quotas, including a rollback plan.", "label": "complex_task", "difficulty": "easy"}
+{"text": "It mentions three priorities — which ones?", "label": "document_qa", "difficulty": "hard"}
+{"text": "Write code that observability stack with OpenTelemetry, Prometheus and Grafana dashboards and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Who is the latest version of Python?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Who is the current year?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "I want to make our docs world-class. Break down the whole project.", "label": "complex_task", "difficulty": "hard"}
+{"text": "What's the official language of Brazil?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "tgif", "label": "chitchat", "difficulty": "easy"}
+{"text": "In the article I shared, what is the projected revenue for next quarter?", "label": "document_qa", "difficulty": "easy"}
+{"text": "According to the report, what are the supported configurations?", "label": "document_qa", "difficulty": "easy"}
+{"text": "In the article I shared, what assumptions does the model rely on?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Walk me through building search service with OpenSearch, ingestion via Kafka and faceted filters with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Our customer support is drowning — break down everything we'd need to set up a help center.", "label": "complex_task", "difficulty": "hard"}
+{"text": "How many the meaning of 'ephemeral'?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Refactor my RAG system that indexes PDFs, embeds with bge-small and answers with citations, with monitoring.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Pleasure to meet you.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Who was the first president of the United States?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "ty", "label": "chitchat", "difficulty": "easy"}
+{"text": "Honestly impressive how fast you came back with that.", "label": "chitchat", "difficulty": "hard"}
+{"text": "In the manual, translate the executive summary into Portuguese.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Were the metrics for success defined?", "label": "document_qa", "difficulty": "hard"}
+{"text": "Not gonna lie, that was a satisfying explanation.", "label": "chitchat", "difficulty": "hard"}
+{"text": "Refactor my notification service that fans out to email, SMS and push with a unified template engine and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Walk me through building frontend dashboard with Next.js, server components, and incremental static regeneration — production ready.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Help me ship model serving layer with batching, GPU autoscaling and request shadowing and document the architecture.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Quick fact: how far is the Moon from Earth?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "Implement terraform module that provisions a VPC, three subnets and a NAT gateway.", "label": "complex_task", "difficulty": "easy"}
+{"text": "How much the fastest land animal?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Say something fun.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Per the file I sent, what does paragraph 4 say?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Develop a RAG system that indexes PDFs, embeds with bge-small and answers with citations, with monitoring.", "label": "complex_task", "difficulty": "easy"}
+{"text": "How much the largest desert in the world?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Give me the speed of light.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "From the spec, what is the main conclusion?", "label": "document_qa", "difficulty": "easy"}
+{"text": "i appreciate you", "label": "chitchat", "difficulty": "easy"}
+{"text": "In the slide deck, what assumptions does the model rely on?", "label": "document_qa", "difficulty": "easy"}
+{"text": "In the attached PDF, what are the payment terms?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Who was the discoverer of penicillin?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Set up an end-to-end REST API in FastAPI with JWT auth, rate limiting and OpenAPI docs with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "What's the GDP of Japan?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "How many the capital of Australia?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Build a fraud detection system with stream processing and a feedback loop, including a rollback plan.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Based on chapter 2, list every action item assigned to me.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Looking at the contract, explain figure 2 in plain English.", "label": "document_qa", "difficulty": "easy"}
+{"text": "favorite food?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Random thought — is honey actually bee vomit?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "In the slide deck, what's the difference between option A and B as described?", "label": "document_qa", "difficulty": "easy"}
+{"text": "In the attached PDF, extract all dates and what happens on each.", "label": "document_qa", "difficulty": "easy"}
+{"text": "From the meeting notes, what assumptions does the model rely on?", "label": "document_qa", "difficulty": "easy"}
+{"text": "ty How have you been?", "label": "chitchat", "difficulty": "easy"}
+{"text": "In the article I shared, list the prerequisites mentioned.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Name the official language of Brazil.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "how's your day so far?", "label": "chitchat", "difficulty": "easy"}
+{"text": "signing off", "label": "chitchat", "difficulty": "easy"}
+{"text": "What's your favorite color?", "label": "chitchat", "difficulty": "easy"}
+{"text": "sure thing happy friday!", "label": "chitchat", "difficulty": "easy"}
+{"text": "What is the tallest mountain in the world?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "In the whitepaper, list every action item assigned to me.", "label": "document_qa", "difficulty": "easy"}
+{"text": "In the slide deck, translate the executive summary into Portuguese.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Side question: oldest university in the world?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "In the attached PDF, give me a TL;DR.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Thank you so much.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Thanks!", "label": "chitchat", "difficulty": "easy"}
+{"text": "Develop a web scraper that crawls news sites, dedupes by URL, and stores results in Postgres — production ready.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Find me the part about parental leave.", "label": "document_qa", "difficulty": "hard"}
+{"text": "Plan and build web scraper that crawls news sites, dedupes by URL, and stores results in Postgres step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "When was the smallest planet in the solar system?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Tell me the chemical formula for water.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Plan and build event-driven workflow with SQS, Lambda and a DLQ that retries with backoff, including a rollback plan.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Which the longest river in South America?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "In the article I shared, what evidence is presented?", "label": "document_qa", "difficulty": "easy"}
+{"text": "rofl", "label": "chitchat", "difficulty": "easy"}
+{"text": "Who is the largest desert in the world?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Help me ship data pipeline that ingests CSVs from S3, validates with pydantic, and loads to BigQuery step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "No worries, take your time!", "label": "chitchat", "difficulty": "hard"}
+{"text": "I need to get our whole CI pipeline from scratch to production-ready, where do I even start?", "label": "complex_task", "difficulty": "hard"}
+{"text": "When did the largest desert in the world?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "😂", "label": "chitchat", "difficulty": "easy"}
+{"text": "Brain fart — who wrote Hamlet again?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "Honestly that's the most useful conversation I've had all week.", "label": "chitchat", "difficulty": "hard"}
+{"text": "Where was what JSON means?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Define the latest version of Python.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Where was the Pythagorean theorem?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Appreciate it.", "label": "chitchat", "difficulty": "easy"}
+{"text": "From the attached spreadsheet, what is the recommended approach?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Build a code review bot that posts inline comments based on a custom linter and document the architecture.", "label": "complex_task", "difficulty": "easy"}
+{"text": "In the manual, what is the termination clause?", "label": "document_qa", "difficulty": "easy"}
+{"text": "nice", "label": "chitchat", "difficulty": "easy"}
+{"text": "Why is Einstein's most famous equation?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "lmao", "label": "chitchat", "difficulty": "easy"}
+{"text": "If you were a person we'd grab coffee.", "label": "chitchat", "difficulty": "hard"}
+{"text": "Help me ship model serving layer with batching, GPU autoscaling and request shadowing step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "When was the capital of France?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "From the spec, what is the termination clause?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Who was the official language of Brazil?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Walk me through building frontend dashboard with Next.js, server components, and incremental static regeneration step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "In the slide deck, what does the author argue?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Which the French Revolution?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "What's up?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Set up an end-to-end frontend dashboard with Next.js, server components, and incremental static regeneration.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Why is the tallest mountain in the world?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "From the attached spreadsheet, give me a TL;DR.", "label": "document_qa", "difficulty": "easy"}
+{"text": "In the slide deck, what is the main conclusion?", "label": "document_qa", "difficulty": "easy"}
+{"text": "In the whitepaper, what does the author argue?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Which two plus two?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "From the attached spreadsheet, summarize each section in one sentence.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Wait wait wait, that's actually genius.", "label": "chitchat", "difficulty": "hard"}
+{"text": "Where is the value of pi?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "sounds good", "label": "chitchat", "difficulty": "easy"}
+{"text": "Develop a event-driven workflow with SQS, Lambda and a DLQ that retries with backoff step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "What is the discoverer of penicillin?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Architect real-time chat backend using WebSockets, Redis pub/sub and presence tracking step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Tell me the French Revolution.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "You know, you'd be a great manager.", "label": "chitchat", "difficulty": "hard"}
+{"text": "Set up an end-to-end vector database wrapper with hybrid search and metadata filtering and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Turn my messy spreadsheet of leads into an actual outreach campaign.", "label": "complex_task", "difficulty": "hard"}
+{"text": "Which clauses talk about data retention?", "label": "document_qa", "difficulty": "hard"}
+{"text": "Where is the GDP of Japan?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "What is a synonym for happy?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Pull the table of contents.", "label": "document_qa", "difficulty": "hard"}
+{"text": "Looking at the contract, who are the parties involved?", "label": "document_qa", "difficulty": "easy"}
+{"text": "lemme think", "label": "chitchat", "difficulty": "easy"}
+{"text": "Sometimes I wonder if you actually enjoy these conversations.", "label": "chitchat", "difficulty": "hard"}
+{"text": "In the whitepaper, translate the executive summary into Portuguese.", "label": "document_qa", "difficulty": "easy"}
+{"text": "In the manual, what does paragraph 4 say?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Damn, you're efficient today.", "label": "chitchat", "difficulty": "hard"}
+{"text": "Set up an end-to-end Kubernetes deployment with autoscaling, secrets via SealedSecrets and a Helm chart with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Plan and build agent that plans a trip end-to-end: flights, hotels, calendar invites, and a budget.", "label": "complex_task", "difficulty": "easy"}
+{"text": "How many what HTTP stands for?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Design a REST API in FastAPI with JWT auth, rate limiting and OpenAPI docs, with monitoring.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Write code that agent that plans a trip end-to-end: flights, hotels, calendar invites, and a budget step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "kinda hungry", "label": "chitchat", "difficulty": "easy"}
+{"text": "Per the file I sent, list every action item assigned to me.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Where does it say the meeting is scheduled?", "label": "document_qa", "difficulty": "hard"}
+{"text": "Walk me through what's involved in opening a coffee shop.", "label": "complex_task", "difficulty": "hard"}
+{"text": "Quick one.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Just to confirm, is Pluto still a planet?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "Build a data labeling tool with active learning and inter-annotator agreement metrics and document the architecture.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Always weird talking to AI but you're chill.", "label": "chitchat", "difficulty": "hard"}
+{"text": "Which the difference between TCP and UDP?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Create a notification service that fans out to email, SMS and push with a unified template engine, with monitoring.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Why is the latest version of Python?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "In the article I shared, what is the termination clause?", "label": "document_qa", "difficulty": "easy"}
+{"text": "yo", "label": "chitchat", "difficulty": "easy"}
+{"text": "How have you been?", "label": "chitchat", "difficulty": "easy"}
+{"text": "From the spec, what evidence is presented?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Mondays...", "label": "chitchat", "difficulty": "easy"}
+{"text": "Tell me the smallest planet in the solar system.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "afk for a moment", "label": "chitchat", "difficulty": "easy"}
+{"text": "Random one for you: how many bones in the human body?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "Plan and build browser extension that captures highlights, syncs to a backend and supports OAuth and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Good evening.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Walk me through building machine learning training loop with mixed precision, gradient accumulation and checkpointing — production ready.", "label": "complex_task", "difficulty": "easy"}
+{"text": "When was World War II?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Which the currency of Switzerland?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "I forget every time — Berlin or Munich, which is the German capital?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "Implement frontend dashboard with Next.js, server components, and incremental static regeneration, including a rollback plan.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Architect scheduled job runner that executes user-defined Python with sandboxing and quotas and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "From the text I uploaded, what is the main conclusion?", "label": "document_qa", "difficulty": "easy"}
+{"text": "got it", "label": "chitchat", "difficulty": "easy"}
+{"text": "Write code that observability stack with OpenTelemetry, Prometheus and Grafana dashboards step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Do you like music? do you dream?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Hope you're well.", "label": "chitchat", "difficulty": "easy"}
+{"text": "In the slide deck, give me a TL;DR.", "label": "document_qa", "difficulty": "easy"}
+{"text": "back from lunch", "label": "chitchat", "difficulty": "easy"}
+{"text": "Remind me how many continents there are.", "label": "simple_qa", "difficulty": "hard"}
+{"text": "From the spec, what are the supported configurations?", "label": "document_qa", "difficulty": "easy"}
+{"text": "you rock", "label": "chitchat", "difficulty": "easy"}
+{"text": "logging off", "label": "chitchat", "difficulty": "easy"}
+{"text": "Architect scheduling agent that books meetings, resolves conflicts and emails participants, including a rollback plan.", "label": "complex_task", "difficulty": "easy"}
+{"text": "kk", "label": "chitchat", "difficulty": "easy"}
+{"text": "In the manual, who are the parties involved?", "label": "document_qa", "difficulty": "easy"}
+{"text": "How many the longest river in South America?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "What's two plus two?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Tell me the inventor of the telephone.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "How much the capital of Australia?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Help me ship fraud detection system with stream processing and a feedback loop with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Define the official language of Brazil.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "What's the bottom line in plain English?", "label": "document_qa", "difficulty": "hard"}
+{"text": "👋", "label": "chitchat", "difficulty": "easy"}
+{"text": "Who was the smallest planet in the solar system?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Off the top of your head, when was the first iPhone released?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "From the meeting notes, give me the methodology used.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Per the file I sent, give me a TL;DR.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Who signed off on this?", "label": "document_qa", "difficulty": "hard"}
+{"text": "Pull out every phone number it mentions.", "label": "document_qa", "difficulty": "hard"}
+{"text": "Architect real-time chat backend using WebSockets, Redis pub/sub and presence tracking — production ready.", "label": "complex_task", "difficulty": "easy"}
+{"text": "When was the capital of Australia?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Based on the document above, extract every named entity.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Name the population of Tokyo.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Tell me a joke.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Could've sworn the heart has four chambers — right?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "Looking at the contract, what is the termination clause?", "label": "document_qa", "difficulty": "easy"}
+{"text": "When did the boiling point of water?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "In the article I shared, translate the executive summary into Portuguese.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Architect observability stack with OpenTelemetry, Prometheus and Grafana dashboards step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Give me the Pythagorean theorem.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Where was the longest river in South America?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Per the file I sent, summarize the key findings in 5 bullet points.", "label": "document_qa", "difficulty": "easy"}
+{"text": "In the article I shared, what's the difference between option A and B as described?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Bye!", "label": "chitchat", "difficulty": "easy"}
+{"text": "I'm bored.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Develop a image processing service that converts, resizes and watermarks with caching.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Eh, not your fault, I phrased it badly.", "label": "chitchat", "difficulty": "hard"}
+{"text": "Walk me through building REST API in FastAPI with JWT auth, rate limiting and OpenAPI docs and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Quick one: boiling point of water in Fahrenheit?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "Based on chapter 2, what risks are flagged?", "label": "document_qa", "difficulty": "easy"}
+{"text": "What's the chemical formula for water?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Implement scheduling agent that books meetings, resolves conflicts and emails participants and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Refactor my real-time chat backend using WebSockets, Redis pub/sub and presence tracking step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "What do I need to think about to migrate our SaaS from Heroku to AWS?", "label": "complex_task", "difficulty": "hard"}
+{"text": "In the slide deck, what are the limitations discussed?", "label": "document_qa", "difficulty": "easy"}
+{"text": "sounds good ty", "label": "chitchat", "difficulty": "easy"}
+{"text": "In the whitepaper, what are the limitations discussed?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Design a fraud detection system with stream processing and a feedback loop step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Architect machine learning training loop with mixed precision, gradient accumulation and checkpointing and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Name the first president of the United States.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Who was the meaning of 'ephemeral'?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "yep", "label": "chitchat", "difficulty": "easy"}
+{"text": "Just curious: what's the smallest country in the world?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "Hold on, my dog's barking at the mailman.", "label": "chitchat", "difficulty": "hard"}
+{"text": "According to the report, who are the parties involved?", "label": "document_qa", "difficulty": "easy"}
+{"text": "How much the GDP of Japan?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Name the French Revolution.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "I'm overwhelmed planning my wedding. Where do we even begin?", "label": "complex_task", "difficulty": "hard"}
+{"text": "Define the current year.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Where is the French Revolution?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "In the manual, what is the main conclusion?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Walk me through building scheduled job runner that executes user-defined Python with sandboxing and quotas and document the architecture.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Sorry, I rambled. Where were we?", "label": "chitchat", "difficulty": "hard"}
+{"text": "Help me ship machine learning training loop with mixed precision, gradient accumulation and checkpointing — production ready.", "label": "complex_task", "difficulty": "easy"}
+{"text": "👍", "label": "chitchat", "difficulty": "easy"}
+{"text": "From the spec, what does the author argue?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Did it list the dependencies anywhere?", "label": "document_qa", "difficulty": "hard"}
+{"text": "In the attached PDF, list the prerequisites mentioned.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Where does it define 'confidential information'?", "label": "document_qa", "difficulty": "hard"}
+{"text": "Tell me the square root of 144.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Based on chapter 2, list the prerequisites mentioned.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Take me through everything I'd need to launch a SaaS in a regulated industry.", "label": "complex_task", "difficulty": "hard"}
+{"text": "Plan and build log analysis tool that parses NGINX access logs and surfaces anomalies step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Drawing a blank — official language of Switzerland?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "Define a synonym for happy.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Where is the population of Tokyo?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Walk me through setting up a Series A fundraise from scratch.", "label": "complex_task", "difficulty": "hard"}
+{"text": "Random question for you.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Just inherited a 10-year-old codebase that nobody understands. How do I tackle it?", "label": "complex_task", "difficulty": "hard"}
+{"text": "Design a feature flag system with percentage rollouts, user targeting and an admin UI and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Tell me the capital of France.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "What's the meaning of 'ephemeral'?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "one sec", "label": "chitchat", "difficulty": "easy"}
+{"text": "Where was the current year?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Based on the document above, what is the SLA?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Help me think through migrating our org from Slack to Teams without chaos.", "label": "complex_task", "difficulty": "hard"}
+{"text": "When was two plus two?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "From the spec, what risks are flagged?", "label": "document_qa", "difficulty": "easy"}
+{"text": "hehe", "label": "chitchat", "difficulty": "easy"}
+{"text": "What's the Pythagorean theorem?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "OK that was helpful, you're a lifesaver.", "label": "chitchat", "difficulty": "hard"}
+{"text": "rofl you rock", "label": "chitchat", "difficulty": "easy"}
+{"text": "From the spec, who are the parties involved?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Design a observability stack with OpenTelemetry, Prometheus and Grafana dashboards with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Our onboarding flow is a mess — give me a full plan to fix it.", "label": "complex_task", "difficulty": "hard"}
+{"text": "From the spec, what does paragraph 4 say?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Set up an end-to-end RAG system that indexes PDFs, embeds with bge-small and answers with citations step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Where was the largest mammal on earth?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "How many Einstein's most famous equation?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Help me ship real-time chat backend using WebSockets, Redis pub/sub and presence tracking — production ready.", "label": "complex_task", "difficulty": "easy"}
+{"text": "According to the report, what are the limitations discussed?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Give me the fastest land animal.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "From the text I uploaded, what's the difference between option A and B as described?", "label": "document_qa", "difficulty": "easy"}
+{"text": "wave hello", "label": "chitchat", "difficulty": "easy"}
+{"text": "Looking at the contract, what does paragraph 4 say?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Walk me through building load testing harness that ramps up traffic and reports p50/p95/p99, with monitoring.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Where was the currency of Switzerland?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "According to the report, what risks are flagged?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Was there a deadline mentioned anywhere?", "label": "document_qa", "difficulty": "hard"}
+{"text": "Based on chapter 2, what does paragraph 4 say?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Based on chapter 2, summarize the key findings in 5 bullet points.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Refactor my multi-tenant SaaS with row-level security, per-tenant migrations and a billing portal and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Per the file I sent, what risks are flagged?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Based on the document above, what does paragraph 4 say?", "label": "document_qa", "difficulty": "easy"}
+{"text": "In the article I shared, what are the payment terms?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Walk me through building agent that plans a trip end-to-end: flights, hotels, calendar invites, and a budget and document the architecture.", "label": "complex_task", "difficulty": "easy"}
+{"text": "haha that's funny", "label": "chitchat", "difficulty": "easy"}
+{"text": "In the manual, what risks are flagged?", "label": "document_qa", "difficulty": "easy"}
+{"text": "tea time", "label": "chitchat", "difficulty": "easy"}
+{"text": "Give me the GDP of Japan.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "When was the antonym of brave?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Hey there.", "label": "chitchat", "difficulty": "easy"}
+{"text": "What's listed under acceptance criteria?", "label": "document_qa", "difficulty": "hard"}
+{"text": "Who was the antonym of brave?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Give me the population of Tokyo.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Who is the tallest mountain in the world?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "I always forget you don't actually sleep — must be peaceful tbh.", "label": "chitchat", "difficulty": "hard"}
+{"text": "I want to organize a 200-person tech conference. What's the whole list?", "label": "complex_task", "difficulty": "hard"}
+{"text": "Who is the largest mammal on earth?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "ok i'm done for today", "label": "chitchat", "difficulty": "easy"}
+{"text": "Good morning.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Walk me through building event-driven workflow with SQS, Lambda and a DLQ that retries with backoff.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Looking at the contract, give me a TL;DR.", "label": "document_qa", "difficulty": "easy"}
+{"text": "We need to build a research lab from zero. What does that look like?", "label": "complex_task", "difficulty": "hard"}
+{"text": "Got asked to lead a team of 6 — talk me through the first 90 days.", "label": "complex_task", "difficulty": "hard"}
+{"text": "cool", "label": "chitchat", "difficulty": "easy"}
+{"text": "What's your name? Appreciate it.", "label": "chitchat", "difficulty": "easy"}
+{"text": "I want to launch a side business selling handmade candles. Take me through it.", "label": "complex_task", "difficulty": "hard"}
+{"text": "Name the discoverer of penicillin.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "favorite book?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Write code that web scraper that crawls news sites, dedupes by URL, and stores results in Postgres with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Build a Kubernetes deployment with autoscaling, secrets via SealedSecrets and a Helm chart and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "In the article I shared, what is the recommended approach?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Hmm, was it Newton or Einstein who discovered gravity?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "According to the report, what is the main conclusion?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Where was the square root of 144?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Develop a multi-tenant SaaS with row-level security, per-tenant migrations and a billing portal step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Write code that frontend dashboard with Next.js, server components, and incremental static regeneration step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Tell me the largest mammal on earth.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Refactor my REST API in FastAPI with JWT auth, rate limiting and OpenAPI docs step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Help me figure out everything involved in adopting a rescue dog.", "label": "complex_task", "difficulty": "hard"}
+{"text": "Do you sleep?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Define the first president of the United States.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "heyo", "label": "chitchat", "difficulty": "easy"}
+{"text": "Help me ship Kubernetes deployment with autoscaling, secrets via SealedSecrets and a Helm chart with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "signing off What's up?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Give me the meaning of 'ephemeral'.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Define the founder of Microsoft.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "In the attached PDF, give me the methodology used.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Nice to meet you.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Trying to overhaul our annual review process for 200 employees. Lay it out.", "label": "complex_task", "difficulty": "hard"}
+{"text": "Remind me real quick — what year did WWII end?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "Per the file I sent, extract all dates and what happens on each.", "label": "document_qa", "difficulty": "easy"}
+{"text": "cheer me up", "label": "chitchat", "difficulty": "easy"}
+{"text": "Who is the value of pi?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Who was the chemical formula for water?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Per the file I sent, what evidence is presented?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Help me ship REST API in FastAPI with JWT auth, rate limiting and OpenAPI docs.", "label": "complex_task", "difficulty": "easy"}
+{"text": "When did the antonym of brave?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Any idea how many planets are in our solar system?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "What's the deadline mentioned in section 4?", "label": "document_qa", "difficulty": "hard"}
+{"text": "In the manual, what is the projected revenue for next quarter?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Help me ship image processing service that converts, resizes and watermarks with caching — production ready.", "label": "complex_task", "difficulty": "easy"}
+{"text": "From the text I uploaded, what are the limitations discussed?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Who is what JSON means?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "From the attached spreadsheet, list the prerequisites mentioned.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Architect personal finance app that imports CSVs, categorizes via ML and exports reports with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Set up an end-to-end agent that plans a trip end-to-end: flights, hotels, calendar invites, and a budget and document the architecture.", "label": "complex_task", "difficulty": "easy"}
+{"text": "much appreciated", "label": "chitchat", "difficulty": "easy"}
+{"text": "what are you up to?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Based on the document above, who are the parties involved?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Implement scheduled job runner that executes user-defined Python with sandboxing and quotas, including a rollback plan.", "label": "complex_task", "difficulty": "easy"}
+{"text": "I'm thinking of becoming a freelance consultant — break down the whole transition.", "label": "complex_task", "difficulty": "hard"}
+{"text": "Random thought: I bet you're tired of dumb questions.", "label": "chitchat", "difficulty": "hard"}
+{"text": "In the whitepaper, what is the recommended approach?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Mondays... signing off", "label": "chitchat", "difficulty": "easy"}
+{"text": "happy friday!", "label": "chitchat", "difficulty": "easy"}
+{"text": "How are you?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Refresh my memory: what's the freezing point of water?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "Build a feature flag system with percentage rollouts, user targeting and an admin UI and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "From the meeting notes, translate the executive summary into Portuguese.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Based on the document above, what is the projected revenue for next quarter?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Where was the official language of Brazil?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Goodnight.", "label": "chitchat", "difficulty": "easy"}
+{"text": "happy monday", "label": "chitchat", "difficulty": "easy"}
+{"text": "Set up an end-to-end observability stack with OpenTelemetry, Prometheus and Grafana dashboards with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Set up an end-to-end scheduled job runner that executes user-defined Python with sandboxing and quotas with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Per section 3 of the document, what does the author argue?", "label": "document_qa", "difficulty": "easy"}
+{"text": "i'm back", "label": "chitchat", "difficulty": "easy"}
+{"text": "Design a log analysis tool that parses NGINX access logs and surfaces anomalies, with monitoring.", "label": "complex_task", "difficulty": "easy"}
+{"text": "According to the report, what is the termination clause?", "label": "document_qa", "difficulty": "easy"}
+{"text": "From the meeting notes, what does paragraph 4 say?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Who are you?", "label": "chitchat", "difficulty": "easy"}
+{"text": "nope", "label": "chitchat", "difficulty": "easy"}
+{"text": "Write code that fraud detection system with stream processing and a feedback loop with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "When was the inventor of the telephone?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Design a terraform module that provisions a VPC, three subnets and a NAT gateway.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Based on the document above, list the prerequisites mentioned.", "label": "document_qa", "difficulty": "easy"}
+{"text": "today was great", "label": "chitchat", "difficulty": "easy"}
+{"text": "Develop a frontend dashboard with Next.js, server components, and incremental static regeneration with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "i need a break", "label": "chitchat", "difficulty": "easy"}
+{"text": "Develop a code review bot that posts inline comments based on a custom linter.", "label": "complex_task", "difficulty": "easy"}
+{"text": "According to the report, list every action item assigned to me.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Define the population of Tokyo.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "thx", "label": "chitchat", "difficulty": "easy"}
+{"text": "That makes total sense, appreciate you breaking it down.", "label": "chitchat", "difficulty": "hard"}
+{"text": "Implement REST API in FastAPI with JWT auth, rate limiting and OpenAPI docs step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "When was the speed of light?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Which the population of Tokyo?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Need to bootstrap a developer relations program at our startup. Start to finish.", "label": "complex_task", "difficulty": "hard"}
+{"text": "I'm tired today.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Knock knock.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Create a frontend dashboard with Next.js, server components, and incremental static regeneration step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Ping.", "label": "chitchat", "difficulty": "easy"}
+{"text": "From the meeting notes, what evidence is presented?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Walk me through building load testing harness that ramps up traffic and reports p50/p95/p99 with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Develop a personal finance app that imports CSVs, categorizes via ML and exports reports step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "In the article I shared, what is the main conclusion?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Hah, you and me both.", "label": "chitchat", "difficulty": "hard"}
+{"text": "OK that's a brain-melter, gonna need a minute.", "label": "chitchat", "difficulty": "hard"}
+{"text": "🙂", "label": "chitchat", "difficulty": "easy"}
+{"text": "How much World War II?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Good afternoon!", "label": "chitchat", "difficulty": "easy"}
+{"text": "Set up an end-to-end REST API in FastAPI with JWT auth, rate limiting and OpenAPI docs, including a rollback plan.", "label": "complex_task", "difficulty": "easy"}
+{"text": "favorite movie?", "label": "chitchat", "difficulty": "easy"}
+{"text": "Set up an end-to-end personal finance app that imports CSVs, categorizes via ML and exports reports — production ready.", "label": "complex_task", "difficulty": "easy"}
+{"text": "thanks for listening", "label": "chitchat", "difficulty": "easy"}
+{"text": "Plan and build image processing service that converts, resizes and watermarks with caching and document the architecture.", "label": "complex_task", "difficulty": "easy"}
+{"text": "In the attached PDF, what is the main conclusion?", "label": "document_qa", "difficulty": "easy"}
+{"text": "In the attached PDF, what risks are flagged?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Based on chapter 2, extract all dates and what happens on each.", "label": "document_qa", "difficulty": "easy"}
+{"text": "OK that one made me laugh out loud at my desk.", "label": "chitchat", "difficulty": "hard"}
+{"text": "Set up an end-to-end web scraper that crawls news sites, dedupes by URL, and stores results in Postgres — production ready.", "label": "complex_task", "difficulty": "easy"}
+{"text": "From the attached spreadsheet, what does paragraph 4 say?", "label": "document_qa", "difficulty": "easy"}
+{"text": "coffee time", "label": "chitchat", "difficulty": "easy"}
+{"text": "How's life?", "label": "chitchat", "difficulty": "easy"}
+{"text": "you're the best", "label": "chitchat", "difficulty": "easy"}
+{"text": "In the slide deck, list every action item assigned to me.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Based on chapter 2, give me a TL;DR.", "label": "document_qa", "difficulty": "easy"}
+{"text": "What's what JSON means?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "What a day.", "label": "chitchat", "difficulty": "easy"}
+{"text": "Does it say anything about late payment penalties?", "label": "document_qa", "difficulty": "hard"}
+{"text": "Tell me the largest desert in the world.", "label": "simple_qa", "difficulty": "easy"}
+{"text": "Help me ship event-driven workflow with SQS, Lambda and a DLQ that retries with backoff with full test coverage.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Build a feature flag system with percentage rollouts, user targeting and an admin UI — production ready.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Pop quiz: capital of Canada?", "label": "simple_qa", "difficulty": "hard"}
+{"text": "compliment me", "label": "chitchat", "difficulty": "easy"}
+{"text": "Where is the largest mammal on earth?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "In the manual, explain figure 2 in plain English.", "label": "document_qa", "difficulty": "easy"}
+{"text": "In the article I shared, what are the supported configurations?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Based on the document above, summarize each section in one sentence.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Per section 3 of the document, what are the supported configurations?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Write code that scheduled job runner that executes user-defined Python with sandboxing and quotas, with monitoring.", "label": "complex_task", "difficulty": "easy"}
+{"text": "smh", "label": "chitchat", "difficulty": "easy"}
+{"text": "In the slide deck, give me the methodology used.", "label": "document_qa", "difficulty": "easy"}
+{"text": "From the spec, explain figure 2 in plain English.", "label": "document_qa", "difficulty": "easy"}
+{"text": "Per the file I sent, give me the methodology used.", "label": "document_qa", "difficulty": "easy"}
+{"text": "From the attached spreadsheet, what evidence is presented?", "label": "document_qa", "difficulty": "easy"}
+{"text": "Plan and build data labeling tool with active learning and inter-annotator agreement metrics step by step.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Design a CI/CD pipeline on GitHub Actions with test matrix, caching and preview deployments, with monitoring.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Architect frontend dashboard with Next.js, server components, and incremental static regeneration.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Implement Kubernetes deployment with autoscaling, secrets via SealedSecrets and a Helm chart and benchmark it against the baseline.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Design a real-time chat backend using WebSockets, Redis pub/sub and presence tracking — production ready.", "label": "complex_task", "difficulty": "easy"}
+{"text": "Why is the smallest planet in the solar system?", "label": "simple_qa", "difficulty": "easy"}
+{"text": "From the text I uploaded, what are the supported configurations?", "label": "document_qa", "difficulty": "easy"}
+{"text": "What is the French Revolution?", "label": "simple_qa", "difficulty": "easy"}
