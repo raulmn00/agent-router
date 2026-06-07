@@ -17,7 +17,14 @@ from .intents import INTENTS
 ROUTER_PKG = Path(__file__).resolve().parent
 DATA_PATH = ROUTER_PKG.parent / "data" / "intents.jsonl"
 
-PER_CLASS_TARGET = 150
+# Two-tier dataset: easy templated examples (give the model the obvious surface
+# cues) + a smaller pool of HARD adversarial examples (deliberately break those
+# cues so the task is realistic). Total per class = PER_CLASS_TARGET; the
+# stratified split function still works since splitting is by label only.
+PER_CLASS_EASY = 150
+PER_CLASS_HARD = 30
+PER_CLASS_TARGET = PER_CLASS_EASY + PER_CLASS_HARD  # = 180
+
 SEED = 1337
 
 
@@ -179,6 +186,187 @@ CHITCHAT_TEMPLATES = [
 ]
 
 
+# ---------------------------------------------------------------------------
+# HARD examples — adversarial inputs that break the surface markers the easy
+# templates rely on. Two disjoint pools per class:
+#
+#   HARD_EXAMPLES[label]                — included in router/data/intents.jsonl
+#                                          (used for training)
+#   HARD_HELD_OUT_FOR_TESTSET[label]    — committed to
+#                                          eval/data/routing_testset.jsonl
+#                                          and NEVER copied into the training
+#                                          pool (the eval split has to stay
+#                                          held-out).
+#
+# Zero overlap is enforced statically by these two lists being source-of-truth
+# and by an assertion in build_dataset(). Don't move strings between the lists
+# without re-running pytest — `test_no_overlap_between_train_and_held_out_hard`
+# pins the disjointness.
+# ---------------------------------------------------------------------------
+
+HARD_EXAMPLES: dict[str, list[str]] = {
+    "simple_qa": [
+        # No "What is X?" framing — indirect, casual, idiomatic.
+        "Any idea what time zone São Paulo is in?",
+        "Remind me how many continents there are.",
+        "I forget — who painted the Mona Lisa?",
+        "Quick one: boiling point of water in Fahrenheit?",
+        "Is a tomato technically a fruit?",
+        "Remind me real quick — what year did WWII end?",
+        "Hey, do you happen to know the capital of Norway?",
+        "Quick fact: how far is the Moon from Earth?",
+        "Any clue what the population of Tokyo is these days?",
+        "Brain fart — who wrote Hamlet again?",
+        "Wait, isn't the Pacific the largest ocean?",
+        "Random one for you: how many bones in the human body?",
+        "I forget every time — Berlin or Munich, which is the German capital?",
+        "Wasn't it Edison who invented the light bulb?",
+        "Tell me, how tall is the Eiffel Tower roughly?",
+        "Help me settle a bet — speed of sound in m/s?",
+        "Just curious: what's the smallest country in the world?",
+        "Could've sworn the heart has four chambers — right?",
+        "Off the top of your head, when was the first iPhone released?",
+        "Refresh my memory: what's the freezing point of water?",
+        "Hmm, was it Newton or Einstein who discovered gravity?",
+        "Drawing a blank — official language of Switzerland?",
+        "Any idea how many planets are in our solar system?",
+        "Need a sanity check: how long is a marathon in km?",
+        "Random thought — is honey actually bee vomit?",
+        "Pop quiz: capital of Canada?",
+        "Out of curiosity, what's the deepest point in the ocean?",
+        "Side question: oldest university in the world?",
+        "Forgot the year — when did the Berlin Wall fall?",
+        "Just to confirm, is Pluto still a planet?",
+    ],
+    "complex_task": [
+        # No leading Design/Plan/Create/Build — casual, multi-step framing.
+        "I need to get our whole CI pipeline from scratch to production-ready, "
+        "where do I even start?",
+        "Walk me through launching a podcast end to end.",
+        "We're moving 40 engineers to a new repo structure — break that down for me.",
+        "Turn my messy spreadsheet of leads into an actual outreach campaign.",
+        "Help me figure out everything involved in adopting a rescue dog.",
+        "Our onboarding flow is a mess — give me a full plan to fix it.",
+        "I want to launch a side business selling handmade candles. Take me through it.",
+        "What do I need to think about to migrate our SaaS from Heroku to AWS?",
+        "Got a small team that needs to ship a mobile app in 6 weeks — how do we do it?",
+        "I'm overwhelmed planning my wedding. Where do we even begin?",
+        "Need to redesign our marketing site from scratch. Walk me through the steps.",
+        "Our customer support is drowning — break down everything we'd need to set up a help center.",
+        "I want to grow my newsletter from 100 to 10k subscribers. Lay out the strategy.",
+        "We're going from on-prem to multi-cloud. Map out everything.",
+        "Just started a YouTube channel. Walk me through getting to 1k subscribers.",
+        "Help me plan opening a small bookstore in my neighborhood, soup to nuts.",
+        "Need to take our open source library from 50 stars to 10k. Roadmap, please.",
+        "I'm thinking of becoming a freelance consultant — break down the whole transition.",
+        "Walk me through setting up a Series A fundraise from scratch.",
+        "I want to organize a 200-person tech conference. What's the whole list?",
+        "Got asked to lead a team of 6 — talk me through the first 90 days.",
+        "We need to build a research lab from zero. What does that look like?",
+        "Take me through everything I'd need to launch a SaaS in a regulated industry.",
+        "I want to make our product accessible to screen reader users — walk me through it.",
+        "Trying to overhaul our annual review process for 200 employees. Lay it out.",
+        "Need to bootstrap a developer relations program at our startup. Start to finish.",
+        "Walk me through what's involved in opening a coffee shop.",
+        "I want to make our docs world-class. Break down the whole project.",
+        "Just inherited a 10-year-old codebase that nobody understands. How do I tackle it?",
+        "Help me think through migrating our org from Slack to Teams without chaos.",
+    ],
+    "document_qa": [
+        # Subtle document reference — no "PDF/document/attached", uses pronouns
+        # (it/this/these) or section references.
+        "What's the deadline mentioned in section 4?",
+        "Does it say anything about late payment penalties?",
+        "Pull out the main argument from what I just shared.",
+        "Which clauses talk about data retention?",
+        "According to this, who's liable if the shipment is damaged?",
+        "Did it list the dependencies anywhere?",
+        "Is there a non-compete clause? If yes, how long?",
+        "Where does it say the meeting is scheduled?",
+        "Pull out every phone number it mentions.",
+        "Summarize what they said about Q3 in two lines.",
+        "Which paragraph covers refunds?",
+        "It mentions three priorities — which ones?",
+        "Does this lay out the timeline anywhere?",
+        "Were the metrics for success defined?",
+        "Find me the part about parental leave.",
+        "What does it say in the conclusion?",
+        "Pull the table of contents.",
+        "Was there a deadline mentioned anywhere?",
+        "Who signed off on this?",
+        "Does this cover the data deletion process?",
+        "What's the bottom line in plain English?",
+        "Which page has the pricing?",
+        "It cites a study — give me the citation.",
+        "What's listed under acceptance criteria?",
+        "Does it allow remote work?",
+        "Where does it define 'confidential information'?",
+        "Pull the requirements for hiring senior engineers.",
+        "Talks about a probation period — for how long?",
+        "Spot anything that contradicts what was agreed yesterday?",
+        "Highlight everything related to security.",
+    ],
+    "chitchat": [
+        # Longer / reactive conversational turns — not just greetings/thanks.
+        "Ugh, Mondays. How do you even function this early?",
+        "That makes total sense, appreciate you breaking it down.",
+        "Honestly you're way more patient than my last assistant lol",
+        "No worries, take your time!",
+        "Wow, didn't expect that answer — neat.",
+        "OK that was helpful, you're a lifesaver.",
+        "Lmao you have a sense of humor, who knew.",
+        "Honestly impressive how fast you came back with that.",
+        "Sometimes I wonder if you actually enjoy these conversations.",
+        "Not gonna lie, that was a satisfying explanation.",
+        "Tough crowd today, sorry I'm cranky.",
+        "I always forget you don't actually sleep — must be peaceful tbh.",
+        "Coffee's kicking in, I should be more useful soon.",
+        "Ha, fair point. I'll concede that one.",
+        "If you were a person we'd grab coffee.",
+        "Sorry, I rambled. Where were we?",
+        "Always weird talking to AI but you're chill.",
+        "OK that one made me laugh out loud at my desk.",
+        "Damn, you're efficient today.",
+        "Hold on, my dog's barking at the mailman.",
+        "Wait wait wait, that's actually genius.",
+        "Eh, not your fault, I phrased it badly.",
+        "Random thought: I bet you're tired of dumb questions.",
+        "Cheers, that was easier than I expected.",
+        "Honestly that's the most useful conversation I've had all week.",
+        "OK that's a brain-melter, gonna need a minute.",
+        "Tea break, bbiab.",
+        "Hah, you and me both.",
+        "Gonna miss this when I have to actually go work.",
+        "You know, you'd be a great manager.",
+    ],
+}
+
+# Reserved for eval/data/routing_testset.jsonl — DO NOT include in training.
+# Three per class, deliberately different from anything in HARD_EXAMPLES above.
+HARD_HELD_OUT_FOR_TESTSET: dict[str, list[str]] = {
+    "simple_qa": [
+        "Funny how I never remember — diameter of Earth?",
+        "Genuine question: how many time zones in Russia?",
+        "Curious thought — what bird has the longest wingspan?",
+    ],
+    "complex_task": [
+        "Take me through what's involved in becoming a notary in my state.",
+        "Our backups have never been tested — work me through making this bulletproof.",
+        "Walk me through the full process of moving across the country with a family of four.",
+    ],
+    "document_qa": [
+        "Anything in there about intellectual property assignment?",
+        "It references appendix B — what's in it?",
+        "Find me the part where they mention the warranty terms.",
+    ],
+    "chitchat": [
+        "Solid advice, I'll think about it on my walk.",
+        "Lmao that's exactly what my wife said.",
+        "OK now I'm curious what you do for fun in there.",
+    ],
+}
+
+
 def _gen_simple_qa(rng: random.Random) -> Iterable[str]:
     """All opener × subject combos, optionally with a '?' suffix."""
     combos = list(itertools.product(SIMPLE_QA_OPENERS, SIMPLE_QA_SUBJECTS))
@@ -249,19 +437,68 @@ def _take_unique(stream: Iterable[str], n: int) -> list[str]:
     return out
 
 
-def build_dataset(per_class: int = PER_CLASS_TARGET, seed: int = SEED) -> list[dict]:
+def build_dataset(
+    per_class_easy: int = PER_CLASS_EASY,
+    per_class_hard: int = PER_CLASS_HARD,
+    seed: int = SEED,
+) -> list[dict]:
+    """Generate the full balanced dataset.
+
+    Each row has the shape:
+        {"text": str, "label": str, "difficulty": "easy" | "hard"}
+
+    `difficulty` is additive — old consumers that read only `text`/`label`
+    keep working. The retrocompatibility test in test_dataset.py pins this.
+    """
     rng = random.Random(seed)
     rows: list[dict] = []
     for label in INTENTS:
-        gen = GENERATORS[label]
-        texts = _take_unique(gen(rng), per_class)
-        rows.extend({"text": t, "label": label} for t in texts)
+        # 1. Easy templated examples (preserves the legacy generation path).
+        easy_gen = GENERATORS[label]
+        easy_texts = _take_unique(easy_gen(rng), per_class_easy)
+
+        # 2. Hard adversarial examples — deterministic slice of the pool.
+        hard_pool = HARD_EXAMPLES[label]
+        if len(hard_pool) < per_class_hard:
+            raise RuntimeError(
+                f"HARD_EXAMPLES[{label!r}] has {len(hard_pool)} entries; "
+                f"need at least {per_class_hard}."
+            )
+        hard_texts = hard_pool[:per_class_hard]
+
+        # 3. Belt-and-suspenders zero-overlap checks. The static lists make
+        # collisions unlikely, but a future edit could introduce one.
+        overlap_easy_hard = set(easy_texts) & set(hard_texts)
+        if overlap_easy_hard:
+            raise RuntimeError(
+                f"{label}: hard examples collide with easy ones: {overlap_easy_hard}"
+            )
+        held_out = set(HARD_HELD_OUT_FOR_TESTSET.get(label, []))
+        overlap_train_test = set(hard_texts) & held_out
+        if overlap_train_test:
+            raise RuntimeError(
+                f"{label}: training hard pool overlaps with held-out testset: "
+                f"{overlap_train_test}"
+            )
+
+        for t in easy_texts:
+            rows.append({"text": t, "label": label, "difficulty": "easy"})
+        for t in hard_texts:
+            rows.append({"text": t, "label": label, "difficulty": "hard"})
+
     rng.shuffle(rows)
     return rows
 
 
-def regenerate(path: Path = DATA_PATH, per_class: int = PER_CLASS_TARGET, seed: int = SEED) -> Path:
-    rows = build_dataset(per_class=per_class, seed=seed)
+def regenerate(
+    path: Path = DATA_PATH,
+    per_class_easy: int = PER_CLASS_EASY,
+    per_class_hard: int = PER_CLASS_HARD,
+    seed: int = SEED,
+) -> Path:
+    rows = build_dataset(
+        per_class_easy=per_class_easy, per_class_hard=per_class_hard, seed=seed,
+    )
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
         for row in rows:
@@ -317,4 +554,8 @@ def load_dataset_splits(
 
 if __name__ == "__main__":
     out = regenerate()
-    print(f"Wrote {out} ({PER_CLASS_TARGET} per class × {len(INTENTS)} classes)")
+    print(
+        f"Wrote {out} "
+        f"({PER_CLASS_EASY} easy + {PER_CLASS_HARD} hard = {PER_CLASS_TARGET} "
+        f"per class × {len(INTENTS)} classes)"
+    )
