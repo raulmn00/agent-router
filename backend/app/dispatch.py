@@ -7,11 +7,25 @@ Given a classified intent, route to the right execution strategy:
   document_qa   → honest stub (RAG would plug in here)
   chitchat      → 1 direct LLM call, very small max_tokens
 
-A confidence threshold (env: `CONFIDENCE_THRESHOLD`, default `0.65`) gates the
-routing: predictions below the threshold land on a cheap fallback that
-surfaces the uncertainty instead of routing on a low-confidence guess. The
-0.65 default is empirically motivated — see `router/results/generalization_test.txt`
-and the evaluation section of the root README.
+A **per-class** confidence threshold gates the routing: each intent has its
+own floor, and predictions below the floor for their intent land on a cheap
+fallback that surfaces the uncertainty instead of routing on a guess.
+
+Why per-class: production data shows the model's confidence distribution
+is class-dependent. simple_qa / complex_task / document_qa peak around
+0.81-0.94 on clear inputs, but `chitchat` saturates much lower — even
+legitimate chitchat tops out around 0.52-0.56. A single global threshold
+of 0.65 unfairly demoted a legitimate "Good morning!" to the fallback (see
+`scripts/results/prod_routing_report.md`). Per-class thresholds let chitchat
+breathe (`0.45`) without letting the genuinely ambiguous inputs through.
+
+Configuration:
+  CONFIDENCE_THRESHOLDS  (preferred) JSON object, e.g.
+                         '{"chitchat": 0.45, "simple_qa": 0.65}'
+  CONFIDENCE_THRESHOLD   (legacy)   scalar; treated as a uniform fallback
+                         for any class not explicitly listed in
+                         CONFIDENCE_THRESHOLDS. Malformed values are logged
+                         and ignored.
 
 The Dispatcher takes its dependencies via constructor injection — the API
 layer wires the real ones, tests inject fakes.
@@ -19,12 +33,16 @@ layer wires the real ones, tests inject fakes.
 
 from __future__ import annotations
 
+import json
+import logging
 import os
 from typing import Callable, Protocol
 
 from agents import LLMProvider, Orchestrator, get_provider
 
 from .schemas import RouteResponse
+
+logger = logging.getLogger("agent_router.dispatch")
 
 
 class ClassifierProtocol(Protocol):
@@ -36,7 +54,20 @@ class ClassifierProtocol(Protocol):
 ProviderFactory = Callable[[str], LLMProvider]
 
 
-DEFAULT_CONFIDENCE_THRESHOLD = 0.65
+# Defaults are calibrated from production confidence distributions:
+#   simple_qa / complex_task / document_qa: 0.81-0.94 on clear inputs
+#   chitchat:                                0.52-0.56 on legitimate chitchat
+#   genuinely ambiguous (any class):         0.39-0.59
+# 0.45 for chitchat catches "what does it say about pricing?" (0.588 in a
+# different class) and "build me something cool" (0.510 ⇒ landed as chitchat)
+# while letting "good morning!" (0.560) through.
+DEFAULT_THRESHOLDS: dict[str, float] = {
+    "simple_qa": 0.65,
+    "complex_task": 0.65,
+    "document_qa": 0.65,
+    "chitchat": 0.45,
+}
+
 LOW_CONFIDENCE_PATH = "low_confidence_fallback"
 
 
@@ -57,8 +88,6 @@ DOCUMENT_QA_STUB = (
     "to an LLM. See README.md for the planned integration point."
 )
 
-# Human-readable path label per intent — used in the fallback trace so the
-# operator can see which arm would have run if the prediction had been confident.
 _INTENT_PATH_LABEL = {
     "simple_qa": "simple_qa:direct_llm",
     "complex_task": "complex_task:orchestrator",
@@ -67,17 +96,96 @@ _INTENT_PATH_LABEL = {
 }
 
 
-def _read_threshold_from_env() -> float:
+# --------------------------------------------------------------------------- #
+# Configuration helpers                                                        #
+# --------------------------------------------------------------------------- #
+
+
+def _clamp01(value: float) -> float:
+    return max(0.0, min(1.0, value))
+
+
+def _read_scalar_threshold_from_env() -> float | None:
+    """Legacy CONFIDENCE_THRESHOLD (scalar). None means: not set."""
     raw = os.environ.get("CONFIDENCE_THRESHOLD")
     if raw is None or raw.strip() == "":
-        return DEFAULT_CONFIDENCE_THRESHOLD
+        return None
     try:
-        value = float(raw)
+        return _clamp01(float(raw))
     except ValueError:
-        return DEFAULT_CONFIDENCE_THRESHOLD
-    # Clamp to [0, 1] — anything outside is almost certainly a typo and we
-    # don't want a misconfig to either route on everything or block everything.
-    return max(0.0, min(1.0, value))
+        logger.warning(
+            "CONFIDENCE_THRESHOLD is not a number (%r); ignoring", raw,
+        )
+        return None
+
+
+def _parse_threshold_map_from_env() -> dict[str, float]:
+    """Per-class CONFIDENCE_THRESHOLDS (JSON object). Returns {} on absence/error."""
+    raw = os.environ.get("CONFIDENCE_THRESHOLDS")
+    if raw is None or raw.strip() == "":
+        return {}
+    try:
+        parsed = json.loads(raw)
+    except json.JSONDecodeError as e:
+        logger.warning(
+            "CONFIDENCE_THRESHOLDS is not valid JSON (%s); falling back to defaults",
+            e,
+        )
+        return {}
+    if not isinstance(parsed, dict):
+        logger.warning(
+            "CONFIDENCE_THRESHOLDS must be a JSON object, got %s; "
+            "falling back to defaults",
+            type(parsed).__name__,
+        )
+        return {}
+
+    cleaned: dict[str, float] = {}
+    for intent, value in parsed.items():
+        if intent not in DEFAULT_THRESHOLDS:
+            logger.warning(
+                "CONFIDENCE_THRESHOLDS contains unknown intent %r; ignoring",
+                intent,
+            )
+            continue
+        try:
+            cleaned[intent] = _clamp01(float(value))
+        except (TypeError, ValueError):
+            logger.warning(
+                "CONFIDENCE_THRESHOLDS[%r] is not a number (%r); ignoring",
+                intent, value,
+            )
+    return cleaned
+
+
+def get_thresholds() -> dict[str, float]:
+    """Resolve the per-class threshold map for this process.
+
+    Resolution order (later wins):
+      1. hardcoded `DEFAULT_THRESHOLDS`
+      2. legacy scalar `CONFIDENCE_THRESHOLD` — applied to every class
+      3. per-class `CONFIDENCE_THRESHOLDS` JSON map — per-key override
+
+    Always returns a dict with one entry per intent in DEFAULT_THRESHOLDS,
+    so callers never have to handle KeyError. Malformed input never raises.
+    """
+    result = dict(DEFAULT_THRESHOLDS)
+
+    scalar = _read_scalar_threshold_from_env()
+    if scalar is not None:
+        for intent in result:
+            result[intent] = scalar
+
+    overrides = _parse_threshold_map_from_env()
+    for intent, value in overrides.items():
+        result[intent] = value
+
+    return result
+
+
+# --------------------------------------------------------------------------- #
+# Dispatcher                                                                   #
+# --------------------------------------------------------------------------- #
 
 
 class Dispatcher:
@@ -85,28 +193,38 @@ class Dispatcher:
         self,
         classifier: ClassifierProtocol,
         provider_factory: ProviderFactory = get_provider,
-        confidence_threshold: float | None = None,
+        confidence_thresholds: dict[str, float] | None = None,
     ):
         self.classifier = classifier
         self.provider_factory = provider_factory
-        # `None` means: read from CONFIDENCE_THRESHOLD env var at construction
-        # time. Tests can pass an explicit float to skip the env lookup.
-        self.confidence_threshold = (
-            confidence_threshold
-            if confidence_threshold is not None
-            else _read_threshold_from_env()
+        # None ⇒ resolve from env / defaults at construction time. Tests can
+        # pass an explicit dict to skip the env lookup.
+        self.confidence_thresholds = (
+            dict(confidence_thresholds)
+            if confidence_thresholds is not None
+            else get_thresholds()
         )
+
+    def _threshold_for(self, intent: str) -> float:
+        """Per-class threshold, with a strict default for unknown classes.
+
+        An unknown intent shouldn't happen (the classifier is constrained to
+        the trained label set), but if a future intent slips through we
+        prefer to demote it to the fallback rather than route blindly on it.
+        """
+        return self.confidence_thresholds.get(intent, max(DEFAULT_THRESHOLDS.values()))
 
     def dispatch(self, text: str) -> RouteResponse:
         decision = self.classifier.classify(text)
         intent = decision.intent
         confidence = float(decision.confidence)
+        threshold = self._threshold_for(intent)
 
-        # Threshold gate — if the model isn't sure, don't pick a path on
-        # its behalf. The empirical motivation is `router/results/generalization_test.txt`:
-        # clear inputs land at 0.81–0.94, ambiguous ones at 0.39–0.59.
-        if confidence < self.confidence_threshold:
-            return self._low_confidence_fallback(intent, confidence)
+        # Per-class threshold gate. The numbers and the chitchat-specific
+        # value of 0.45 are empirically grounded — see the module docstring
+        # and scripts/results/prod_routing_report.md.
+        if confidence < threshold:
+            return self._low_confidence_fallback(intent, confidence, threshold)
 
         if intent == "simple_qa":
             answer, path, trace = self._simple_qa(text)
@@ -133,7 +251,12 @@ class Dispatcher:
     # Low-confidence fallback                                              #
     # ------------------------------------------------------------------- #
 
-    def _low_confidence_fallback(self, intent: str, confidence: float) -> RouteResponse:
+    def _low_confidence_fallback(
+        self,
+        intent: str,
+        confidence: float,
+        threshold: float,
+    ) -> RouteResponse:
         """Return a transparent low-confidence response instead of routing.
 
         Intentionally cheap: no LLM call, no orchestrator. The schema stays
@@ -142,19 +265,20 @@ class Dispatcher:
         explicit marker `low_confidence_fallback` so callers can route the
         UI accordingly.
 
+        The threshold reported back in `answer`/`trace` is the per-class one,
+        not a global value — observability for the operator.
+
         Future enhancement (not implemented): ask the user a clarifying
         question via an LLM, or escalate to an LLM-as-router for this single
-        call. Either path keeps the dispatcher in charge of the *decision*
-        while letting the LLM resolve the ambiguity.
+        call.
         """
-        threshold = self.confidence_threshold
         would_have_taken = _INTENT_PATH_LABEL.get(intent, intent)
         answer = (
             "I couldn't confidently classify your request — the most likely "
             f"intent was '{intent}' with confidence {confidence:.3f}, below "
-            f"the threshold of {threshold:.2f}. Try rephrasing with a clearer "
-            "cue (e.g. start a coding task with 'build', reference a document "
-            "explicitly, or just say hi)."
+            f"the {threshold:.2f} threshold set for that class. Try "
+            "rephrasing with a clearer cue (e.g. start a coding task with "
+            "'build', reference a document explicitly, or just say hi)."
         )
         return RouteResponse(
             intent=intent,
@@ -163,7 +287,7 @@ class Dispatcher:
             path_taken=LOW_CONFIDENCE_PATH,
             trace=[
                 f"low confidence: intent={intent!r} confidence={confidence:.3f} "
-                f"threshold={threshold:.2f}",
+                f"threshold={threshold:.2f} (per-class)",
                 f"would have routed to: {would_have_taken}",
                 "no LLM call made; future: ask clarifying question or escalate to LLM router",
             ],
