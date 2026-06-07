@@ -52,6 +52,58 @@ export interface CompareResponse {
 }
 
 // --------------------------------------------------------------------------- //
+// /stats — observability snapshot                                              //
+// --------------------------------------------------------------------------- //
+//
+// The backend's /stats endpoint returns the SAME schema regardless of how much
+// traffic it has seen, but the maps inside (`intents`, `latency_ms`, `errors`,
+// `fallbacks.by_attempted_intent`) start as `{}` and only gain keys as the
+// dispatcher serves requests. Every component that reads /stats data MUST
+// handle the empty-object case — never assume a particular intent or path is
+// present. Hence `Record<string, X>` everywhere those maps live, and the
+// `ConfidenceBucket | null` on IntentStats.
+
+export interface ConfidenceBucket {
+  min: number;
+  max: number;
+  mean: number;
+  p50: number;
+  p95: number;
+  count: number;
+}
+
+export interface IntentStats {
+  count: number;
+  share: number; // 0..1
+  confidence: ConfidenceBucket | null; // null when no samples yet for this intent
+}
+
+export interface LatencyBucket {
+  p50: number;
+  p95: number;
+  mean: number;
+  count: number;
+}
+
+export interface FallbackStats {
+  total: number;
+  rate: number; // 0..1
+  by_attempted_intent: Record<string, number>;
+}
+
+export interface StatsResponse {
+  since: string; // ISO timestamp of when the collector started
+  uptime_seconds: number;
+  total_requests: number;
+  intents: Record<string, IntentStats>;
+  fallbacks: FallbackStats;
+  latency_ms: Record<string, LatencyBucket>;
+  errors: Record<string, number>; // keys look like "429", "500", "503"
+  ephemeral: boolean; // true while metrics live in process memory
+  note: string;
+}
+
+// --------------------------------------------------------------------------- //
 // Errors                                                                       //
 // --------------------------------------------------------------------------- //
 
@@ -114,7 +166,23 @@ async function postJson<TResponse>(
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-  } catch (e) {
+  } catch {
+    throw new ApiError("network", null, userFacingMessage("network"));
+  }
+
+  if (!resp.ok) {
+    const kind = kindFromStatus(resp.status);
+    throw new ApiError(kind, resp.status, userFacingMessage(kind));
+  }
+
+  return (await resp.json()) as TResponse;
+}
+
+async function getJson<TResponse>(path: string): Promise<TResponse> {
+  let resp: Response;
+  try {
+    resp = await fetch(`${API_URL}${path}`);
+  } catch {
     throw new ApiError("network", null, userFacingMessage("network"));
   }
 
@@ -132,6 +200,10 @@ export async function postRoute(input: string): Promise<RouteResponse> {
 
 export async function postCompare(input: string): Promise<CompareResponse> {
   return postJson<CompareResponse>("/compare", { input } satisfies CompareRequest);
+}
+
+export async function getStats(): Promise<StatsResponse> {
+  return getJson<StatsResponse>("/stats");
 }
 
 // --------------------------------------------------------------------------- //
