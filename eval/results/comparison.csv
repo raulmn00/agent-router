@@ -1,4 +1,4 @@
 approach,accuracy,f1_macro,mean_latency_ms,stdev_latency_ms,cost_per_1k_usd,n,runs
-DistilBERT (fine-tuned),0.9750,0.9749,24.16,0.15,0.000000,40,3
-LLM zero-shot (gpt-4o-mini),1.0000,1.0000,1786.79,1893.85,0.012000,40,3
-Embeddings + LogReg,0.9750,0.9749,3375.47,3883.26,0.000300,40,3
+DistilBERT (fine-tuned),0.9750,0.9749,25.04,4.40,0.000000,40,3
+LLM zero-shot (gpt-4o-mini),1.0000,1.0000,795.71,68.64,0.012000,40,3
+Embeddings + LogReg,0.9750,0.9749,780.73,574.94,0.000300,40,3

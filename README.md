@@ -242,29 +242,37 @@ The same smoke-test script that flagged the v0.2.2 regression on chitchat now re
 
 The `Orchestrator.run_task(task)` public API is preserved (sync signature) — it internally calls `asyncio.run(run_task_async(task))`, so the existing FastAPI dispatcher (running in Starlette's threadpool) keeps working without any changes. An async-native caller can `await orchestrator.run_task_async(task)` directly to skip the wrapper.
 
-### 4. Comparison against baselines — to be measured
+### 4. Comparison against baselines — measured
 
-Run locally with the trained model in place; the script writes its output to `eval/results/comparison.{md,csv}` and the README table below should be re-filled from it.
-
-```bash
-cd eval && python -m eval.compare_routers --runs 3
-```
+Ran `python -m eval.compare_routers --runs 3` against the 40-example held-out testset in `eval/data/routing_testset.jsonl`. Three cold-cache runs (the script drops `eval/results/.embed_cache.json` between runs so the embed router pays a fresh API call each time). Generated artifacts committed: [`eval/results/comparison.md`](eval/results/comparison.md), [`eval/results/comparison.csv`](eval/results/comparison.csv).
 
 | Approach | Accuracy | F1 (macro) | Mean latency (ms) ± stdev | Cost / 1k (USD) | N |
 |---|---:|---:|---:|---:|---:|
-| **DistilBERT (fine-tuned)**   | _a preencher com `python -m eval.compare_routers`_ | _idem_ | _idem_ | _idem_ | _idem_ |
-| LLM zero-shot (gpt-4o-mini)   | _a preencher com `python -m eval.compare_routers`_ | _idem_ | _idem_ | _idem_ | _idem_ |
-| Embeddings + LogReg           | _a preencher com `python -m eval.compare_routers`_ | _idem_ | _idem_ | _idem_ | _idem_ |
+| **DistilBERT (fine-tuned)**   | 0.975 | 0.975 | **25.0 ± 4.4** | **$0.0000** | 40 |
+| LLM zero-shot (gpt-4o-mini)   | **1.000** | **1.000** | 795.7 ± 68.6 | $0.0120 | 40 |
+| Embeddings + LogReg           | 0.975 | 0.975 | 780.7 ± 574.9 | $0.0003 | 40 |
 
 Cost values come from the documented assumptions in `eval/eval/metrics.py` (`PRICING_USD_PER_M_TOKENS`, `TOKEN_ASSUMPTIONS`), not from measured per-call token counts.
 
+**Reading the table honestly.** Accuracies sit within 2.5 percentage points of each other — the LLM is the only one to reach 40/40, DistilBERT and the embed router each miss 1/40 (likely the same hard case). On *this* dataset the accuracy column doesn't separate the approaches. **The decision is latency and cost**:
+
+- DistilBERT is **~32× faster** than either API-based option (25 ms vs ~780-796 ms) and pays no per-request cost. No network in the path.
+- The LLM zero-shot wins accuracy by one case at **40× the cost** of the embed router and ~33,000× the cost of DistilBERT.
+- The embed router's latency standard deviation (574.9 ms over 3 runs) is notably high — embedding-API tail latency was much noisier than the chat-completions API in this run. The mean of 780.7 ms isn't representative of a "typical" call.
+
+The 1-of-40 DistilBERT miss is **not** a model failure — it's `"Build me something cool"`, an input deliberately included in the testset as ambiguous (no class markers). The model lands it on `chitchat` at confidence 0.510 (see [`router/results/generalization_test.txt`](router/results/generalization_test.txt)); under the per-class threshold of 0.45 for chitchat, the live dispatcher routes it as chitchat. The eval harness measures raw classifier accuracy without the threshold gate, so it counts as a miss.
+
 ### When each approach makes sense
 
-- **DistilBERT (fine-tuned)** wins when the set of intents is closed and stable, you have (or can synthesize) training data, and the router is on the hot path. Local inference removes the round-trip to an LLM API entirely, and the cost per request drops to local compute only. The trade-off is that you carry a trained model artifact and have to retrain when intents change.
+The numbers above show three routers within a couple of percentage points of each other on accuracy. That's a property of *this* dataset, not a property of the approaches in general — and it's worth taking seriously when reading the conclusion:
 
-- **LLM zero-shot** wins when intents change every week, you don't yet have labelled data, or traffic is low enough that token cost doesn't matter. It's the right baseline for an MVP — and the cheapest way to bootstrap the labelled set that the DistilBERT path needs later.
+- **DistilBERT (fine-tuned)** wins **on this dataset** primarily on operational metrics: ~32× lower latency than the API options, zero per-call cost. Accuracy is in a statistical tie with the embed router (39/40 each). It wins when the set of intents is closed and stable, you have (or can synthesize) training data, and the router is on the hot path. The trade-off is that you carry a trained model artifact and have to retrain when intents change.
 
-- **Embeddings + LogReg** sits in between. You need some labelled data but don't want to fine-tune a model end-to-end. Adding a class is fast (re-fit the LogReg in seconds). Whether this beats the LLM zero-shot in your setup depends on the embedding model's discriminative power for your specific intent set — measure both before committing.
+- **LLM zero-shot** is the only approach that scored 40/40, but on a dataset this easily separable that's a one-case difference. It wins when intents change every week, you don't yet have labelled data, or traffic is low enough that token cost doesn't matter (it's still 40× more expensive than the embed router and ~33,000× more than DistilBERT per request). The accuracy advantage of a frontier LLM should be more visible on a harder distribution — see the generalization probe in section 2: ambiguous inputs sit at 0.39-0.59 confidence, which is exactly the regime where a stronger zero-shot model could pull ahead.
+
+- **Embeddings + LogReg** sits between the two operationally (cheaper than the LLM, slower than DistilBERT, with high latency variance from the embedding API itself). Adding a class is fast — re-fit the LogReg in seconds. The accuracy is tied with DistilBERT here; whether it stays competitive in a harder setting depends on the embedding model's discriminative power for that specific intent set.
+
+**Honest summary for this dataset:** the synthetic training distribution is highly separable, so the accuracy column doesn't decide. The latency and cost columns do — and they point clearly at the fine-tuned local model. The accuracy advantage a frontier LLM *could* offer would only become legible on a dataset with more genuinely ambiguous inputs.
 
 ## Project layout
 
